@@ -1,0 +1,231 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===== LUXURY FRAGRANCE DESIGN TOKENS ===== */
+:root {
+  /* Primary Palette - Warm Atmospheric Tones */
+  --background: oklch(0.12 0.01 60);           /* Deep warm charcoal */
+  --foreground: oklch(0.92 0.02 85);           /* Ivory cream */
+  
+  /* Card & Surface Colors */
+  --card: oklch(0.14 0.012 55);                /* Slightly lighter warm charcoal */
+  --card-foreground: oklch(0.90 0.02 85);      /* Warm ivory */
+  
+  /* Popover */
+  --popover: oklch(0.16 0.015 50);             /* Elevated warm surface */
+  --popover-foreground: oklch(0.90 0.02 85);
+  
+  /* Primary - Aged Copper */
+  --primary: oklch(0.65 0.12 55);              /* Aged copper tone */
+  --primary-foreground: oklch(0.12 0.01 60);   /* Deep charcoal for contrast */
+  
+  /* Secondary - Sandalwood Beige */
+  --secondary: oklch(0.45 0.06 65);            /* Muted sandalwood */
+  --secondary-foreground: oklch(0.92 0.02 85);
+  
+  /* Muted - Deep Terracotta */
+  --muted: oklch(0.25 0.04 45);                /* Deep terracotta brown */
+  --muted-foreground: oklch(0.65 0.04 70);     /* Soft warm gray */
+  
+  /* Accent - Dusty Rose */
+  --accent: oklch(0.55 0.08 25);               /* Dusty rose */
+  --accent-foreground: oklch(0.95 0.01 85);
+  
+  /* Amber Highlight */
+  --amber: oklch(0.70 0.14 70);                /* Deep amber */
+  --amber-foreground: oklch(0.15 0.01 60);
+  
+  /* Destructive */
+  --destructive: oklch(0.50 0.15 25);
+  --destructive-foreground: oklch(0.95 0.01 85);
+  
+  /* Borders & Inputs */
+  --border: oklch(0.25 0.02 55);               /* Subtle warm border */
+  --input: oklch(0.20 0.02 55);
+  --ring: oklch(0.65 0.12 55);                 /* Copper ring */
+  
+  /* Charts - Warm Palette */
+  --chart-1: oklch(0.65 0.12 55);              /* Copper */
+  --chart-2: oklch(0.55 0.08 25);              /* Dusty rose */
+  --chart-3: oklch(0.45 0.06 65);              /* Sandalwood */
+  --chart-4: oklch(0.70 0.14 70);              /* Amber */
+  --chart-5: oklch(0.35 0.05 45);              /* Terracotta */
+  
+  /* Radius - Minimal for luxury feel */
+  --radius: 0.125rem;
+  
+  /* Sidebar */
+  --sidebar: oklch(0.10 0.01 60);
+  --sidebar-foreground: oklch(0.90 0.02 85);
+  --sidebar-primary: oklch(0.65 0.12 55);
+  --sidebar-primary-foreground: oklch(0.12 0.01 60);
+  --sidebar-accent: oklch(0.20 0.02 55);
+  --sidebar-accent-foreground: oklch(0.90 0.02 85);
+  --sidebar-border: oklch(0.20 0.02 55);
+  --sidebar-ring: oklch(0.65 0.12 55);
+  
+  /* ===== ATMOSPHERIC SHADOWS ===== */
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.2);
+  --shadow-md: 0 4px 12px oklch(0 0 0 / 0.25);
+  --shadow-lg: 0 8px 32px oklch(0 0 0 / 0.35);
+  --shadow-xl: 0 16px 64px oklch(0 0 0 / 0.45);
+  --shadow-glow: 0 0 60px oklch(0.65 0.12 55 / 0.15);
+  
+  /* ===== CINEMATIC SPACING RHYTHM ===== */
+  --section-sm: 4rem;
+  --section-md: 8rem;
+  --section-lg: 12rem;
+  --section-xl: 16rem;
+}
+
+@theme inline {
+  /* Typography - Elegant Serif & Refined Sans */
+  --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: 'Inter', 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  
+  /* Color Mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-amber: var(--amber);
+  --color-amber-foreground: var(--amber-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+  
+  /* ===== LUXURY TYPOGRAPHY SYSTEM ===== */
+  
+  /* Display - Cinematic Headlines */
+  .text-display {
+    @apply font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-tight leading-none;
+  }
+  
+  /* Headline - Section Titles */
+  .text-headline {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-light tracking-tight leading-tight;
+  }
+  
+  /* Title - Subsection Headers */
+  .text-title {
+    @apply font-serif text-2xl md:text-3xl font-light tracking-normal leading-snug;
+  }
+  
+  /* Subhead - Elegant Labels */
+  .text-subhead {
+    @apply font-sans text-xs md:text-sm uppercase tracking-[0.25em] font-medium;
+  }
+  
+  /* Body - Premium Reading */
+  .text-body {
+    @apply font-sans text-base md:text-lg leading-relaxed tracking-wide;
+  }
+  
+  /* Body Small */
+  .text-body-sm {
+    @apply font-sans text-sm md:text-base leading-relaxed tracking-wide;
+  }
+  
+  /* Caption - Refined Details */
+  .text-caption {
+    @apply font-sans text-xs tracking-widest uppercase;
+  }
+  
+  /* ===== ATMOSPHERIC DIVIDERS ===== */
+  .divider-atmospheric {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-border to-transparent;
+  }
+  
+  .divider-copper {
+    @apply h-px w-24 bg-primary/60;
+  }
+  
+  /* ===== CINEMATIC SECTION SPACING ===== */
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+  
+  .section-padding-sm {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+  
+  .section-padding-lg {
+    @apply py-32 md:py-40 lg:py-56;
+  }
+  
+  /* ===== ANIMATION-READY STATES ===== */
+  .animate-ready {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  .animate-initial {
+    @apply opacity-0 translate-y-8;
+  }
+  
+  /* ===== ATMOSPHERIC OVERLAYS ===== */
+  .overlay-dark {
+    @apply absolute inset-0 bg-background/80;
+  }
+  
+  .overlay-gradient {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.12 0.01 60 / 0.9) 0%,
+      oklch(0.12 0.01 60 / 0.4) 50%,
+      oklch(0.12 0.01 60 / 0.95) 100%
+    );
+  }
+  
+  /* ===== SELECTION STYLING ===== */
+  ::selection {
+    background: oklch(0.65 0.12 55 / 0.3);
+    color: oklch(0.95 0.02 85);
+  }
+}
