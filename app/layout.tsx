@@ -19,7 +19,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Kannauj Attar House | Ancient Perfumery',
+  title: 'Kannauj Attar | Ancient Perfumery',
   description: 'A natural attar and perfumery house inspired by the ancient traditions of Kannauj. Handcrafted fragrances through Deg Bhapka distillation.',
   keywords: ['attar', 'perfume', 'kannauj', 'natural fragrance', 'deg bhapka', 'sandalwood', 'rose'],
 }
