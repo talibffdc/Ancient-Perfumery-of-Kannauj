@@ -421,10 +421,10 @@ export function InquirySection() {
               Visit us by appointment in Kannauj
             </p>
             <a 
-              href="mailto:inquiry@kannauj.in" 
+              href="mailto:kannaujattar.co.in@gmail.com" 
               className="mt-4 inline-block font-sans text-xs tracking-[0.15em] text-foreground/30 transition-colors duration-500 hover:text-primary/60"
             >
-              inquiry@kannauj.in
+              kannaujattar.co.in@gmail.com
             </a>
           </div>
         </div>
