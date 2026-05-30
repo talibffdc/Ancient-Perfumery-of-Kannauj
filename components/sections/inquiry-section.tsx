@@ -135,10 +135,11 @@ export function InquirySection() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const form = e.currentTarget
     
     if (isSubmitting) return
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(form)
     const name = formData.get('name') as string
     const email = formData.get('email') as string
     const message = formData.get('message') as string
@@ -158,11 +159,11 @@ export function InquirySection() {
       try {
         data = await response.json()
       } catch (parseError) {
-        console.error('Failed to parse API response:', parseError)
         setFeedback({
           type: 'error',
           message: 'Failed to process response. Please try again.',
         })
+        setIsSubmitting(false)
         return
       }
 
@@ -172,6 +173,7 @@ export function InquirySection() {
           type: 'error',
           message: data.error || 'Failed to send inquiry. Please try again.',
         })
+        setIsSubmitting(false)
         return
       }
 
@@ -181,15 +183,19 @@ export function InquirySection() {
         message: data.message || 'Thank you! Your inquiry has been sent.',
       })
 
-      // Reset form
-      e.currentTarget.reset()
+      // Reset form (wrapped to prevent success from being overwritten by form reset errors)
+      try {
+        form.reset()
+      } catch (resetError) {
+        // Form reset error is non-critical; success has already been shown
+        console.error('Form reset error:', resetError)
+      }
+      setIsSubmitting(false)
     } catch (error) {
-      console.error('Form submission error:', error)
       setFeedback({
         type: 'error',
         message: 'Network error. Please try again.',
       })
-    } finally {
       setIsSubmitting(false)
     }
   }
