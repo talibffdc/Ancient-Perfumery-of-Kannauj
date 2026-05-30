@@ -76,10 +76,13 @@ export async function POST(request: Request) {
       )
     }
 
-    return Response.json({
-      success: true,
-      message: 'Your inquiry has been sent. Thank you for reaching out.',
-    })
+    return Response.json(
+      {
+        success: true,
+        message: 'Your inquiry has been sent. Thank you for reaching out.',
+      },
+      { status: 200 }
+    )
   } catch (error) {
     // Handle validation errors
     if (error instanceof z.ZodError) {

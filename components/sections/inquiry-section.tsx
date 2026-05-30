@@ -153,8 +153,20 @@ export function InquirySection() {
         body: JSON.stringify({ name, email, message }),
       })
 
-      const data = await response.json()
+      // Ensure we can parse the response
+      let data
+      try {
+        data = await response.json()
+      } catch (parseError) {
+        console.error('Failed to parse API response:', parseError)
+        setFeedback({
+          type: 'error',
+          message: 'Failed to process response. Please try again.',
+        })
+        return
+      }
 
+      // Check response status
       if (!response.ok) {
         setFeedback({
           type: 'error',
@@ -163,6 +175,7 @@ export function InquirySection() {
         return
       }
 
+      // Success case
       setFeedback({
         type: 'success',
         message: data.message || 'Thank you! Your inquiry has been sent.',
@@ -171,6 +184,7 @@ export function InquirySection() {
       // Reset form
       e.currentTarget.reset()
     } catch (error) {
+      console.error('Form submission error:', error)
       setFeedback({
         type: 'error',
         message: 'Network error. Please try again.',
