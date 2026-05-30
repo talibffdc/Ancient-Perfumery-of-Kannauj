@@ -57,7 +57,7 @@ export function Footer() {
               KANNAUJ
             </span>
             <p className="mt-3 font-sans text-[10px] uppercase tracking-[0.35em] text-foreground/30">
-              Ancient Perfumery House
+              Ancient Perfumery of kannauj
             </p>
           </div>
 
