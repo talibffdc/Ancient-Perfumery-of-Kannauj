@@ -115,7 +115,7 @@ export function Footer() {
           >
             {/* Copyright */}
             <p className="font-sans text-[10px] tracking-[0.15em] text-foreground/20">
-              © 2024 Kannauj Attar House
+              © 2024 Ancient Perfumery of Kannauj
             </p>
 
             {/* Subtle social references - no icons, just text */}
