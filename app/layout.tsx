@@ -3,6 +3,8 @@ import { Cormorant_Garamond, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { RootLayoutClient } from './layout-client'
 import { getAllSchemas } from '@/lib/schema'
+import { createProductSchema } from '@/lib/schema'
+import { productData } from '@/lib/product-schemas'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -80,6 +82,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const schemas = getAllSchemas()
+  const productSchemas = productData.map(product => 
+    createProductSchema({
+      name: product.name,
+      description: product.description,
+    })
+  )
+  const allSchemas = [...schemas, ...productSchemas]
 
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable} bg-background`}>
@@ -88,7 +97,7 @@ export default function RootLayout({
         <link rel="canonical" href="https://kannaujattar.co.in" />
         
         {/* JSON-LD Structured Data for Search Engines and AI Systems */}
-        {schemas.map((schema, idx) => (
+        {allSchemas.map((schema, idx) => (
           <script
             key={idx}
             type="application/ld+json"
