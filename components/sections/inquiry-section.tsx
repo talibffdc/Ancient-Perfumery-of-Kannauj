@@ -293,6 +293,7 @@ export function InquirySection() {
             {/* Name field */}
             <div className="form-field group relative opacity-0">
               <label 
+                htmlFor="inquiry-name"
                 className={cn(
                   "absolute left-0 font-sans text-xs uppercase tracking-[0.2em] transition-all duration-500",
                   focusedField === 'name' ? "text-primary/70" : "text-foreground/30"
@@ -302,6 +303,7 @@ export function InquirySection() {
                 Who are you
               </label>
               <input
+                id="inquiry-name"
                 type="text"
                 name="name"
                 onFocus={(e) => handleFocus('name', e.target)}
@@ -320,6 +322,7 @@ export function InquirySection() {
             {/* Email field */}
             <div className="form-field group relative opacity-0">
               <label 
+                htmlFor="inquiry-email"
                 className={cn(
                   "absolute left-0 font-sans text-xs uppercase tracking-[0.2em] transition-all duration-500",
                   focusedField === 'email' ? "text-primary/70" : "text-foreground/30"
@@ -329,6 +332,7 @@ export function InquirySection() {
                 Where to reach you
               </label>
               <input
+                id="inquiry-email"
                 type="email"
                 name="email"
                 onFocus={(e) => handleFocus('email', e.target)}
@@ -347,6 +351,7 @@ export function InquirySection() {
             {/* Message field */}
             <div className="form-field group relative opacity-0">
               <label 
+                htmlFor="inquiry-message"
                 className={cn(
                   "absolute left-0 font-sans text-xs uppercase tracking-[0.2em] transition-all duration-500",
                   focusedField === 'message' ? "text-primary/70" : "text-foreground/30"
@@ -356,6 +361,7 @@ export function InquirySection() {
                 Leave a note for us
               </label>
               <textarea
+                id="inquiry-message"
                 name="message"
                 rows={4}
                 onFocus={(e) => handleFocus('message', e.target)}
@@ -397,6 +403,8 @@ export function InquirySection() {
             {feedback && (
               <div
                 ref={feedbackRef}
+                role="status"
+                aria-live="polite"
                 className={cn(
                   "mt-8 text-center font-serif text-sm",
                   feedback.type === 'success'

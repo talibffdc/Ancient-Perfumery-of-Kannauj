@@ -43,6 +43,10 @@ export function ProcessSection() {
             A 500-year-old technique where copper vessels, fire, and patience 
             transform botanical matter into liquid poetry.
           </BodyText>
+          <BodyText className="mt-6 max-w-2xl">
+            Attar is the concentrated botanical oil that rises from steam and plant matter,
+            not a fragrance assembled from separate notes.
+          </BodyText>
         </div>
 
         {/* Process Steps */}

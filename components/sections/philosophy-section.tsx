@@ -18,6 +18,7 @@ export function PhilosophySection() {
   const labelRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLDivElement>(null)
   const dividerRef = useRef<HTMLDivElement>(null)
+  const introRef = useRef<HTMLDivElement>(null)
   const pillarsRef = useRef<HTMLDivElement>(null)
   
   const { isReady } = useAnimation()
@@ -33,10 +34,11 @@ export function PhilosophySection() {
       gsap.set(labelRef.current, { opacity: 0, y: reduced ? 0 : 20 })
       gsap.set(quoteRef.current, { opacity: 0, y: reduced ? 0 : 30 })
       gsap.set(dividerRef.current, { scaleX: 0 })
+      gsap.set(introRef.current, { opacity: 0, y: reduced ? 0 : 20 })
       if (pillars) {
         gsap.set(pillars, { opacity: 0, y: reduced ? 0 : 40 })
       }
-
+ 
       // Main timeline
       gsap.timeline({
         scrollTrigger: {
@@ -64,7 +66,14 @@ export function PhilosophySection() {
           duration: reduced ? 0.1 : duration.slow,
           ease: ease.cinematic,
         }, '-=1')
-
+        // Intro sentence
+        .to(introRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: reduced ? 0.1 : duration.normal,
+          ease: ease.cinematicOut,
+        }, '-=0.8')
+ 
       // Philosophy pillars - separate trigger for staggered reveal
       if (pillars) {
         gsap.timeline({
@@ -129,6 +138,12 @@ export function PhilosophySection() {
         {/* Divider */}
         <div ref={dividerRef} className="my-16 flex justify-center md:my-24" style={{ transformOrigin: 'center' }}>
           <AtmosphericDivider variant="copper" />
+        </div>
+
+        <div ref={introRef} className="mx-auto max-w-3xl text-foreground/60 opacity-0 mb-16 md:mb-20">
+          <BodyText>
+            These are the qualities we measure by in every distillation, harvest, and bottle.
+          </BodyText>
         </div>
 
         {/* Philosophy Pillars */}

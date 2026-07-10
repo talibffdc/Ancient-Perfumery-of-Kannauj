@@ -190,6 +190,10 @@ export function IngredientsSection() {
             Each ingredient carries the essence of its origin—the soil, the climate, 
             the hands that tended it. We honor this journey from earth to essence.
           </BodyText>
+          <BodyText className="mt-6 max-w-2xl">
+            These are the botanical oils at the heart of true attar, each one carrying 
+            origin, weather, and care into the finished scent.
+          </BodyText>
         </div>
 
         {/* Ingredients Grid */}

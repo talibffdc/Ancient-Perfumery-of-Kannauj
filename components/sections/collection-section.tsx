@@ -217,6 +217,7 @@ function FragrancePresentation({ fragrance, index }: {
             <div className="animate-item pt-4 md:pt-6">
               <a 
                 href="#inquiry" 
+                aria-label={`Inquire about ${fragrance.name}`}
                 className="group inline-flex items-center gap-4 text-foreground/50 hover:text-foreground transition-colors duration-500"
               >
                 <span className="font-sans text-xs uppercase tracking-[0.2em]">
@@ -341,6 +342,9 @@ export function CollectionSection() {
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
           <p className="cta-item font-serif text-xl md:text-2xl italic text-foreground/40 mb-12 max-w-lg opacity-0">
             Each fragrance is made in small quantities. Some take months to prepare.
+          </p>
+          <p className="cta-item font-sans text-sm text-foreground/50 mb-10 max-w-xl opacity-0">
+            Let the scent that feels closest to your quietest memory guide your inquiry.
           </p>
           
           <a 

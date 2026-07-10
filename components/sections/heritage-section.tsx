@@ -165,6 +165,11 @@ export function HeritageSection() {
               </BodyText>
               
               <BodyText className="max-w-lg mt-6 opacity-0">
+                In this place, river water, clay, and copper craft converge with rose cultivation 
+                to give attar its singular depth.
+              </BodyText>
+              
+              <BodyText className="max-w-lg mt-6 opacity-0">
                 Each vessel in our distillery holds stories—of monsoon roses harvested at dawn, 
                 of sandalwood aged in silence, of patience distilled into fragrance.
               </BodyText>

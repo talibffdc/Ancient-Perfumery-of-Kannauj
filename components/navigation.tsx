@@ -28,7 +28,8 @@ export function Navigation({ className }: NavigationProps) {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-8 lg:px-12">
         {/* Logo */}
         <a
-          href="#"
+          href="#hero"
+          aria-label="Go to top"
           className="font-serif text-lg md:text-xl tracking-widest text-foreground transition-colors duration-300 hover:text-primary"
         >
           Kannauj
@@ -53,14 +54,16 @@ export function Navigation({ className }: NavigationProps) {
           href="#inquiry"
           className="hidden font-sans text-xs uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:text-primary lg:block"
         >
-          Inquiry
+          Begin a Conversation
         </a>
 
         {/* Mobile Menu Button */}
         <button
+          type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="flex flex-col items-end gap-1.5 lg:hidden"
           aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
         >
           <span
             className={cn(
@@ -85,11 +88,21 @@ export function Navigation({ className }: NavigationProps) {
 
       {/* Mobile Menu */}
       <div
+        id="mobile-menu"
+        aria-hidden={!isMenuOpen}
         className={cn(
           'fixed inset-0 top-0 flex flex-col items-center justify-center bg-background transition-all duration-500 lg:hidden',
           isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         )}
       >
+        <button
+          type="button"
+          onClick={() => setIsMenuOpen(false)}
+          aria-label="Close menu"
+          className="absolute right-6 top-6 inline-flex items-center justify-center rounded-full border border-foreground/10 bg-background/90 px-4 py-3 text-sm text-foreground transition-colors duration-300 hover:border-primary hover:text-primary"
+        >
+          Close
+        </button>
         <ul className="flex flex-col items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
@@ -108,7 +121,7 @@ export function Navigation({ className }: NavigationProps) {
               onClick={() => setIsMenuOpen(false)}
               className="font-sans text-xs uppercase tracking-[0.25em] text-primary"
             >
-              Make an Inquiry
+              Begin a Conversation
             </a>
           </li>
         </ul>
