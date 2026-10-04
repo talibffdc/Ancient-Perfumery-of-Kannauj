@@ -94,7 +94,6 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${inter.variable} bg-background`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link rel="canonical" href="https://kannaujattar.co.in" />
         
         {/* JSON-LD Structured Data for Search Engines and AI Systems */}
         {allSchemas.map((schema, idx) => (

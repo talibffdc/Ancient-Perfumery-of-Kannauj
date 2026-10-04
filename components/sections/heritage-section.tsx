@@ -13,6 +13,7 @@ import {
   stagger,
   prefersReducedMotion,
 } from '@/lib/animations'
+import Image from 'next/image'
 
 export function HeritageSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -181,12 +182,25 @@ export function HeritageSection() {
             ref={imageRef} 
             className="relative aspect-[4/5] overflow-hidden bg-muted/30 opacity-0"
           >
-            <div className="image-inner absolute inset-0 flex items-center justify-center scale-110">
+            {/* <div className="image-inner absolute inset-0 flex items-center justify-center scale-110">
               <div className="text-center">
                 <Subhead className="text-muted-foreground/50">Copper Vessels</Subhead>
                 <span className="mt-2 block font-serif text-5xl text-muted-foreground/20">देग</span>
               </div>
-            </div>
+            </div> */}
+
+
+              <div className="image-inner absolute inset-0 scale-110">
+  <Image
+    src="/heritage-deg-vessel.webp"
+
+    alt="Copper deg vessels — Kannauj Attar distillery"
+    fill
+    style={{ objectFit: 'cover', objectPosition: 'center' }}
+    sizes="(max-width: 1024px) 100vw, 50vw"
+  />
+</div>
+
             {/* Atmospheric overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
             {/* Warm inner glow */}
