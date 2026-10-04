@@ -56,7 +56,7 @@ export function Footer() {
             <span className="font-serif text-2xl font-light tracking-[0.25em] text-foreground/80 md:text-3xl">
               KANNAUJ
             </span>
-            <p className="mt-3 font-sans text-[10px] uppercase tracking-[0.35em] text-foreground/30">
+            <p className="mt-3 font-sans text-[10px] uppercase tracking-[0.35em] text-foreground/55">
               Ancient Perfumery of kannauj
             </p>
           </div>
@@ -72,7 +72,7 @@ export function Footer() {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/30 transition-colors duration-500 hover:text-foreground/60"
+                className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
               >
                 {item}
               </a>
@@ -86,10 +86,10 @@ export function Footer() {
               isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             )}
           >
-            <p className="font-serif text-xs font-light italic text-foreground/25">
+            <p className="font-serif text-xs font-light italic text-foreground/50">
               Distilled slowly in Kannauj, Uttar Pradesh
             </p>
-            <p className="mt-2 font-sans text-[10px] tracking-[0.2em] text-foreground/15">
+            <p className="mt-2 font-sans text-[10px] tracking-[0.2em] text-foreground/40">
               27.0671° N, 79.9132° E
             </p>
           </div>
@@ -101,7 +101,7 @@ export function Footer() {
               isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             )}
           >
-            <p className="font-serif text-lg font-light italic tracking-wide text-foreground/35 md:text-xl">
+            <p className="font-serif text-lg font-light italic tracking-wide text-foreground/60 md:text-xl">
               Steam. Copper. Memory.
             </p>
           </div>
@@ -114,7 +114,7 @@ export function Footer() {
             )}
           >
             {/* Copyright */}
-            <p className="font-sans text-[10px] tracking-[0.15em] text-foreground/20">
+            <p className="font-sans text-[10px] tracking-[0.15em] text-foreground/45">
               © 2024 Ancient Perfumery of Kannauj
             </p>
 
@@ -122,20 +122,20 @@ export function Footer() {
             <div className="flex gap-8">
               <a 
                 href="#" 
-                className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/15 transition-colors duration-500 hover:text-foreground/40"
+                className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/40 transition-colors duration-500 hover:text-foreground/60"
               >
                 Instagram
               </a>
               <a 
                 href="#" 
-                className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/15 transition-colors duration-500 hover:text-foreground/40"
+                className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/40 transition-colors duration-500 hover:text-foreground/60"
               >
                 WhatsApp
               </a>
             </div>
 
             {/* Made with patience */}
-            <p className="font-serif text-[10px] font-light italic text-foreground/15">
+            <p className="font-serif text-[10px] font-light italic text-foreground/40">
               Made with patience
             </p>
           </div>
@@ -209,7 +209,7 @@ function ClosingTransition() {
       <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
         <p 
           className={cn(
-            "text-center font-serif text-sm font-light italic tracking-wider text-foreground/20 transition-all duration-[2000ms] md:text-base",
+            "text-center font-serif text-sm font-light italic tracking-wider text-foreground/45 transition-all duration-[2000ms] md:text-base",
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           )}
         >
@@ -219,7 +219,7 @@ function ClosingTransition() {
         {/* Hindi closing whisper */}
         <span 
           className={cn(
-            "mt-8 font-serif text-xs tracking-[0.4em] text-foreground/10 transition-all delay-1000 duration-[2000ms]",
+            "mt-8 font-serif text-xs tracking-[0.4em] text-foreground/35 transition-all delay-1000 duration-[2000ms]",
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           )}
         >

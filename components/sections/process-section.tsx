@@ -7,21 +7,25 @@ const processSteps = [
     number: '01',
     title: 'Harvest',
     description: 'Rose petals gathered before dawn, when dew still clings to their velvet skin.',
+    image: '/images/roseharvest.jpg',
   },
   {
     number: '02',
     title: 'Preparation',
     description: 'Flowers placed gently into copper degs, layered with sacred intention.',
+    image: '/images/preparerose.png',
   },
   {
     number: '03',
     title: 'Distillation',
     description: 'Fire meets water. Steam rises through bamboo pipes, carrying the soul of the rose.',
+    image: '/images/distillation.jpg',
   },
   {
     number: '04',
     title: 'Receiving',
     description: 'Sandalwood oil receives the essence, marrying earth to flower.',
+    image: '/images/receiveattar.jpg',
   },
 ]
 
@@ -56,6 +60,11 @@ export function ProcessSection() {
               key={step.number}
               className="group bg-background p-8 transition-colors duration-500 hover:bg-card md:p-10"
             >
+              <img
+                src={step.image}
+                alt={`${step.title} process`}
+                className="mb-6 h-48 w-full bg-muted/10 object-contain"
+              />
               <Caption className="text-primary">{step.number}</Caption>
               <Title as="h4" className="mt-6 mb-4">
                 {step.title}
