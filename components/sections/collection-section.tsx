@@ -16,6 +16,7 @@ interface Fragrance {
   hindi: string
   poeticLine: string
   narrative: string
+  image: string
   atmosphere: {
     gradient: string
     accentColor: string
@@ -28,6 +29,7 @@ const collection: Fragrance[] = [
     hindi: 'गुलाब अत्तर',
     poeticLine: 'The morning before the world remembers heat.',
     narrative: 'Ten thousand rose petals, gathered in darkness, distilled into sandalwood over forty days. What remains is not a scent—it is a feeling. The softness of early morning. The memory of gardens before anyone else woke.',
+    image: '/images/gulabattar.jpg',
     atmosphere: {
       gradient: 'from-[oklch(0.14_0.03_350)] to-[oklch(0.11_0.01_60)]',
       accentColor: 'text-[oklch(0.68_0.10_350)]'
@@ -38,6 +40,7 @@ const collection: Fragrance[] = [
     hindi: 'मिट्टी अत्तर',
     poeticLine: 'Rain touching earth after months of waiting.',
     narrative: 'We bake the clay of dried riverbeds, then coax its essence into sandalwood. This is the scent of relief—of parched ground finally drinking, of the first monsoon drop after endless summer. Memory of homecoming.',
+    image: '/images/mittiattar.png',
     atmosphere: {
       gradient: 'from-[oklch(0.16_0.04_55)] to-[oklch(0.11_0.01_60)]',
       accentColor: 'text-[oklch(0.68_0.12_55)]'
@@ -48,6 +51,7 @@ const collection: Fragrance[] = [
     hindi: 'शमामा',
     poeticLine: 'Forty ingredients. One conversation.',
     narrative: 'The most complex attar in existence. Forty precious materials—flowers, woods, resins, spices—distilled together over months. Each wearing reveals new facets. It does not repeat itself. It grows with you.',
+    image: '/images/shamamaattarkannaujattar.jpg',
     atmosphere: {
       gradient: 'from-[oklch(0.12_0.03_40)] to-[oklch(0.10_0.01_60)]',
       accentColor: 'text-[oklch(0.65_0.10_45)]'
@@ -58,6 +62,7 @@ const collection: Fragrance[] = [
     hindi: 'हिना अत्तर',
     poeticLine: 'Stillness held in amber light.',
     narrative: 'Warm, resinous, meditative. Hina is the scent of inner quiet—of temple incense and late afternoon sun through wooden shutters. It does not demand attention. It accompanies contemplation.',
+    image: '/images/hinattarkannauj.jpg',
     atmosphere: {
       gradient: 'from-[oklch(0.15_0.05_70)] to-[oklch(0.11_0.01_60)]',
       accentColor: 'text-[oklch(0.70_0.10_70)]'
@@ -170,10 +175,13 @@ function FragrancePresentation({ fragrance, index }: {
             <div className="aspect-[4/5] relative overflow-hidden">
               {/* Parallax wrapper */}
               <div className="parallax-inner absolute inset-[-10%]">
-                {/* Image placeholder */}
-                <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.03] to-foreground/[0.01]" />
+                <img
+                  src={fragrance.image}
+                  alt={fragrance.name}
+                  className="h-full w-full object-cover grayscale-[0.15] contrast-[1.05]"
+                />
               </div>
-              
+
               {/* Inner frame */}
               <div className="absolute inset-6 md:inset-8 border border-foreground/[0.08]" />
               

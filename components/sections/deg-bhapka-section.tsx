@@ -21,6 +21,7 @@ const acts = [
     title: 'Preparation',
     visualHint: 'Copper Vessel',
     devanagari: 'तैयारी',
+    image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=1200&q=80',
     quote: 'The vessel has been prepared since dawn.',
     mood: 'stillness, warmth, anticipation',
   },
@@ -30,6 +31,7 @@ const acts = [
     title: 'Loading the Roses',
     visualHint: 'Rose Petals',
     devanagari: 'गुलाब',
+    image: 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=1200&q=80',
     quote: 'Forty kilograms of rose.',
     subQuote: 'One morning. One batch.',
     mood: 'softness, abundance, morning harvest',
@@ -40,6 +42,7 @@ const acts = [
     title: 'Sealing',
     visualHint: 'Cloth & Water',
     devanagari: 'मुहर',
+    image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80',
     quote: 'The seal is cloth and water.',
     subQuote: 'An ancient technology.',
     mood: 'precision, ritual, human hands',
@@ -50,6 +53,7 @@ const acts = [
     title: 'Waiting',
     visualHint: 'Low Fire',
     devanagari: 'इंतज़ार',
+    image: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80',
     quote: 'Now.',
     subQuote: 'There is only time.',
     mood: 'deep stillness, silence, time slowing',
@@ -61,6 +65,7 @@ const acts = [
     title: 'Collection',
     visualHint: 'Pure Distillate',
     devanagari: 'संग्रह',
+    image: 'https://images.unsplash.com/photo-1528740561666-dc2479dc08ab?auto=format&fit=crop&w=1200&q=80',
     quote: 'This is what remains.',
     subQuote: 'Pure. True. Attar.',
     mood: 'purity, warm light, completion',
@@ -119,10 +124,16 @@ function Act({ act, index }: ActProps) {
               ? 'aspect-square w-48 md:w-64' 
               : 'aspect-[16/9] w-full max-w-2xl'
           )}>
+            <img
+              src={act.image}
+              alt={act.title}
+              className="absolute inset-0 h-full w-full object-cover grayscale-[0.2] contrast-[1.05]"
+            />
+
             {/* Warm atmospheric overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/40" />
             <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-transparent to-background/30" />
-            
+
             {/* Placeholder content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="font-serif text-5xl text-foreground/[0.07] md:text-7xl lg:text-8xl">
