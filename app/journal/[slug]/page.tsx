@@ -91,7 +91,10 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
 
   return (
     <main>
-      <CinematicSection id="journal-article" className="bg-background section-padding-lg">
+      <CinematicSection
+        id="journal-article"
+        className="bg-background section-padding-sm !py-20 md:!py-24 lg:!py-28"
+      >
         <SectionContainer size="lg">
           <Breadcrumb className="mb-8">
             <BreadcrumbList>
@@ -122,7 +125,7 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
             <BodyText className="mt-10 text-foreground/60">{article.description}</BodyText>
           </div>
 
-          <article className="mt-20 space-y-14">
+          <article className="mt-12 space-y-14">
             {article.content.map((block, index) => {
               if (block.type === 'subhead') {
                 return (

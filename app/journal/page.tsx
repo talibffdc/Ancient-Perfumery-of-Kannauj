@@ -28,7 +28,10 @@ export default function JournalLandingPage() {
 
   return (
     <main>
-      <CinematicSection id="journal" className="bg-background section-padding-lg">
+      <CinematicSection
+        id="journal"
+        className="bg-background section-padding-sm !py-20 md:!py-24 lg:!py-28"
+      >
         <SectionContainer size="lg">
           <div className="max-w-4xl text-center">
             <Subhead className="mb-6">Journal</Subhead>
@@ -42,7 +45,7 @@ export default function JournalLandingPage() {
             </BodyText>
           </div>
 
-          <div className="mt-20 grid gap-10 lg:grid-cols-2">
+          <div className="mt-12 grid gap-10 lg:grid-cols-2">
             {articles.map((article) => (
               <JournalCard key={article.slug} article={article} />
             ))}
