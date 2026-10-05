@@ -1,0 +1,148 @@
+{
+  "fees": {
+    "indiaShipping": 0,
+    "internationalShipping": 3000,
+    "indiaCodFee": 49
+  },
+  "products": [
+  {
+    "slug": "gulab",
+    "name": "Gulab",
+    "hindi": "गुलाब",
+    "note": "A soft, richly floral rose distilled at dawn.",
+    "image": "/images/gulabattar.jpg",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1299 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1699 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1499 }
+    ]
+  },
+  {
+    "slug": "jasmine",
+    "name": "Jasmine",
+    "hindi": "चमेली",
+    "note": "A luminous white floral with a warm, gentle trail.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1399 }
+    ]
+  },
+  {
+    "slug": "zafran",
+    "name": "Zafran",
+    "hindi": "ज़ाफ़रान",
+    "note": "A precious, warm spice with a golden, honeyed depth.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1899 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2199 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1999 }
+    ]
+  },
+  {
+    "slug": "shamama",
+    "name": "Shamama",
+    "hindi": "शमामा",
+    "note": "A layered conversation of botanicals, spice, and woods.",
+    "image": "/images/shamamaattarkannaujattar.jpg",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1699 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2099 }
+    ]
+  },
+  {
+    "slug": "kewda",
+    "name": "Kewda",
+    "hindi": "केवड़ा",
+    "note": "Fresh, distinctive floral notes with a green sweetness.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1399 }
+    ]
+  },
+  {
+    "slug": "mitti",
+    "name": "Mitti",
+    "hindi": "मिट्टी",
+    "note": "The unmistakable scent of rain meeting sun-warmed earth.",
+    "image": "/images/mittiattar.png",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 999 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1399 }
+    ]
+  },
+  {
+    "slug": "ruh-khus",
+    "name": "Ruh Khus",
+    "hindi": "रूह ख़स",
+    "note": "Cool, earthy vetiver with a calm, enduring character.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1399 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1799 }
+    ]
+  },
+  {
+    "slug": "oud",
+    "name": "Oud",
+    "hindi": "ऊद",
+    "note": "Deep woods and resin, composed with quiet intensity.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1999 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2399 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 2199 }
+    ]
+  },
+  {
+    "slug": "mukhallat",
+    "name": "Mukhallat",
+    "hindi": "मुख़ल्लत",
+    "note": "A balanced blend where florals and woods meet.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1899 }
+    ]
+  },
+  {
+    "slug": "hina",
+    "name": "Hina",
+    "hindi": "हीना",
+    "note": "A warm, resinous blend made for moments of stillness.",
+    "image": "/images/hinattarkannauj.jpg",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1899 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1699 }
+    ]
+  },
+  {
+    "slug": "rajnigandha",
+    "name": "Rajnigandha",
+    "hindi": "रजनीगंधा",
+    "note": "An elegant white floral that opens as evening falls.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1299 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1699 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1499 }
+    ]
+  },
+  {
+    "slug": "harsingar",
+    "name": "Harsingar",
+    "hindi": "हरसिंगार",
+    "note": "A delicate, nostalgic floral with a soft orange warmth.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 }
+    ]
+  }
+  ]
+}

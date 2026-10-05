@@ -356,11 +356,11 @@ export function CollectionSection() {
           </p>
           
           <a 
-            href="#inquiry"
+            href="#shop"
             className="cta-item group inline-flex items-center gap-6 px-8 py-4 border border-foreground/20 text-foreground/70 hover:text-foreground hover:border-foreground/40 transition-all duration-500 opacity-0"
           >
             <span className="font-sans text-xs uppercase tracking-[0.2em]">
-              Begin a Conversation
+              Explore the Attar House
             </span>
             <span className="h-px w-6 bg-current transition-all duration-500 group-hover:w-10" />
           </a>

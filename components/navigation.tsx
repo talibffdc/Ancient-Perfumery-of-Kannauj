@@ -13,6 +13,7 @@ const navLinks = [
   { label: 'Ingredients', href: '#ingredients' },
   { label: 'Philosophy', href: '#philosophy' },
   { label: 'Collection', href: '#collection' },
+  { label: 'Shop', href: '#shop' },
 ]
 
 export function Navigation({ className }: NavigationProps) {

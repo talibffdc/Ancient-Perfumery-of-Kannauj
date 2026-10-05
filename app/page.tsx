@@ -5,6 +5,7 @@ import { ProcessSection } from '@/components/sections/process-section'
 import { IngredientsSection } from '@/components/sections/ingredients-section'
 import { PhilosophySection } from '@/components/sections/philosophy-section'
 import { CollectionSection } from '@/components/sections/collection-section'
+import { ShopSection } from '@/components/sections/shop-section'
 import { InquirySection } from '@/components/sections/inquiry-section'
 import { Footer } from '@/components/footer'
 
@@ -31,6 +32,9 @@ export default function HomePage() {
 
       {/* Collection */}
       <CollectionSection />
+
+      {/* Shop */}
+      <ShopSection />
 
       {/* Inquiry */}
       <InquirySection />

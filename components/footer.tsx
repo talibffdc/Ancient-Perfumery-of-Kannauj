@@ -68,7 +68,7 @@ export function Footer() {
               isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             )}
           >
-            {['Heritage', 'Process', 'Collection', 'Inquiry'].map((item) => (
+            {['Heritage', 'Process', 'Collection', 'Shop', 'Inquiry'].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
