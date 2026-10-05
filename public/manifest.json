@@ -18,13 +18,5 @@
       "sizes": "180x180",
       "type": "image/png"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/apple-icon.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
   ]
 }
