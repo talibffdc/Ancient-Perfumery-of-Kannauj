@@ -54,6 +54,9 @@ export const metadata: Metadata = {
     images: ['/og-image.jpg'],
   },
   authors: [{ name: 'Kannauj Attar' }],
+  verification: {
+    google: 'itv-MFL-BxIQ4yUYYur6vOpPj_uATyykQekjpve0qrk',
+  },
   robots: {
     index: true,
     follow: true,
