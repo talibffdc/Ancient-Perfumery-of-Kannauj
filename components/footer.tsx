@@ -113,10 +113,17 @@ export function Footer() {
               isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             )}
           >
-            {/* Copyright */}
-            <p className="font-sans text-[10px] tracking-[0.15em] text-foreground/45">
-              © 2024 Ancient Perfumery of Kannauj
-            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+              <p className="font-sans text-[10px] tracking-[0.15em] text-foreground/45">
+                © 2024 Ancient Perfumery of Kannauj
+              </p>
+              <a
+                href="/sitemap.xml"
+                className="font-sans text-[10px] uppercase tracking-[0.15em] text-foreground/45 transition-colors duration-500 hover:text-foreground/75"
+              >
+                Sitemap
+              </a>
+            </div>
 
             {/* Subtle social references - no icons, just text */}
             <div className="flex gap-8">

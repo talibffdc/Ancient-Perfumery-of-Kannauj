@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/.next/', '/public/'],
+      disallow: ['/api/'],
     },
     sitemap: 'https://kannaujattar.co.in/sitemap.xml',
     host: 'https://kannaujattar.co.in',
