@@ -11,8 +11,6 @@ import { ShopSection } from '@/components/sections/shop-section'
 import { InquirySection } from '@/components/sections/inquiry-section'
 import { Footer } from '@/components/footer'
 import type { Metadata } from 'next'
-import { shopCatalog } from '@/lib/shop-catalog'
-import { createProductSchema } from '@/lib/schema'
 
 export const metadata: Metadata = {
   alternates: {
@@ -21,20 +19,6 @@ export const metadata: Metadata = {
 }
 
 export default function HomePage() {
-  const productSchemas = shopCatalog.products.map((product) =>
-    createProductSchema({
-      name: product.name,
-      description: product.note,
-      slug: product.slug,
-      image: product.image || undefined,
-      offers: product.variants.map((variant) => ({
-        name: variant.name,
-        price: variant.price,
-        size: variant.size,
-      })),
-    })
-  )
-
   return (
     <main className="relative">
       {/* Navigation */}
@@ -72,16 +56,6 @@ export default function HomePage() {
 
       {/* Footer */}
       <Footer />
-
-      {productSchemas.map((schema) => (
-        <script
-          key={schema.name}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
-          }}
-        />
-      ))}
     </main>
   )
 }

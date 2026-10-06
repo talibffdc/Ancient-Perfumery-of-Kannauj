@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
+import Link from 'next/link'
 import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline, Title } from '@/components/typography'
 import { shopCatalog, type ProductVariant, type StoreProduct } from '@/lib/shop-catalog'
@@ -260,7 +261,12 @@ export function ShopSection() {
                   <div>
                     <Caption className="text-foreground/45">{product.hindi}</Caption>
                     <Title as="h3" className="mt-1 text-2xl text-foreground">
+                      <Link
+                        href={`/products/${product.slug}`}
+                        className="transition-colors hover:text-primary focus-visible:text-primary"
+                      >
                       {product.name}
+                      </Link>
                     </Title>
                   </div>
                   <span className="pt-1 text-[10px] uppercase tracking-wider text-foreground/40">

@@ -83,6 +83,7 @@ export const createProductSchema = (product: {
   name: string
   description: string
   slug: string
+  url: string
   image?: string
   offers: Array<{
     name: string
@@ -92,10 +93,10 @@ export const createProductSchema = (product: {
 }) => ({
   '@context': 'https://schema.org',
   '@type': 'Product',
-  '@id': `https://kannaujattar.co.in/#product-${product.slug}`,
+  '@id': `${product.url}#product`,
   name: product.name,
   description: product.description,
-  url: `https://kannaujattar.co.in/#shop`,
+  url: product.url,
   ...(product.image && { image: `https://kannaujattar.co.in${product.image}` }),
   category: 'Natural Attar',
   brand: {
@@ -107,17 +108,14 @@ export const createProductSchema = (product: {
     name: 'Kannauj Attar',
     url: 'https://kannaujattar.co.in',
   },
-  offers: product.offers.map((offer) => ({
-    '@type': 'Offer',
-    name: `${offer.name} · ${offer.size}`,
-    price: offer.price,
+  offers: {
+    '@type': 'AggregateOffer',
+    lowPrice: Math.min(...product.offers.map((offer) => offer.price)),
+    highPrice: Math.max(...product.offers.map((offer) => offer.price)),
     priceCurrency: 'INR',
-    url: 'https://kannaujattar.co.in/#shop',
-    seller: {
-      '@type': 'Organization',
-      name: 'Kannauj Attar',
-    },
-  })),
+    offerCount: product.offers.length,
+    url: product.url,
+  },
 })
 
 /**

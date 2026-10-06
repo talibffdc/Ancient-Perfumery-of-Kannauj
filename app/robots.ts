@@ -8,6 +8,5 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/api/'],
     },
     sitemap: 'https://kannaujattar.co.in/sitemap.xml',
-    host: 'https://kannaujattar.co.in',
   }
 }

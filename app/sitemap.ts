@@ -25,6 +25,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    ...shopCatalog.products.map((product) => ({
+      url: `${baseUrl}/products/${product.slug}`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
     ...getAllJournalArticles().map((article) => ({
       url: `${baseUrl}/journal/${article.slug}`,
       changeFrequency: 'monthly' as const,
