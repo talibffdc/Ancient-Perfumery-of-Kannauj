@@ -92,8 +92,9 @@ Update these columns in the sheet as the order moves through fulfilment:
 - **Internal Notes** for customer follow-up or dispatch details
 
 An order is confirmed on the site only after the sheet confirms it was saved.
-If the email provider fails after that, the sheet remains authoritative and the
-confirmation page warns that the notification email needs attention.
+The notification email is sent after the order response so a slow email provider
+does not hold up checkout. If email sending fails, the failure is logged by the
+server; the sheet remains the authoritative order record.
 
 ## Payment state
 

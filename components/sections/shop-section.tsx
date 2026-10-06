@@ -61,6 +61,7 @@ export function ShopSection() {
   const productsRef = useRef<HTMLDivElement>(null)
   const optionsRef = useRef<HTMLDivElement>(null)
   const bagRef = useRef<HTMLDivElement>(null)
+  const placedOrderRef = useRef<HTMLDivElement>(null)
 
   const selectedVariant = selectedProduct?.variants.find(
     (variant) => variant.id === selectedVariantId
@@ -78,6 +79,12 @@ export function ShopSection() {
     if (!selectedProduct) return
     optionsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [selectedProduct])
+
+  useEffect(() => {
+    if (!placedOrder) return
+    placedOrderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    placedOrderRef.current?.focus({ preventScroll: true })
+  }, [placedOrder])
 
   const scrollToBag = () => {
     bagRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -156,7 +163,7 @@ export function ShopSection() {
 
     const formData = new FormData(event.currentTarget)
     setIsSubmittingOrder(true)
-    setCheckoutNotice('')
+    setCheckoutNotice('Saving your order securely. Please keep this page open for a moment.')
 
     try {
       const response = await fetch('/api/order', {
@@ -591,18 +598,30 @@ export function ShopSection() {
         )}
 
         {placedOrder && (
-          <div className="mt-10 border border-primary/50 bg-background p-6 md:p-10" role="status">
-            <Caption className="text-primary">Order received</Caption>
-            <h3 className="mt-3 font-serif text-3xl text-foreground">Thank you for your order.</h3>
-            <p className="mt-3 text-sm text-foreground/65">
-              Order reference: <span className="font-medium text-foreground">{placedOrder.id}</span>
-            </p>
-            <p className="mt-2 text-sm text-foreground/55">
-              Payment method: Cash on Delivery. We’ll contact you to confirm dispatch details.
-            </p>
-            {placedOrder.emailWarning && (
-              <p className="mt-3 text-sm text-primary">{placedOrder.emailWarning}</p>
-            )}
+          <div
+            ref={placedOrderRef}
+            className="order-success relative mt-10 overflow-hidden border border-primary/50 bg-background p-6 md:p-10"
+            role="status"
+            aria-live="polite"
+            tabIndex={-1}
+          >
+            <span className="order-success__sparkle order-success__sparkle--one" aria-hidden="true">✦</span>
+            <span className="order-success__sparkle order-success__sparkle--two" aria-hidden="true">✧</span>
+            <span className="order-success__sparkle order-success__sparkle--three" aria-hidden="true">✦</span>
+            <span className="order-success__sparkle order-success__sparkle--four" aria-hidden="true">✧</span>
+            <div className="relative z-10">
+              <Caption className="text-primary">Order received · confirmed</Caption>
+              <h3 className="mt-3 font-serif text-3xl text-foreground">Thank you for your order.</h3>
+              <p className="mt-3 text-sm text-foreground/65">
+                Order reference: <span className="font-medium text-foreground">{placedOrder.id}</span>
+              </p>
+              <p className="mt-2 text-sm text-foreground/55">
+                Payment method: Cash on Delivery. We’ll contact you to confirm dispatch details.
+              </p>
+              {placedOrder.emailWarning && (
+                <p className="mt-3 text-sm text-primary">{placedOrder.emailWarning}</p>
+              )}
+            </div>
           </div>
         )}
       </SectionContainer>

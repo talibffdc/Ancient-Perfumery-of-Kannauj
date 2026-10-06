@@ -228,4 +228,62 @@
     background: oklch(0.65 0.12 55 / 0.3);
     color: oklch(0.95 0.02 85);
   }
+
+  .order-success__sparkle {
+    position: absolute;
+    z-index: 1;
+    color: var(--amber);
+    pointer-events: none;
+    opacity: 0;
+    animation: order-sparkle 1.8s ease-out both;
+  }
+
+  .order-success__sparkle--one {
+    top: 18%;
+    right: 14%;
+    font-size: 1.75rem;
+  }
+
+  .order-success__sparkle--two {
+    top: 56%;
+    right: 7%;
+    font-size: 1.25rem;
+    animation-delay: 160ms;
+  }
+
+  .order-success__sparkle--three {
+    top: 68%;
+    right: 28%;
+    font-size: 1rem;
+    animation-delay: 320ms;
+  }
+
+  .order-success__sparkle--four {
+    top: 24%;
+    right: 36%;
+    font-size: 0.875rem;
+    animation-delay: 480ms;
+  }
+
+  @keyframes order-sparkle {
+    0% {
+      opacity: 0;
+      transform: scale(0.3) rotate(-25deg);
+    }
+    35% {
+      opacity: 1;
+      transform: scale(1) rotate(15deg);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.75) rotate(45deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .order-success__sparkle {
+      display: none;
+      animation: none;
+    }
+  }
 }

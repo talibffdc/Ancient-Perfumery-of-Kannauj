@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { after } from 'next/server'
 import { z } from 'zod'
 
 import { shopCatalog } from '@/lib/shop-catalog'
@@ -43,12 +44,89 @@ function formatRupees(amount: number) {
   }).format(amount)
 }
 
+type ConfirmedOrder = {
+  orderId: string
+  customer: {
+    name: string
+    email: string
+    phone: string
+    address: string
+    city: string
+    region: string
+    postalCode: string
+    country: string
+  }
+  items: Array<{
+    productName: string
+    variantName: string
+    size: string
+    quantity: number
+    lineTotal: number
+  }>
+  subtotal: number
+  shippingFee: number
+  codFee: number
+  total: number
+}
+
+async function sendOrderNotification(
+  order: ConfirmedOrder,
+  recipient: string,
+  resendApiKey: string
+) {
+  const itemsHtml = order.items.map((item) => `
+    <tr>
+      <td style="padding:10px;border-bottom:1px solid #e5e5e5">${escapeHtml(item.productName)} · ${escapeHtml(item.variantName)} (${escapeHtml(item.size)})</td>
+      <td style="padding:10px;border-bottom:1px solid #e5e5e5;text-align:center">${item.quantity}</td>
+      <td style="padding:10px;border-bottom:1px solid #e5e5e5;text-align:right">${formatRupees(item.lineTotal)}</td>
+    </tr>
+  `).join('')
+
+  try {
+    const resend = new Resend(resendApiKey)
+    const emailResult = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: recipient,
+      replyTo: order.customer.email,
+      subject: `New COD order ${order.orderId}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#27231f;max-width:720px">
+          <h1 style="font-family:Georgia,serif;font-weight:400">New Cash on Delivery Order</h1>
+          <p><strong>Order reference:</strong> ${order.orderId}<br><strong>Order status:</strong> New</p>
+          <h2>Customer</h2>
+          <p>${escapeHtml(order.customer.name)}<br><a href="mailto:${escapeHtml(order.customer.email)}">${escapeHtml(order.customer.email)}</a><br>${escapeHtml(order.customer.phone)}</p>
+          <p>${escapeHtml(order.customer.address)}<br>${escapeHtml(order.customer.city)}, ${escapeHtml(order.customer.region)} ${escapeHtml(order.customer.postalCode)}<br>${escapeHtml(order.customer.country)}</p>
+          <h2>Items</h2>
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr><th style="text-align:left;padding:10px">Product</th><th>Qty</th><th style="text-align:right">Amount</th></tr></thead>
+            <tbody>${itemsHtml}</tbody>
+          </table>
+          <p style="text-align:right">
+            Items: ${formatRupees(order.subtotal)}<br>
+            Shipping: ${order.shippingFee === 0 ? 'Free' : formatRupees(order.shippingFee)}<br>
+            COD fee: ${formatRupees(order.codFee)}<br>
+            <strong>Collect on delivery: ${formatRupees(order.total)}</strong>
+          </p>
+          <hr>
+          <p><strong>Dispatch:</strong> Pending · Update order status, courier, and tracking in the Orders sheet.</p>
+        </div>
+      `,
+    })
+
+    if (emailResult.error) {
+      console.error('Order notification email failed:', emailResult.error)
+    }
+  } catch (error) {
+    console.error('Order notification email failed:', error)
+  }
+}
+
 export async function POST(request: Request) {
   const sheetsUrl = process.env.GOOGLE_SHEETS_ORDERS_URL
   const sheetsSecret = process.env.GOOGLE_SHEETS_ORDERS_SECRET
   const resendApiKey = process.env.RESEND_API_KEY
 
-  if (!sheetsUrl || !sheetsSecret || !resendApiKey) {
+  if (!sheetsUrl || !sheetsSecret) {
     console.error('Order configuration is incomplete.')
     return Response.json(
       { error: 'Order placement is temporarily unavailable. Please contact us directly.' },
@@ -131,64 +209,85 @@ export async function POST(request: Request) {
     dispatchStatus: 'Pending',
   }
 
-  let spreadsheetResult: { success?: boolean; duplicate?: boolean; error?: string }
-  try {
-    const response = await fetch(sheetsUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret: sheetsSecret, order }),
-      signal: AbortSignal.timeout(20_000),
-    })
+  let spreadsheetResult: { success?: boolean; duplicate?: boolean; error?: string } | undefined
+  let lastSheetFailure: string | undefined
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    try {
+      const response = await fetch(sheetsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret: sheetsSecret, order }),
+        signal: AbortSignal.timeout(12_000),
+      })
 
-    if (!response.ok) {
-      const requiresGoogleLogin =
-        new URL(response.url).hostname === 'accounts.google.com' ||
-        response.status === 401 ||
-        response.status === 403
-      console.error('Order spreadsheet request failed with status:', response.status)
-      const isMissingDeployment = response.status === 404
-      return Response.json(
-        {
-          error: requiresGoogleLogin
-            ? 'Google Sheets is asking the server to sign in. In Apps Script, set “Execute as: Me” and “Who has access: Anyone”, deploy a new Web app version, then update the /exec URL if it changed.'
-            : isMissingDeployment
-              ? 'Google Apps Script returned HTTP 404. The production GOOGLE_SHEETS_ORDERS_URL is likely an old, mistyped, or non-Web-app URL. Copy the current Web app URL ending in /exec from Apps Script → Deploy → Manage deployments, update the Production environment variable, then redeploy the site.'
-              : `Google Sheets could not accept the order (HTTP ${response.status}). Check the Apps Script deployment and executions, then try again.`,
-        },
-        { status: 502 }
-      )
+      if (!response.ok) {
+        const requiresGoogleLogin =
+          new URL(response.url).hostname === 'accounts.google.com' ||
+          response.status === 401 ||
+          response.status === 403
+        console.error('Order spreadsheet request failed with status:', response.status)
+        if (requiresGoogleLogin) {
+          return Response.json(
+            { error: 'Google Sheets is asking the server to sign in. Check the Apps Script Web app access settings.' },
+            { status: 502 }
+          )
+        }
+        if (response.status === 404) {
+          return Response.json(
+            { error: 'Google Apps Script returned HTTP 404. Verify the Production GOOGLE_SHEETS_ORDERS_URL ends in /exec, then redeploy.' },
+            { status: 502 }
+          )
+        }
+        lastSheetFailure = `HTTP ${response.status}`
+      } else {
+        const contentType = response.headers.get('content-type') ?? ''
+        if (!contentType.includes('application/json')) {
+          const requiresGoogleLogin = new URL(response.url).hostname === 'accounts.google.com'
+          if (requiresGoogleLogin) {
+            return Response.json(
+              { error: 'Google Sheets is asking the server to sign in. Redeploy the Apps Script Web app with access set to “Anyone”.' },
+              { status: 502 }
+            )
+          }
+          lastSheetFailure = `Unexpected response type: ${contentType || 'unknown'}`
+        } else {
+          const result = await response.json() as {
+            success?: boolean
+            duplicate?: boolean
+            error?: string
+          }
+
+          if (result.success) {
+            spreadsheetResult = result
+            break
+          }
+          if (result.error === 'Unauthorized') {
+            return Response.json(
+              { error: 'The Apps Script secret does not match GOOGLE_SHEETS_ORDERS_SECRET.' },
+              { status: 502 }
+            )
+          }
+          lastSheetFailure = result.error ?? 'Apps Script did not confirm saving the order'
+        }
+      }
+    } catch (error) {
+      console.error(`Order spreadsheet request failed (attempt ${attempt}):`, error)
+      lastSheetFailure = error instanceof Error && error.name === 'TimeoutError'
+        ? 'Apps Script response timed out'
+        : 'Could not read the Apps Script response'
     }
 
-    const contentType = response.headers.get('content-type') ?? ''
-    if (!contentType.includes('application/json')) {
-      const requiresGoogleLogin = new URL(response.url).hostname === 'accounts.google.com'
-      console.error('Order spreadsheet returned a non-JSON response:', contentType)
-      return Response.json(
-        {
-          error: requiresGoogleLogin
-            ? 'Google Sheets is asking the server to sign in. Redeploy the Apps Script Web app with access set to “Anyone”.'
-            : 'Google Sheets returned an unexpected response. Confirm the Web app /exec URL and deploy the latest script version.',
-        },
-        { status: 502 }
-      )
+    if (attempt < 2) {
+      await new Promise((resolve) => setTimeout(resolve, 250))
     }
-
-    spreadsheetResult = await response.json()
-  } catch (error) {
-    console.error('Order spreadsheet request failed:', error)
-    return Response.json(
-      { error: 'We could not save the order yet. Please try again or contact us.' },
-      { status: 502 }
-    )
   }
 
-  if (!spreadsheetResult.success) {
-    console.error('Order spreadsheet did not confirm the order:', spreadsheetResult.error ?? 'Unknown error')
+  if (!spreadsheetResult?.success) {
+    console.error('Order spreadsheet did not confirm the order after retry:', lastSheetFailure ?? 'Unknown error')
     return Response.json(
       {
-        error: spreadsheetResult.error === 'Unauthorized'
-          ? 'The Apps Script secret does not match. Set Script Property ORDER_WEBHOOK_SECRET to the exact value of GOOGLE_SHEETS_ORDERS_SECRET, then redeploy.'
-          : 'The Apps Script received the request but could not record it. Check Apps Script → Executions and confirm the Orders tab can be created/edited.',
+        error: 'We could not confirm the order save. Please wait a moment and check your order status before submitting again.',
+        retryable: true,
       },
       { status: 502 }
     )
@@ -199,53 +298,12 @@ export async function POST(request: Request) {
   }
 
   let emailWarning: string | undefined
-  const recipient = process.env.ORDER_NOTIFICATION_EMAIL ?? 'talibffdc@gmail.com'
-  const itemsHtml = orderItems.map((item) => `
-    <tr>
-      <td style="padding:10px;border-bottom:1px solid #e5e5e5">${escapeHtml(item.productName)} · ${escapeHtml(item.variantName)} (${escapeHtml(item.size)})</td>
-      <td style="padding:10px;border-bottom:1px solid #e5e5e5;text-align:center">${item.quantity}</td>
-      <td style="padding:10px;border-bottom:1px solid #e5e5e5;text-align:right">${formatRupees(item.lineTotal)}</td>
-    </tr>
-  `).join('')
-
-  try {
-    const resend = new Resend(resendApiKey)
-    const emailResult = await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: recipient,
-      replyTo: input.email,
-      subject: `New COD order ${orderId}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#27231f;max-width:720px">
-          <h1 style="font-family:Georgia,serif;font-weight:400">New Cash on Delivery Order</h1>
-          <p><strong>Order reference:</strong> ${orderId}<br><strong>Order status:</strong> New</p>
-          <h2>Customer</h2>
-          <p>${escapeHtml(input.name)}<br><a href="mailto:${escapeHtml(input.email)}">${escapeHtml(input.email)}</a><br>${escapeHtml(input.phone)}</p>
-          <p>${escapeHtml(input.address)}<br>${escapeHtml(input.city)}, ${escapeHtml(input.region)} ${escapeHtml(input.postalCode)}<br>${escapeHtml(input.country)}</p>
-          <h2>Items</h2>
-          <table style="width:100%;border-collapse:collapse">
-            <thead><tr><th style="text-align:left;padding:10px">Product</th><th>Qty</th><th style="text-align:right">Amount</th></tr></thead>
-            <tbody>${itemsHtml}</tbody>
-          </table>
-          <p style="text-align:right">
-            Items: ${formatRupees(subtotal)}<br>
-            Shipping: ${shippingFee === 0 ? 'Free' : formatRupees(shippingFee)}<br>
-            COD fee: ${formatRupees(codFee)}<br>
-            <strong>Collect on delivery: ${formatRupees(total)}</strong>
-          </p>
-          <hr>
-          <p><strong>Dispatch:</strong> Pending · Update order status, courier, and tracking in the Orders sheet.</p>
-        </div>
-      `,
-    })
-
-    if (emailResult.error) {
-      console.error('Order notification email failed:', emailResult.error)
-      emailWarning = 'Order saved, but the store notification email could not be sent. Please check the mail service.'
-    }
-  } catch (error) {
-    console.error('Order notification email failed:', error)
-    emailWarning = 'Order saved, but the store notification email could not be sent. Please check the mail service.'
+  if (!resendApiKey) {
+    console.error('Order was saved, but RESEND_API_KEY is not configured; notification email was not scheduled.')
+    emailWarning = 'Your order is saved, but the store notification email is not configured.'
+  } else {
+    const recipient = process.env.ORDER_NOTIFICATION_EMAIL ?? 'talibffdc@gmail.com'
+    after(() => sendOrderNotification(order, recipient, resendApiKey))
   }
 
   return Response.json({ success: true, orderId, emailWarning })
