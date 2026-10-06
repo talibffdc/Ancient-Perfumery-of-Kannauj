@@ -77,6 +77,14 @@ export function ShopSection() {
   }
 
   useEffect(() => {
+    const productSlug = new URLSearchParams(window.location.search).get('product')
+    if (!productSlug) return
+
+    const product = products.find((entry) => entry.slug === productSlug)
+    if (product) chooseProduct(product)
+  }, [])
+
+  useEffect(() => {
     if (!selectedProduct) return
     optionsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [selectedProduct])
