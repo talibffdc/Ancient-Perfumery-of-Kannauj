@@ -43,7 +43,7 @@ export function PhilosophySection() {
       gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 70%',
+          start: 'top 95%',
         },
       })
         // Label
@@ -79,7 +79,7 @@ export function PhilosophySection() {
         gsap.timeline({
           scrollTrigger: {
             trigger: pillarsRef.current,
-            start: 'top 80%',
+            start: 'top 95%',
           },
         })
           .to(pillars, {

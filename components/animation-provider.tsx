@@ -36,7 +36,7 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
     // Configure GSAP defaults for cinematic feel
     gsap.defaults({
       ease: 'power2.out',
-      duration: 1.2,
+      duration: 0.55,
     })
     
     // Configure ScrollTrigger defaults

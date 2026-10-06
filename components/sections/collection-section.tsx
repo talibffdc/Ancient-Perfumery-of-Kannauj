@@ -105,7 +105,7 @@ function FragrancePresentation({ fragrance, index }: {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start: 'top 95%',
         },
       })
 
@@ -268,7 +268,7 @@ export function CollectionSection() {
         gsap.timeline({
           scrollTrigger: {
             trigger: headerRef.current,
-            start: 'top 75%',
+            start: 'top 95%',
           },
         })
           .to(headerItems, {
@@ -291,7 +291,7 @@ export function CollectionSection() {
         gsap.timeline({
           scrollTrigger: {
             trigger: ctaRef.current,
-            start: 'top 85%',
+            start: 'top 95%',
           },
         })
           .to(ctaItems, {

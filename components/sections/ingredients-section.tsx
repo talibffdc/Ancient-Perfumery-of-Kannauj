@@ -88,7 +88,7 @@ export function IngredientsSection() {
       // Section header animation
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top 75%',
+        start: 'top 95%',
         onEnter: () => {
           const tl = gsap.timeline()
           
@@ -111,7 +111,7 @@ export function IngredientsSection() {
       // Ingredient cards - staggered reveal
       ScrollTrigger.create({
         trigger: gridRef.current,
-        start: 'top 80%',
+        start: 'top 95%',
         onEnter: () => {
           gsap.to(ingredientCards, {
             opacity: 1,

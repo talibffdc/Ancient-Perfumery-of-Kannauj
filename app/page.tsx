@@ -2,6 +2,7 @@ import { Navigation } from '@/components/navigation'
 import { HeroSection } from '@/components/sections/hero-section'
 import { HeritageSection } from '@/components/sections/heritage-section'
 import { ProcessSection } from '@/components/sections/process-section'
+import { GallerySection } from '@/components/sections/gallery-section'
 import { IngredientsSection } from '@/components/sections/ingredients-section'
 import { PhilosophySection } from '@/components/sections/philosophy-section'
 import { CollectionSection } from '@/components/sections/collection-section'
@@ -23,6 +24,9 @@ export default function HomePage() {
 
       {/* Distillation Process */}
       <ProcessSection />
+
+      {/* Traditional craft photo gallery */}
+      <GallerySection />
 
       {/* Ingredients */}
       <IngredientsSection />

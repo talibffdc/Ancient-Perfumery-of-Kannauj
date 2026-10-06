@@ -10,8 +10,7 @@ if (typeof window !== 'undefined') {
 
 /* ===== MOTION PHILOSOPHY =====
  * Movement should reveal, not perform.
- * Everything must feel slow, heavy, organic, breathing, and emotionally intentional.
- * The website should move like smoke, steam, falling petals, warm air, slow cinema.
+ * Keep motion smooth, organic, and intentional without delaying the content.
  */
 
 /* ===== CINEMATIC EASING PRESETS ===== */
@@ -37,38 +36,38 @@ export const ease = {
 
 /* ===== CINEMATIC DURATION PRESETS ===== */
 export const duration = {
-  // Quick but still slow (0.6-0.8s)
-  fast: 0.8,
+  // Short interaction and reveal
+  fast: 0.35,
   
-  // Standard cinematic (1-1.2s)
-  normal: 1.2,
+  // Standard section reveal
+  normal: 0.5,
   
-  // Slow reveal (1.5-2s)
-  slow: 1.8,
+  // Emphasized reveal
+  slow: 0.7,
   
-  // Very slow, emotional moments (2-3s)
-  verySlow: 2.4,
+  // Large visual reveal
+  verySlow: 0.9,
   
-  // Ultra slow for hero/key moments
-  hero: 3,
+  // Hero/key moments
+  hero: 1.5,
 } as const
 
 /* ===== STAGGER PRESETS ===== */
 export const stagger = {
   // Subtle stagger for text lines
-  text: 0.08,
+  text: 0.03,
   
   // Stagger for list items
-  items: 0.12,
+  items: 0.04,
   
   // Stagger for grid elements
-  grid: 0.15,
+  grid: 0.05,
   
-  // Slow stagger for cinematic reveals
-  slow: 0.2,
+  // Emphasized stagger for cinematic reveals
+  slow: 0.06,
   
-  // Very slow for emotional moments
-  verySlow: 0.3,
+  // Longer stagger for a small number of elements
+  verySlow: 0.08,
 } as const
 
 /* ===== REUSABLE ANIMATION CREATORS ===== */
@@ -229,7 +228,7 @@ export function createScrollFadeUp(
 ) {
   const {
     trigger,
-    start = 'top 85%',
+    start = 'top 95%',
     duration: dur = duration.normal,
     stagger: stag = 0,
     y = 40,
@@ -270,7 +269,7 @@ export function createScrollDissolve(
 ) {
   const {
     trigger,
-    start = 'top 80%',
+    start = 'top 95%',
     duration: dur = duration.slow,
   } = options
 
@@ -600,10 +599,10 @@ export const sectionAnimations = {
   
   // Heritage section - editorial reveal
   heritage: {
-    label: { start: 'top 80%', duration: duration.normal },
-    headline: { start: 'top 75%', duration: duration.slow, y: 30 },
-    body: { start: 'top 70%', duration: duration.normal, stagger: stagger.text },
-    image: { start: 'top 75%', duration: duration.verySlow },
+    label: { start: 'top 95%', duration: duration.normal },
+    headline: { start: 'top 95%', duration: duration.slow, y: 30 },
+    body: { start: 'top 95%', duration: duration.normal, stagger: stagger.text },
+    image: { start: 'top 95%', duration: duration.verySlow },
   },
   
   // Ingredients section - immersive transitions

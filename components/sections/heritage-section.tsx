@@ -53,7 +53,7 @@ export function HeritageSection() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 95%',
           end: 'center center',
           toggleActions: 'play none none none',
         },

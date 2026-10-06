@@ -43,7 +43,7 @@ export function KannaujAtmosphereSection() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 60%',
+          start: 'top 95%',
           toggleActions: 'play none none none',
         },
       })

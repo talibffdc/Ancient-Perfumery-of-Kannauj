@@ -58,7 +58,7 @@ export function InquirySection() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 60%',
+          start: 'top 95%',
         },
       })
 

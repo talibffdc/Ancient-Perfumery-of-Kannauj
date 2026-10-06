@@ -10,6 +10,7 @@ interface NavigationProps {
 const navLinks = [
   { label: 'Heritage', href: '#heritage' },
   { label: 'Process', href: '#process' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'Ingredients', href: '#ingredients' },
   { label: 'Philosophy', href: '#philosophy' },
   { label: 'Collection', href: '#collection' },
@@ -22,11 +23,11 @@ export function Navigation({ className }: NavigationProps) {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-colors duration-500',
+        'fixed top-0 left-0 right-0 z-50 border-b border-foreground/10 bg-background/95 shadow-[0_8px_24px_oklch(0_0_0/0.16)] backdrop-blur-md transition-colors duration-300',
         className
       )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-8 lg:px-12">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-8 lg:px-12">
         {/* Logo */}
         <a
           href="#hero"
