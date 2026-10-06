@@ -30,6 +30,9 @@ empty `image` field with its exact public path.
 
 1. Open the provided spreadsheet and choose **Extensions → Apps Script**.
 2. Replace the editor contents with `scripts/google-sheets-orders.gs`, then save.
+   Order confirmation now returns immediately after the row is appended; row
+   formatting is kept out of the save request so a formatting error cannot make
+   a saved order appear unconfirmed.
 3. In Apps Script, open **Project Settings → Script Properties** and add:
    - Property: `ORDER_WEBHOOK_SECRET`
    - Value: a private random value generated for this site. For example, run
@@ -47,6 +50,8 @@ The endpoint must be public for the store server to call it, but it rejects
 requests without the matching secret. Keep the secret private and restrict
 spreadsheet access to trusted staff because it contains customer personal data.
 If the Apps Script deployment is changed, update the URL in the site environment.
+After changing this Apps Script code, choose **Deploy → Manage deployments →
+Edit → New version → Deploy**. Keep the same `/exec` URL if Google retains it.
 Before testing a real order, open the `/exec` URL in a private/incognito browser
 window. It should show JSON with `"status":"ready"`. If it redirects to a Google
 sign-in page, deployment access is not public yet. If it says

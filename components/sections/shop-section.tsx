@@ -82,8 +82,20 @@ export function ShopSection() {
 
   useEffect(() => {
     if (!placedOrder) return
-    placedOrderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    placedOrderRef.current?.focus({ preventScroll: true })
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    placedOrderRef.current?.focus()
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setPlacedOrder(null)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', closeOnEscape)
+    }
   }, [placedOrder])
 
   const scrollToBag = () => {
@@ -598,29 +610,56 @@ export function ShopSection() {
         )}
 
         {placedOrder && (
-          <div
-            ref={placedOrderRef}
-            className="order-success relative mt-10 overflow-hidden border border-primary/50 bg-background p-6 md:p-10"
-            role="status"
-            aria-live="polite"
-            tabIndex={-1}
-          >
-            <span className="order-success__sparkle order-success__sparkle--one" aria-hidden="true">✦</span>
-            <span className="order-success__sparkle order-success__sparkle--two" aria-hidden="true">✧</span>
-            <span className="order-success__sparkle order-success__sparkle--three" aria-hidden="true">✦</span>
-            <span className="order-success__sparkle order-success__sparkle--four" aria-hidden="true">✧</span>
-            <div className="relative z-10">
+          <div className="checkout-celebration" role="presentation">
+            <div className="checkout-celebration__sparkles" aria-hidden="true">
+              {Array.from({ length: 12 }, (_, index) => (
+                <span
+                  key={index}
+                  className={`checkout-celebration__sparkle checkout-celebration__sparkle--${index % 12}`}
+                />
+              ))}
+            </div>
+            <div
+              ref={placedOrderRef}
+              className="checkout-celebration__dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="order-confirmation-title"
+              aria-describedby="order-confirmation-description"
+              tabIndex={-1}
+            >
+              <button
+                type="button"
+                className="checkout-celebration__close"
+                onClick={() => setPlacedOrder(null)}
+                aria-label="Close order confirmation"
+              >
+                ×
+              </button>
+              <span className="checkout-celebration__seal" aria-hidden="true">✓</span>
               <Caption className="text-primary">Order received · confirmed</Caption>
-              <h3 className="mt-3 font-serif text-3xl text-foreground">Thank you for your order.</h3>
-              <p className="mt-3 text-sm text-foreground/65">
+              <h3 id="order-confirmation-title" className="mt-3 font-serif text-4xl text-foreground md:text-5xl">
+                Congratulations!
+              </h3>
+              <p id="order-confirmation-description" className="mt-3 text-base text-foreground/70">
+                Your order has been confirmed successfully.
+              </p>
+              <p className="mt-5 border-y border-border py-4 text-sm text-foreground/65">
                 Order reference: <span className="font-medium text-foreground">{placedOrder.id}</span>
               </p>
-              <p className="mt-2 text-sm text-foreground/55">
+              <p className="mt-4 text-sm text-foreground/55">
                 Payment method: Cash on Delivery. We’ll contact you to confirm dispatch details.
               </p>
               {placedOrder.emailWarning && (
                 <p className="mt-3 text-sm text-primary">{placedOrder.emailWarning}</p>
               )}
+              <button
+                type="button"
+                onClick={() => setPlacedOrder(null)}
+                className="mt-7 min-h-12 bg-primary px-7 text-xs uppercase tracking-[0.16em] text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Continue browsing
+              </button>
             </div>
           </div>
         )}

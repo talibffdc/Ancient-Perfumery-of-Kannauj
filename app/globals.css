@@ -229,61 +229,147 @@
     color: oklch(0.95 0.02 85);
   }
 
-  .order-success__sparkle {
+  .checkout-celebration {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 1rem;
+    background: oklch(0.08 0.01 55 / 0.88);
+    backdrop-filter: blur(8px);
+    animation: celebration-appear 350ms ease-out both;
+  }
+
+  .checkout-celebration__sparkles {
     position: absolute;
-    z-index: 1;
-    color: var(--amber);
+    inset: 0;
+    overflow: hidden;
     pointer-events: none;
+  }
+
+  .checkout-celebration__sparkle {
+    position: absolute;
+    width: 0.55rem;
+    height: 0.55rem;
+    color: var(--amber);
     opacity: 0;
-    animation: order-sparkle 1.8s ease-out both;
+    animation: celebration-sparkle 2.4s ease-out infinite;
   }
 
-  .order-success__sparkle--one {
-    top: 18%;
-    right: 14%;
+  .checkout-celebration__sparkle::before {
+    content: '✦';
+    display: block;
+    font-size: inherit;
+    text-shadow: 0 0 1rem oklch(0.78 0.14 75 / 0.8);
+  }
+
+  .checkout-celebration__sparkle--0 { top: 8%; left: 9%; font-size: 1.3rem; animation-delay: 0ms; }
+  .checkout-celebration__sparkle--1 { top: 14%; left: 78%; font-size: 0.9rem; animation-delay: 120ms; }
+  .checkout-celebration__sparkle--2 { top: 24%; left: 35%; font-size: 1rem; animation-delay: 240ms; }
+  .checkout-celebration__sparkle--3 { top: 30%; left: 91%; font-size: 1.4rem; animation-delay: 360ms; }
+  .checkout-celebration__sparkle--4 { top: 43%; left: 5%; font-size: 0.9rem; animation-delay: 480ms; }
+  .checkout-celebration__sparkle--5 { top: 52%; left: 20%; font-size: 1.2rem; animation-delay: 600ms; }
+  .checkout-celebration__sparkle--6 { top: 61%; left: 86%; font-size: 1rem; animation-delay: 720ms; }
+  .checkout-celebration__sparkle--7 { top: 73%; left: 12%; font-size: 1.5rem; animation-delay: 840ms; }
+  .checkout-celebration__sparkle--8 { top: 82%; left: 69%; font-size: 0.9rem; animation-delay: 960ms; }
+  .checkout-celebration__sparkle--9 { top: 91%; left: 38%; font-size: 1.2rem; animation-delay: 1080ms; }
+  .checkout-celebration__sparkle--10 { top: 10%; left: 53%; font-size: 0.85rem; animation-delay: 1320ms; }
+  .checkout-celebration__sparkle--11 { top: 88%; left: 94%; font-size: 1rem; animation-delay: 1440ms; }
+
+  .checkout-celebration__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 34rem);
+    max-height: min(90vh, 48rem);
+    overflow-y: auto;
+    border: 1px solid oklch(0.65 0.12 55 / 0.7);
+    background:
+      radial-gradient(ellipse at top, oklch(0.3 0.07 60 / 0.45), transparent 65%),
+      var(--background);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 2rem 7rem oklch(0 0 0 / 0.55), 0 0 3rem oklch(0.65 0.12 55 / 0.12);
+    animation: celebration-card-in 550ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .checkout-celebration__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.9rem;
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    color: var(--foreground);
     font-size: 1.75rem;
+    opacity: 0.65;
   }
 
-  .order-success__sparkle--two {
-    top: 56%;
-    right: 7%;
-    font-size: 1.25rem;
-    animation-delay: 160ms;
+  .checkout-celebration__close:hover {
+    opacity: 1;
   }
 
-  .order-success__sparkle--three {
-    top: 68%;
-    right: 28%;
-    font-size: 1rem;
-    animation-delay: 320ms;
+  .checkout-celebration__seal {
+    display: grid;
+    width: 3.5rem;
+    height: 3.5rem;
+    place-items: center;
+    margin: 0 auto 1.5rem;
+    border: 1px solid var(--primary);
+    border-radius: 9999px;
+    color: var(--amber);
+    font-size: 1.5rem;
+    animation: celebration-seal-in 650ms 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 
-  .order-success__sparkle--four {
-    top: 24%;
-    right: 36%;
-    font-size: 0.875rem;
-    animation-delay: 480ms;
+  @keyframes celebration-appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
-  @keyframes order-sparkle {
+  @keyframes celebration-card-in {
+    from { opacity: 0; transform: translateY(1.25rem) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes celebration-seal-in {
+    from { opacity: 0; transform: scale(0.4) rotate(-30deg); }
+    to { opacity: 1; transform: scale(1) rotate(0); }
+  }
+
+  @keyframes celebration-sparkle {
     0% {
       opacity: 0;
-      transform: scale(0.3) rotate(-25deg);
+      transform: scale(0.35) rotate(-25deg);
     }
-    35% {
+    18% {
       opacity: 1;
-      transform: scale(1) rotate(15deg);
+      transform: scale(1.2) rotate(15deg);
     }
-    100% {
+    42%, 100% {
       opacity: 0;
-      transform: scale(0.75) rotate(45deg);
+      transform: scale(0.55) rotate(50deg);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .order-success__sparkle {
-      display: none;
+    .checkout-celebration,
+    .checkout-celebration__sparkle,
+    .checkout-celebration__dialog,
+    .checkout-celebration__seal {
       animation: none;
+    }
+
+    .checkout-celebration__sparkle {
+      opacity: 0.75;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .checkout-celebration__dialog {
+      padding: 3rem;
     }
   }
 }

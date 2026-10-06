@@ -43,6 +43,8 @@ function setupOrdersSheet() {
     sheet.getRange(1, 1, sheet.getMaxRows(), HEADERS.length).createFilter();
   }
   const statusRows = Math.max(sheet.getMaxRows() - 1, 1);
+  sheet.getRange(2, 11, statusRows, 1).setWrap(true);
+  sheet.getRange(2, 12, statusRows, 4).setNumberFormat('"₹"#,##0.00');
   const orderStatusRule = SpreadsheetApp.newDataValidation()
     .requireValueInList(['New', 'Confirmed', 'Packed', 'Dispatched', 'Delivered', 'Cancelled'], true)
     .setAllowInvalid(false)
@@ -144,10 +146,6 @@ function doPost(event) {
     ];
 
     sheet.appendRow(row);
-    const newRow = sheet.getLastRow();
-    sheet.getRange(newRow, 12, 1, 4).setNumberFormat('"₹"#,##0.00');
-    sheet.getRange(newRow, 1, 1, HEADERS.length).setVerticalAlignment('top');
-    sheet.getRange(newRow, 11).setWrap(true);
     return jsonResponse_({ success: true, duplicate: false, orderId: order.orderId });
   } catch (error) {
     console.error('Order sheet write failed: ' + error);
