@@ -11,19 +11,21 @@ export const organizationSchema = {
   alternateName: 'Ancient Perfumery of Kannauj',
   url: 'https://kannaujattar.co.in',
   logo: 'https://kannaujattar.co.in/icon.svg',
-  description: 'Heritage perfumery house preserving the ancient art of Deg Bhapka distillation for seven generations. Handcrafted natural attars from Kannauj, the perfumery capital of India.',
+  description: 'A heritage perfumery house from Kannauj, India, creating 100% pure natural attars using traditional Deg Bhapka distillation. The attars are government certified and lab tested, alcohol free with no synthetics, and a certificate is provided with every order.',
   sameAs: [
     // Placeholder social URLs - update when available
     // 'https://www.instagram.com/kannaujattar',
     // 'https://www.facebook.com/kannaujattar',
   ],
-  foundingDate: '1800s',
   knowsAbout: [
     'Deg Bhapka Distillation',
     'Traditional Attar Production',
     'Natural Perfumery',
     'Botanical Distillation',
     'Heritage Fragrance Craftsmanship',
+    'Government-certified attars',
+    'Laboratory-tested attars',
+    'Alcohol-free attars without synthetics',
   ],
 }
 
@@ -50,7 +52,7 @@ export const brandSchema = {
     // Placeholders for social URLs
     // 'https://www.instagram.com/kannaujattar',
   ],
-  description: 'Seven-generation heritage perfumery brand preserving authentic Deg Bhapka distillation craft.',
+  description: 'Kannauj Attar creates 100% pure natural, government-certified and lab-tested attars using traditional Deg Bhapka distillation. The attars are alcohol free with no synthetics, and a certificate is provided with every order.',
 }
 
 export const kannaujPlaceSchema = {
@@ -80,14 +82,22 @@ export const kannaujPlaceSchema = {
 export const createProductSchema = (product: {
   name: string
   description: string
+  slug: string
   image?: string
-  ingredients?: string
+  offers: Array<{
+    name: string
+    price: number
+    size: string
+  }>
 }) => ({
   '@context': 'https://schema.org',
   '@type': 'Product',
+  '@id': `https://kannaujattar.co.in/#product-${product.slug}`,
   name: product.name,
   description: product.description,
-  image: product.image || 'https://kannaujattar.co.in/icon.svg',
+  url: `https://kannaujattar.co.in/#shop`,
+  ...(product.image && { image: `https://kannaujattar.co.in${product.image}` }),
+  category: 'Natural Attar',
   brand: {
     '@type': 'Brand',
     name: 'Kannauj Attar',
@@ -97,9 +107,17 @@ export const createProductSchema = (product: {
     name: 'Kannauj Attar',
     url: 'https://kannaujattar.co.in',
   },
-  ...(product.ingredients && {
-    ingredients: product.ingredients,
-  }),
+  offers: product.offers.map((offer) => ({
+    '@type': 'Offer',
+    name: `${offer.name} · ${offer.size}`,
+    price: offer.price,
+    priceCurrency: 'INR',
+    url: 'https://kannaujattar.co.in/#shop',
+    seller: {
+      '@type': 'Organization',
+      name: 'Kannauj Attar',
+    },
+  })),
 })
 
 /**

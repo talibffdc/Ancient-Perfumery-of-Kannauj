@@ -3,8 +3,6 @@ import { Cormorant_Garamond, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { RootLayoutClient } from './layout-client'
 import { getAllSchemas } from '@/lib/schema'
-import { createProductSchema } from '@/lib/schema'
-import { productData } from '@/lib/product-schemas'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -23,19 +21,32 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kannaujattar.co.in'),
-  title: 'Kannauj Attar | Authentic Natural Attar & Ancient Perfumery',
-  description: 'Experience the timeless art of Deg Bhapka distillation. Handcrafted natural attars from the heritage perfumery house of Kannauj, reviving centuries of fragrance craftsmanship.',
-  keywords: ['attar', 'perfume', 'kannauj', 'natural fragrance', 'deg bhapka', 'sandalwood attar', 'rose attar', 'traditional perfumery', 'authentic attar'],
+  title: 'Kannauj Attar | Handcrafted Natural Attars from Kannauj',
+  description: 'Explore handcrafted natural attars shaped by Kannauj’s traditional Deg Bhapka distillation. Discover Gulab, Jasmine, Zafran, Shamama, Mitti and more, with Cash on Delivery across India.',
+  keywords: [
+    'Kannauj attar',
+    'natural attar India',
+    'traditional Indian attar',
+    'Deg Bhapka distillation',
+    'buy attar online India',
+    'Gulab attar',
+    'Jasmine attar',
+    'Zafran attar',
+    'Shamama attar',
+    'Mitti attar',
+    'Kewda attar',
+    'Hina attar',
+  ],
   icons: {
     icon: '/icon.svg',
     apple: '/apple-icon.png',
   },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'en_IN',
     url: 'https://kannaujattar.co.in',
-    title: 'Kannauj Attar | Authentic Natural Attar & Ancient Perfumery',
-    description: 'Experience the timeless art of Deg Bhapka distillation. Handcrafted natural attars from the heritage perfumery house of Kannauj.',
+    title: 'Kannauj Attar | Handcrafted Natural Attars from Kannauj',
+    description: 'Explore handcrafted natural attars shaped by Kannauj’s traditional Deg Bhapka distillation. Discover the fragrance collection and order online in India.',
     siteName: 'Kannauj Attar',
     images: [
       {
@@ -49,8 +60,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kannauj Attar | Authentic Natural Attar & Ancient Perfumery',
-    description: 'Handcrafted natural attars using traditional Deg Bhapka distillation.',
+    title: 'Kannauj Attar | Handcrafted Natural Attars from Kannauj',
+    description: 'Handcrafted natural attars shaped by Kannauj’s traditional Deg Bhapka distillation.',
     images: ['/og-image.jpg'],
   },
   authors: [{ name: 'Kannauj Attar' }],
@@ -85,21 +96,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const schemas = getAllSchemas()
-  const productSchemas = productData.map(product => 
-    createProductSchema({
-      name: product.name,
-      description: product.description,
-    })
-  )
-  const allSchemas = [...schemas, ...productSchemas]
 
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable} bg-background`}>
+    <html lang="en-IN" className={`${cormorant.variable} ${inter.variable} bg-background`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
         
         {/* JSON-LD Structured Data for Search Engines and AI Systems */}
-        {allSchemas.map((schema, idx) => (
+        {schemas.map((schema, idx) => (
           <script
             key={idx}
             type="application/ld+json"

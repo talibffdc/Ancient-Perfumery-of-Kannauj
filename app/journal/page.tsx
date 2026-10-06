@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     description:
       'A quiet library of notes on natural perfumery, attar craft, and traditional fragrance practice.',
   },
+  alternates: {
+    canonical: '/journal',
+  },
 }
 
 export default function JournalLandingPage() {
