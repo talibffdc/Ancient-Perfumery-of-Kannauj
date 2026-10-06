@@ -72,6 +72,7 @@ type ConfirmedOrder = {
 async function sendOrderNotification(
   order: ConfirmedOrder,
   recipient: string,
+  sender: string,
   resendApiKey: string
 ) {
   const itemsHtml = order.items.map((item) => `
@@ -85,7 +86,7 @@ async function sendOrderNotification(
   try {
     const resend = new Resend(resendApiKey)
     const emailResult = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: sender,
       to: recipient,
       replyTo: order.customer.email,
       subject: `New COD order ${order.orderId}`,
@@ -115,6 +116,8 @@ async function sendOrderNotification(
 
     if (emailResult.error) {
       console.error('Order notification email failed:', emailResult.error)
+    } else {
+      console.info('Order notification email accepted by Resend:', emailResult.data?.id)
     }
   } catch (error) {
     console.error('Order notification email failed:', error)
@@ -124,7 +127,7 @@ async function sendOrderNotification(
 export async function POST(request: Request) {
   const sheetsUrl = process.env.GOOGLE_SHEETS_ORDERS_URL
   const sheetsSecret = process.env.GOOGLE_SHEETS_ORDERS_SECRET
-  const resendApiKey = process.env.RESEND_API_KEY
+  const resendApiKey = process.env.RESEND_API_KEY_ORDERS ?? process.env.RESEND_API_KEY
 
   if (!sheetsUrl || !sheetsSecret) {
     console.error('Order configuration is incomplete.')
@@ -293,18 +296,20 @@ export async function POST(request: Request) {
     )
   }
 
-  if (spreadsheetResult.duplicate) {
-    return Response.json({ success: true, orderId, duplicate: true })
-  }
-
   let emailWarning: string | undefined
   if (!resendApiKey) {
-    console.error('Order was saved, but RESEND_API_KEY is not configured; notification email was not scheduled.')
+    console.error('Order was saved, but no Resend API key is configured for order notifications.')
     emailWarning = 'Your order is saved, but the store notification email is not configured.'
   } else {
     const recipient = process.env.ORDER_NOTIFICATION_EMAIL ?? 'talibffdc@gmail.com'
-    after(() => sendOrderNotification(order, recipient, resendApiKey))
+    const sender = process.env.ORDER_NOTIFICATION_FROM ?? 'onboarding@resend.dev'
+    after(() => sendOrderNotification(order, recipient, sender, resendApiKey))
   }
 
-  return Response.json({ success: true, orderId, emailWarning })
+  return Response.json({
+    success: true,
+    orderId,
+    duplicate: spreadsheetResult.duplicate ?? false,
+    emailWarning,
+  })
 }

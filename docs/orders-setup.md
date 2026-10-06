@@ -76,12 +76,21 @@ changing them:
 GOOGLE_SHEETS_ORDERS_URL=https://script.google.com/macros/s/DEPLOYMENT_ID/exec
 GOOGLE_SHEETS_ORDERS_SECRET=THE_SAME_PRIVATE_RANDOM_VALUE_AS_SCRIPT_PROPERTY
 ORDER_NOTIFICATION_EMAIL=talibffdc@gmail.com
+ORDER_NOTIFICATION_FROM=onboarding@resend.dev
 ```
 
-`RESEND_API_KEY` is already used by the inquiry endpoint and is also required
-for order email notifications. Do not prefix any of these values with `NEXT_PUBLIC_`.
-To send email to another inbox, change `ORDER_NOTIFICATION_EMAIL`; the contact
-form recipient is currently set separately in `app/api/inquiry/route.ts`.
+Set `RESEND_API_KEY_ORDERS` for order notification emails. If it is not set,
+the order endpoint falls back to `RESEND_API_KEY` for compatibility. The
+inquiry endpoint continues to use `RESEND_API_KEY`. For production sending,
+verify your own domain
+in Resend and set `ORDER_NOTIFICATION_FROM` to a sender address on that verified
+domain, such as `orders@yourdomain.com`. The `onboarding@resend.dev` sender is
+intended for testing and may only deliver to the Resend account's verified
+recipient. Set `ORDER_NOTIFICATION_EMAIL` to the inbox where order alerts should
+arrive. Keep the API key and both notification settings in the Vercel
+Production environment; do not prefix them with `NEXT_PUBLIC_`. Redeploy the
+production site after changing environment variables. The contact-form recipient
+is configured separately in `app/api/inquiry/route.ts`.
 
 ## 4. Order and dispatch tracking
 
@@ -98,8 +107,10 @@ Update these columns in the sheet as the order moves through fulfilment:
 
 An order is confirmed on the site only after the sheet confirms it was saved.
 The notification email is sent after the order response so a slow email provider
-does not hold up checkout. If email sending fails, the failure is logged by the
-server; the sheet remains the authoritative order record.
+does not hold up checkout. An idempotent retry that discovers an already-saved
+row also schedules its notification. If email sending fails, inspect the
+production function logs and Resend Logs; the sheet remains the authoritative
+order record.
 
 ## Payment state
 
