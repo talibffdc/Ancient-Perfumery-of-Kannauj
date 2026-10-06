@@ -54,6 +54,13 @@ sign-in page, deployment access is not public yet. If it says
 `"spreadsheet_unavailable"`, run `setupOrdersSheet` and authorize spreadsheet
 access again.
 
+If the production checkout reports HTTP 404, copy the current **Web app** URL
+from Apps Script → Deploy → Manage deployments. Use the URL ending in `/exec`
+(not `/dev`, a library URL, or a URL from an older deployment), update
+`GOOGLE_SHEETS_ORDERS_URL` for the Production environment in Vercel, then trigger
+a new Vercel deployment. Open that exact URL in a private browser window and
+confirm it returns the `ready` JSON before retrying checkout.
+
 ## 3. Configure the website server
 
 Add these server-only values to local `.env.local` and the hosting provider's

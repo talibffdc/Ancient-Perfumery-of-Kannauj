@@ -146,11 +146,14 @@ export async function POST(request: Request) {
         response.status === 401 ||
         response.status === 403
       console.error('Order spreadsheet request failed with status:', response.status)
+      const isMissingDeployment = response.status === 404
       return Response.json(
         {
           error: requiresGoogleLogin
-            ? 'Google Sheets is asking the server to sign in. In Apps Script, deploy a new Web app version with “Execute as: Me” and “Who has access: Anyone”, then update the /exec URL if it changed.'
-            : `Google Sheets could not accept the order (HTTP ${response.status}). Check the Apps Script deployment and executions, then try again.`,
+            ? 'Google Sheets is asking the server to sign in. In Apps Script, set “Execute as: Me” and “Who has access: Anyone”, deploy a new Web app version, then update the /exec URL if it changed.'
+            : isMissingDeployment
+              ? 'Google Apps Script returned HTTP 404. The production GOOGLE_SHEETS_ORDERS_URL is likely an old, mistyped, or non-Web-app URL. Copy the current Web app URL ending in /exec from Apps Script → Deploy → Manage deployments, update the Production environment variable, then redeploy the site.'
+              : `Google Sheets could not accept the order (HTTP ${response.status}). Check the Apps Script deployment and executions, then try again.`,
         },
         { status: 502 }
       )
