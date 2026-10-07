@@ -128,13 +128,17 @@ export function Footer() {
             {/* Subtle social references - no icons, just text */}
             <div className="flex gap-8">
               <a 
-                href="#" 
+                href="https://www.instagram.com/kannaujattar.co.in/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/40 transition-colors duration-500 hover:text-foreground/60"
               >
                 Instagram
               </a>
               <a 
-                href="#" 
+                href="https://wa.me/919598295267"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/40 transition-colors duration-500 hover:text-foreground/60"
               >
                 WhatsApp

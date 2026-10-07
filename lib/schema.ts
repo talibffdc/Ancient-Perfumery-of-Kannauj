@@ -12,11 +12,7 @@ export const organizationSchema = {
   url: 'https://kannaujattar.co.in',
   logo: 'https://kannaujattar.co.in/icon.svg',
   description: 'A heritage perfumery house from Kannauj, India, creating 100% pure natural attars using traditional Deg Bhapka distillation. The attars are government certified and lab tested, alcohol free with no synthetics, and a certificate is provided with every order.',
-  sameAs: [
-    // Placeholder social URLs - update when available
-    // 'https://www.instagram.com/kannaujattar',
-    // 'https://www.facebook.com/kannaujattar',
-  ],
+  sameAs: ['https://www.instagram.com/kannaujattar.co.in/'],
   knowsAbout: [
     'Deg Bhapka Distillation',
     'Traditional Attar Production',
@@ -48,10 +44,7 @@ export const brandSchema = {
   name: 'Kannauj Attar',
   url: 'https://kannaujattar.co.in',
   logo: 'https://kannaujattar.co.in/icon.svg',
-  sameAs: [
-    // Placeholders for social URLs
-    // 'https://www.instagram.com/kannaujattar',
-  ],
+  sameAs: ['https://www.instagram.com/kannaujattar.co.in/'],
   description: 'Kannauj Attar creates 100% pure natural, government-certified and lab-tested attars using traditional Deg Bhapka distillation. The attars are alcohol free with no synthetics, and a certificate is provided with every order.',
 }
 
