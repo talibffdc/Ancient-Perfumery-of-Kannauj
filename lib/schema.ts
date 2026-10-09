@@ -7,6 +7,7 @@
 export const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://kannaujattar.co.in/#organization',
   name: 'Kannauj Attar',
   alternateName: 'Ancient Perfumery of Kannauj',
   url: 'https://kannaujattar.co.in',
@@ -28,13 +29,14 @@ export const organizationSchema = {
 export const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': 'https://kannaujattar.co.in/#website',
   name: 'Kannauj Attar',
+  alternateName: 'Ancient Perfumery of Kannauj',
   url: 'https://kannaujattar.co.in',
+  inLanguage: 'en-IN',
   description: 'Official website of Kannauj Attar - authentic natural attar and ancient perfumery house from India.',
   publisher: {
-    '@type': 'Organization',
-    name: 'Kannauj Attar',
-    logo: 'https://kannaujattar.co.in/icon.svg',
+    '@id': 'https://kannaujattar.co.in/#organization',
   },
 }
 

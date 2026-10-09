@@ -21,6 +21,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kannaujattar.co.in'),
+  applicationName: 'Kannauj Attar',
   title: 'Kannauj Attar | Handcrafted Natural Attars from Kannauj',
   description: 'Explore handcrafted natural attars shaped by Kannauj’s traditional Deg Bhapka distillation. Discover Gulab, Jasmine, Zafran, Shamama, Mitti and more, with Cash on Delivery across India.',
   keywords: [
