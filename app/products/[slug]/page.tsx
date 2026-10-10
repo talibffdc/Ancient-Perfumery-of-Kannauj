@@ -119,6 +119,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="mt-5 text-xs leading-relaxed text-foreground/50">
                 Cash on Delivery available in India · Free India shipping · ₹49 COD fee.
               </p>
+              <p className="mt-2 text-xs leading-relaxed text-foreground/50">
+                Returns accepted within 7 days for unused, sealed products. Return shipping is paid by Kannauj Attar.
+              </p>
               <Link
                 href={`/?product=${encodeURIComponent(product.slug)}#shop`}
                 className="mt-7 inline-flex min-h-12 items-center bg-primary px-7 text-xs uppercase tracking-[0.16em] text-primary-foreground transition-opacity hover:opacity-90"
