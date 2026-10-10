@@ -13,6 +13,7 @@ export interface StoreProduct {
   hindi: string
   note: string
   image: string
+  imageAlt?: string
   variants: ProductVariant[]
 }
 

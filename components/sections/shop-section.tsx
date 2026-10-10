@@ -29,16 +29,14 @@ function ProductImage({ product }: { product: StoreProduct }) {
       {product.image && (
         <img
           src={product.image}
-          alt={`${product.name} attar`}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          alt={product.imageAlt ?? `${product.name} natural attar from Kannauj`}
+          className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
           onLoad={() => setIsLoaded(true)}
           onError={() => setIsLoaded(true)}
         />
       )}
       {!isLoaded && (
-        <span className="pointer-events-none absolute inset-0 flex items-center justify-center text-[10px] uppercase tracking-[0.25em] text-foreground/35">
-          {product.name} · product photo
-        </span>
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0" />
       )}
       <span className="absolute right-3 top-3 font-serif text-2xl text-foreground/70">
         {product.hindi}

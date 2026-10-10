@@ -22,7 +22,8 @@
     "name": "Jasmine",
     "hindi": "चमेली",
     "note": "A luminous white floral with a warm, gentle trail.",
-    "image": "",
+    "image": "/images/product-jasmine.jpg",
+    "imageAlt": "Jasmine flowers used in Kannauj natural jasmine attar, handcrafted with traditional Deg Bhapka distillation",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 },
@@ -34,7 +35,8 @@
     "name": "Zafran",
     "hindi": "ज़ाफ़रान",
     "note": "A precious, warm spice with a golden, honeyed depth.",
-    "image": "",
+    "image": "/images/product-zafran.webp",
+    "imageAlt": "Saffron threads for Kannauj Zafran attar, handcrafted using traditional Deg Bhapka distillation",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1899 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2199 },
@@ -57,7 +59,8 @@
     "name": "Kewda",
     "hindi": "केवड़ा",
     "note": "Fresh, distinctive floral notes with a green sweetness.",
-    "image": "",
+    "image": "/images/product-kewda.jpg",
+    "imageAlt": "Kewda flower used to make natural Kewda attar in Kannauj using traditional distillation",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 },
@@ -126,7 +129,8 @@
     "name": "Rajnigandha",
     "hindi": "रजनीगंधा",
     "note": "An elegant white floral that opens as evening falls.",
-    "image": "",
+    "image": "/images/product-rajnigandha.jpg",
+    "imageAlt": "Rajnigandha flowers used in natural Kannauj attar made with traditional Deg Bhapka distillation",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1299 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1699 },
@@ -138,7 +142,8 @@
     "name": "Harsingar",
     "hindi": "हरसिंगार",
     "note": "A delicate, nostalgic floral with a soft orange warmth.",
-    "image": "",
+    "image": "/images/product-harsingar.jpg",
+    "imageAlt": "Harsingar flowers prepared for natural attar making in Kannauj",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 }

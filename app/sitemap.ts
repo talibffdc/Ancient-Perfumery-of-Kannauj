@@ -27,6 +27,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/products/${product.slug}`,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+      ...(product.image && {
+        images: [`${baseUrl}${product.image}`],
+      }),
     })),
     ...getAllJournalArticles().map((article) => ({
       url: `${baseUrl}/journal/${article.slug}`,

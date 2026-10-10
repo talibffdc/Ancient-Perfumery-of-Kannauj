@@ -35,7 +35,14 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       url: canonical,
       title: `${product.name} Attar | Kannauj Attar`,
       description,
-      ...(product.image && { images: [product.image] }),
+      ...(product.image && {
+        images: [
+          {
+            url: product.image,
+            alt: product.imageAlt ?? `${product.name} natural attar from Kannauj`,
+          },
+        ],
+      }),
     },
   }
 }
@@ -76,8 +83,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product.image ? (
               <img
                 src={product.image}
-                alt={`${product.name} attar`}
-                className="aspect-square w-full bg-muted/30 object-cover"
+                alt={product.imageAlt ?? `${product.name} natural attar from Kannauj`}
+                className="aspect-square w-full bg-muted/30 object-contain"
               />
             ) : (
               <div className="flex aspect-square items-center justify-center border border-border bg-card/50">
