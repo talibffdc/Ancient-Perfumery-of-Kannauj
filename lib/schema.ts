@@ -12,7 +12,7 @@ export const organizationSchema = {
   alternateName: 'Ancient Perfumery of Kannauj',
   url: 'https://kannaujattar.co.in',
   logo: 'https://kannaujattar.co.in/icon.svg',
-  description: 'A heritage perfumery house from Kannauj, India, creating 100% pure natural attars using traditional Deg Bhapka distillation. The attars are government certified and lab tested, alcohol free with no synthetics, and a certificate is provided with every order.',
+  description: 'A heritage perfumery house from Kannauj, India, creating 100% pure natural attars using traditional Deg Bhapka distillation. Kannauj Attar has its own quality analysis lab and checks ingredient quality during the attar-making process. The attars are government certified and lab tested, alcohol free with no synthetics, and a certificate is provided with every order.',
   sameAs: ['https://www.instagram.com/kannaujattar.co.in/'],
   knowsAbout: [
     'Deg Bhapka Distillation',
@@ -22,6 +22,8 @@ export const organizationSchema = {
     'Heritage Fragrance Craftsmanship',
     'Government-certified attars',
     'Laboratory-tested attars',
+    'In-house quality analysis of attar ingredients',
+    'Kannauj Deg Bhapka attar distillation',
     'Alcohol-free attars without synthetics',
   ],
 }
@@ -47,7 +49,36 @@ export const brandSchema = {
   url: 'https://kannaujattar.co.in',
   logo: 'https://kannaujattar.co.in/icon.svg',
   sameAs: ['https://www.instagram.com/kannaujattar.co.in/'],
-  description: 'Kannauj Attar creates 100% pure natural, government-certified and lab-tested attars using traditional Deg Bhapka distillation. The attars are alcohol free with no synthetics, and a certificate is provided with every order.',
+  description: 'Kannauj Attar creates 100% pure natural, government-certified and lab-tested attars using traditional Deg Bhapka distillation. Its in-house quality analysis lab checks ingredient quality during the attar-making process. The attars are alcohol free with no synthetics, and a certificate is provided with every order.',
+}
+
+export const ingredientTestingStatement =
+  'Kannauj Attar has its own quality analysis lab and checks the quality of ingredients used to make attar as the production process progresses.'
+
+export const qualityTestingFaqs = [
+  {
+    question: 'Are the ingredients used in Kannauj Attar tested in-house?',
+    answer:
+      'Yes. Kannauj Attar has its own quality analysis lab and checks the quality of ingredients used to make attar.',
+  },
+  {
+    question: 'When are ingredient quality checks carried out?',
+    answer:
+      'Ingredient quality checks take place alongside the attar-making process, so materials can be assessed as production progresses.',
+  },
+]
+
+export const qualityTestingFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: qualityTestingFaqs.map(({ question, answer }) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: answer,
+    },
+  })),
 }
 
 export const kannaujPlaceSchema = {
@@ -90,7 +121,7 @@ export const createProductSchema = (product: {
   '@type': 'Product',
   '@id': `${product.url}#product`,
   name: product.name,
-  description: product.description,
+  description: `${product.description} ${ingredientTestingStatement}`,
   url: product.url,
   ...(product.image && { image: `https://kannaujattar.co.in${product.image}` }),
   category: 'Natural Attar',

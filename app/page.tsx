@@ -12,10 +12,21 @@ import { InquirySection } from '@/components/sections/inquiry-section'
 import { Footer } from '@/components/footer'
 import type { Metadata } from 'next'
 import { gallerySchema } from '@/lib/gallery-photos'
+import { qualityTestingFaqSchema } from '@/lib/schema'
 
 export const metadata: Metadata = {
+  description:
+    'Shop natural attars handcrafted in Kannauj using traditional Deg Bhapka distillation. Our in-house quality analysis lab checks ingredient quality during production.',
   alternates: {
     canonical: '/',
+  },
+  openGraph: {
+    description:
+      'Natural attars handcrafted in Kannauj using traditional Deg Bhapka distillation, with ingredient quality checks in our in-house quality analysis lab.',
+  },
+  twitter: {
+    description:
+      'Natural Kannauj attars made with traditional Deg Bhapka distillation and in-house ingredient quality checks.',
   },
 }
 
@@ -39,6 +50,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(gallerySchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(qualityTestingFaqSchema) }}
       />
 
       {/* Ingredients */}

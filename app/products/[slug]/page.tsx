@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer'
 import { Navigation } from '@/components/navigation'
 import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline, Title } from '@/components/typography'
-import { createProductSchema } from '@/lib/schema'
+import { createProductSchema, ingredientTestingStatement } from '@/lib/schema'
 import { shopCatalog } from '@/lib/shop-catalog'
 
 interface ProductPageProps {
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   if (!product) return { title: 'Product not found | Kannauj Attar' }
 
   const canonical = `https://kannaujattar.co.in/products/${product.slug}`
-  const description = `${product.note} Discover ${product.name} attar, handcrafted in Kannauj. Available in ${product.variants.map((variant) => variant.name).join(', ')} forms.`
+  const description = `Buy ${product.name} attar from Kannauj Attar. Handcrafted using Deg Bhapka distillation, with ingredient quality checks in our in-house lab.`
 
   return {
     title: `${product.name} Attar | Kannauj Attar`,
@@ -89,6 +89,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <Caption className="text-primary">{product.hindi} · Kannauj Attar</Caption>
               <Headline className="mt-4">{product.name} Attar</Headline>
               <BodyText className="mt-5 text-foreground/60">{product.note}</BodyText>
+              <p className="mt-4 border-l border-primary/50 pl-4 text-sm leading-relaxed text-foreground/60">
+                {ingredientTestingStatement}
+              </p>
 
               <div className="mt-8 border-y border-border py-5">
                 <Title as="h2" className="text-xl">Available forms</Title>
