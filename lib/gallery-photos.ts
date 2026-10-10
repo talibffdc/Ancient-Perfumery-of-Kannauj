@@ -1,0 +1,123 @@
+export const galleryPhotos = [
+  {
+    src: '/images/roseharvest.jpg',
+    alt: 'Rose petals gathered for natural attar making in Kannauj',
+    title: 'Rose harvest',
+    note: 'Flowers at the heart of the craft',
+    description: 'Roses gathered as botanical material for traditional natural attar making in Kannauj, India.',
+  },
+  {
+    src: '/images/preparerose.png',
+    alt: 'Rose petals prepared by hand beside a traditional Kannauj distillation vessel',
+    title: 'Petals, prepared by hand',
+    note: 'Careful preparation before distillation',
+    description: 'Rose petals are prepared beside a traditional deg bhapka vessel before the attar distillation process.',
+  },
+  {
+    src: '/images/distillation.jpg',
+    alt: 'Deg bhapka vessels used for traditional attar distillation in Kannauj',
+    title: 'The deg bhapka',
+    note: 'A time-honoured distillation method',
+    description: 'Traditional deg bhapka vessels used in the heritage method of attar distillation in Kannauj.',
+  },
+  {
+    src: '/images/receiveattar.jpg',
+    alt: 'Kannauj attar distillation workshop with vessels and a wood fire',
+    title: 'Inside the workshop',
+    note: 'Fire, vessels and patient craft',
+    description: 'A view inside a traditional Kannauj perfumery workshop, where heat and distillation vessels are part of attar making.',
+  },
+  {
+    src: '/images/mittiattar.png',
+    alt: 'Earthen materials used to create mitti attar in Kannauj',
+    title: 'The scent of mitti',
+    note: 'Earth-inspired Kannauj perfumery',
+    description: 'Earthy materials associated with mitti attar, a traditional fragrance made through the Deg Bhapka distillation craft.',
+  },
+  {
+    src: '/images/gulabattar.jpg',
+    alt: 'Fresh rose petals used in the traditional Gulab attar distillation process',
+    title: 'Gulab, from flower to fragrance',
+    note: 'A closer look at rose attar making',
+    description: 'Fresh roses are the botanical starting point for Gulab attar, made using traditional distillation methods in Kannauj.',
+  },
+  {
+    src: '/images/gallery-bamboo-pipe.jpg',
+    alt: 'Bamboo pipe connecting vessels in a traditional Kannauj deg bhapka setup',
+    title: 'The bamboo connection',
+    note: 'Fitting the pipe between the vessels',
+    description: 'A bamboo pipe fitted between vessels in the traditional Deg Bhapka setup used for attar distillation.',
+  },
+  {
+    src: '/images/gallery-deg-on-fire.jpg',
+    alt: 'Traditional Kannauj deg vessel heated over a fire for attar distillation',
+    title: 'The deg on the fire',
+    note: 'The distillation begins',
+    description: 'A traditional deg is heated over a fire as part of the Deg Bhapka attar distillation process in Kannauj.',
+  },
+  {
+    src: '/images/gallery-deg-sealed.jpg',
+    alt: 'Sealed deg vessel in a traditional Kannauj attar distillation setup',
+    title: 'Ready after sealing',
+    note: 'The deg is sealed and the bhapka cooled',
+    description: 'A sealed deg prepared for traditional attar distillation, with the bhapka vessel cooled as part of the process.',
+  },
+  {
+    src: '/images/gallery-oil-water-separation.jpg',
+    alt: 'Oil and water separating in a bhapka during traditional Kannauj attar distillation',
+    title: 'Oil and water separate',
+    note: 'The first bhapka and separation stage',
+    description: 'The oil and water separation stage in a bhapka, shown as part of traditional Deg Bhapka attar making.',
+  },
+  {
+    src: '/images/gallery-sunlit-earthenware-workshop.jpg',
+    alt: 'Sunlit earthenware and distillation vessels in a Kannauj attar workshop',
+    title: 'Earthenware in the workshop',
+    note: 'The vessels and setting behind traditional attar making',
+    description: 'Earthenware and distillation vessels in a sunlit workshop setting associated with traditional Kannauj attar making.',
+  },
+  {
+    src: '/images/gallery-traditional-deg-bhapka-process.jpg',
+    alt: 'Traditional Deg Bhapka distillation vessels used in Kannauj attar making',
+    title: 'The deg bhapka process',
+    note: 'Traditional vessels used in Kannauj distillation',
+    description: 'Traditional deg and bhapka vessels used in the process of distilling natural attar in Kannauj, India.',
+  },
+  {
+    src: '/images/gallery-sunlit-distillation-workshop.jpg',
+    alt: 'Sunlight across traditional distillation vessels in a Kannauj perfumery workshop',
+    title: 'Light in the distillation workshop',
+    note: 'A moment inside a traditional Kannauj workshop',
+    description: 'Traditional distillation vessels inside a Kannauj perfumery workshop, photographed in natural sunlight.',
+  },
+] as const
+
+export const gallerySchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': 'https://kannaujattar.co.in/#traditional-attar-gallery',
+  name: 'Kannauj Attar Traditional Deg Bhapka Distillation Photo Gallery',
+  description: 'Original Kannauj Attar photographs of traditional attar making, botanical preparation, workshop vessels, and Deg Bhapka distillation in Kannauj, India.',
+  url: 'https://kannaujattar.co.in/#gallery',
+  creator: {
+    '@id': 'https://kannaujattar.co.in/#organization',
+  },
+  image: galleryPhotos.map((photo) => ({
+    '@type': 'ImageObject',
+    contentUrl: `https://kannaujattar.co.in${photo.src}`,
+    url: `https://kannaujattar.co.in${photo.src}`,
+    name: photo.title,
+    description: photo.description,
+    creator: {
+      '@id': 'https://kannaujattar.co.in/#organization',
+    },
+    copyrightHolder: {
+      '@id': 'https://kannaujattar.co.in/#organization',
+    },
+    copyrightNotice: 'Original photograph supplied by Kannauj Attar.',
+    contentLocation: {
+      '@type': 'Place',
+      name: 'Kannauj, Uttar Pradesh, India',
+    },
+  })),
+}

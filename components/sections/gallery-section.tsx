@@ -3,58 +3,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline } from '@/components/typography'
-
-const galleryPhotos = [
-  {
-    src: '/images/roseharvest.jpg',
-    alt: 'Hands gathering fragrant roses among the flowers',
-    title: 'Rose harvest',
-    note: 'Flowers at the heart of the craft',
-    shape: 'row-span-2',
-  },
-  {
-    src: '/images/preparerose.png',
-    alt: 'Rose petals being prepared beside a traditional distillation vessel',
-    title: 'Petals, prepared by hand',
-    note: 'Careful preparation before distillation',
-    shape: '',
-  },
-  {
-    src: '/images/distillation.jpg',
-    alt: 'Traditional deg vessels used in Kannauj attar making',
-    title: 'The deg bhapka',
-    note: 'A time-honoured distillation method',
-    shape: '',
-  },
-  {
-    src: '/images/receiveattar.jpg',
-    alt: 'Traditional distillation workshop with copper vessels and fire',
-    title: 'Inside the workshop',
-    note: 'Fire, vessels and patient craft',
-    shape: '',
-  },
-  {
-    src: '/images/mittiattar.png',
-    alt: 'Earthen materials prepared for making mitti attar',
-    title: 'The scent of mitti',
-    note: 'Earth-inspired Kannauj perfumery',
-    shape: '',
-  },
-  {
-    src: '/images/gulabattar.jpg',
-    alt: 'Fresh rose petals ready for the distillation process',
-    title: 'Gulab, from flower to fragrance',
-    note: 'A closer look at rose attar making',
-    shape: '',
-  },
-]
+import { galleryPhotos } from '@/lib/gallery-photos'
 
 export function GallerySection() {
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
+  const isPhotoOpen = activePhotoIndex !== null
 
   useEffect(() => {
-    if (activePhotoIndex === null) return
+    if (!isPhotoOpen) return
 
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
@@ -79,12 +36,16 @@ export function GallerySection() {
       document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', closeOnEscape)
     }
-  }, [activePhotoIndex])
+  }, [isPhotoOpen])
 
   const activePhoto = activePhotoIndex === null ? null : galleryPhotos[activePhotoIndex]
 
   return (
-    <section id="gallery" className="bg-card/35 py-24 md:py-32">
+    <section
+      id="gallery"
+      className="bg-card/35 py-24 md:py-32"
+      onContextMenu={(event) => event.preventDefault()}
+    >
       <SectionContainer size="lg">
         <div className="mb-12 flex flex-col gap-6 md:mb-16 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
@@ -94,7 +55,9 @@ export function GallerySection() {
             </Headline>
             <BodyText className="mt-5 max-w-xl text-foreground/60">
               From gathered flowers to the traditional deg bhapka, explore moments
-              from the materials and methods of Kannauj perfumery.
+              from the materials and methods of Kannauj perfumery. These original
+              Kannauj Attar photographs document traditional attar-making and
+              Deg Bhapka distillation in Kannauj, India.
             </BodyText>
           </div>
           <a
@@ -105,27 +68,36 @@ export function GallerySection() {
           </a>
         </div>
 
-        <div className="grid auto-rows-[175px] grid-cols-2 gap-3 sm:auto-rows-[210px] sm:gap-4 md:auto-rows-[220px] md:grid-cols-3">
-          {galleryPhotos.map((photo, index) => (
+        <div className="columns-2 gap-3 sm:gap-4 md:columns-3">
+          {galleryPhotos.map((photo) => (
             <button
               key={photo.src}
               type="button"
-              onClick={() => setActivePhotoIndex(index)}
+              onClick={() => setActivePhotoIndex(galleryPhotos.indexOf(photo))}
+              onDragStart={(event) => event.preventDefault()}
               aria-label={`View photo: ${photo.title}`}
-              className={`group relative overflow-hidden bg-muted text-left ${photo.shape}`}
+              className="group relative mb-3 inline-block w-full break-inside-avoid overflow-hidden border border-border/70 bg-background text-left transition-colors hover:border-primary/60 sm:mb-4"
             >
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/5 to-transparent opacity-85 transition-opacity group-hover:opacity-100" />
-              <span className="absolute inset-x-0 bottom-0 p-3 text-white sm:p-5">
-                <span className="block font-serif text-lg leading-tight sm:text-2xl">{photo.title}</span>
-                <span className="mt-1 block text-[10px] leading-relaxed text-white/75 sm:text-xs">{photo.note}</span>
+              <span className="relative block">
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  loading="lazy"
+                  draggable={false}
+                  className="block h-auto w-full"
+                />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute bottom-2 right-2 bg-black/40 px-1.5 py-1 text-[8px] uppercase tracking-[0.14em] text-white/80"
+                >
+                  Kannauj Attar
+                </span>
               </span>
-              <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center border border-white/45 bg-black/20 text-lg text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
+              <span className="block border-t border-border/70 bg-background px-3 py-2.5 sm:px-4">
+                <span className="block font-serif text-base leading-tight text-foreground sm:text-lg">{photo.title}</span>
+                <span className="mt-1 block text-[10px] leading-relaxed text-foreground/55 sm:text-xs">{photo.note}</span>
+              </span>
+              <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center border border-white/45 bg-black/40 text-lg text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
                 +
               </span>
             </button>
@@ -156,11 +128,20 @@ export function GallerySection() {
             >
               ×
             </button>
-            <img
-              src={activePhoto.src}
-              alt={activePhoto.alt}
-              className="max-h-[76vh] w-auto max-w-full object-contain"
-            />
+            <span className="relative inline-flex max-h-[76vh] max-w-full">
+              <img
+                src={activePhoto.src}
+                alt={activePhoto.alt}
+                draggable={false}
+                className="max-h-[76vh] w-auto max-w-full object-contain"
+              />
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-3 right-3 bg-black/40 px-2 py-1.5 text-[9px] uppercase tracking-[0.14em] text-white/80"
+              >
+                Kannauj Attar
+              </span>
+            </span>
             <div className="mt-4 flex w-full items-center justify-between gap-4 text-white">
               <button
                 type="button"

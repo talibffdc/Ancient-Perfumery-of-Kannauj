@@ -1,15 +1,13 @@
 import type { MetadataRoute } from 'next'
 import { getAllJournalArticles } from '@/lib/journal'
 import { shopCatalog } from '@/lib/shop-catalog'
+import { galleryPhotos } from '@/lib/gallery-photos'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://kannaujattar.co.in'
   const homepageImages = Array.from(new Set([
     '/heritage-deg-vessel.webp',
-    '/images/roseharvest.jpg',
-    '/images/preparerose.png',
-    '/images/distillation.jpg',
-    '/images/receiveattar.jpg',
+    ...galleryPhotos.map((photo) => photo.src),
     ...shopCatalog.products.map((product) => product.image),
   ].filter(Boolean))).map((image) => `${baseUrl}${image}`)
 

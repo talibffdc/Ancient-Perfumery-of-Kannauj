@@ -11,6 +11,7 @@ import { ShopSection } from '@/components/sections/shop-section'
 import { InquirySection } from '@/components/sections/inquiry-section'
 import { Footer } from '@/components/footer'
 import type { Metadata } from 'next'
+import { gallerySchema } from '@/lib/gallery-photos'
 
 export const metadata: Metadata = {
   alternates: {
@@ -35,6 +36,10 @@ export default function HomePage() {
 
       {/* Traditional craft photo gallery */}
       <GallerySection />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(gallerySchema) }}
+      />
 
       {/* Ingredients */}
       <IngredientsSection />
