@@ -6,8 +6,11 @@ import { Footer } from '@/components/footer'
 import { Navigation } from '@/components/navigation'
 import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline, Title } from '@/components/typography'
+import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
 import { createProductSchema, ingredientTestingStatement } from '@/lib/schema'
 import { shopCatalog } from '@/lib/shop-catalog'
+
+export const revalidate = 3600
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>
@@ -24,7 +27,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   if (!product) return { title: 'Product not found | Kannauj Attar' }
 
   const canonical = `https://kannaujattar.co.in/products/${product.slug}`
-  const description = `Buy ${product.name} attar from Kannauj Attar. Handcrafted using Deg Bhapka distillation, with ingredient quality checks in our in-house lab.`
+  const offerActive = isDiwaliOfferActive()
+  const description = `Buy ${product.name} attar from Kannauj Attar. Handcrafted using Deg Bhapka distillation, with ingredient quality checks in our in-house lab.${offerActive ? ` Save ${diwaliOffer.discountPercent}% with the Diwali Offer until 8 November 2026.` : ''}`
 
   return {
     title: `${product.name} Attar | Kannauj Attar`,
@@ -53,6 +57,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) notFound()
 
   const canonical = `https://kannaujattar.co.in/products/${product.slug}`
+  const offerActive = isDiwaliOfferActive()
   const schema = createProductSchema({
     name: product.name,
     description: product.note,
@@ -96,6 +101,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <Caption className="text-primary">{product.hindi} · Kannauj Attar</Caption>
               <Headline className="mt-4">{product.name} Attar</Headline>
               <BodyText className="mt-5 text-foreground/60">{product.note}</BodyText>
+              {offerActive && (
+                <p className="mt-5 border border-primary/40 bg-primary/5 px-4 py-3 text-sm text-foreground/80">
+                  <span className="font-medium text-primary">{diwaliOffer.name}: save {diwaliOffer.discountPercent}%</span>
+                  {' '}on this attar. Discount applied automatically through 8 November 2026.
+                </p>
+              )}
               <p className="mt-4 border-l border-primary/50 pl-4 text-sm leading-relaxed text-foreground/60">
                 {ingredientTestingStatement}
               </p>
@@ -111,12 +122,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       <span className="text-foreground/70">
                         {variant.name} <span className="text-foreground/45">· {variant.size}</span>
                       </span>
-                      <span className="font-medium text-primary">
-                        {new Intl.NumberFormat('en-IN', {
+                      <span className="flex flex-col items-end font-medium text-primary">
+                        {offerActive && (
+                          <del className="text-xs text-foreground/40">
+                            {new Intl.NumberFormat('en-IN', {
+                              style: 'currency',
+                              currency: 'INR',
+                              maximumFractionDigits: 0,
+                            }).format(variant.price)}
+                          </del>
+                        )}
+                        <span>{new Intl.NumberFormat('en-IN', {
                           style: 'currency',
                           currency: 'INR',
                           maximumFractionDigits: 0,
-                        }).format(variant.price)}
+                        }).format(getDiwaliPrice(variant.price))}</span>
                       </span>
                     </li>
                   ))}

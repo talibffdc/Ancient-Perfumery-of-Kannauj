@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline, Title } from '@/components/typography'
+import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
 import { shopCatalog, type ProductVariant, type StoreProduct } from '@/lib/shop-catalog'
 
 type OrderItem = {
@@ -20,6 +21,27 @@ const formatPrice = (price: number) =>
     currency: 'INR',
     maximumFractionDigits: 0,
   }).format(price)
+
+function SalePrice({
+  regularPrice,
+  className,
+}: {
+  regularPrice: number
+  className?: string
+}) {
+  const salePrice = getDiwaliPrice(regularPrice)
+
+  return (
+    <span className={className}>
+      {salePrice < regularPrice && (
+        <del className="text-foreground/40">{formatPrice(regularPrice)}</del>
+      )}
+      <span className={salePrice < regularPrice ? 'font-medium text-primary' : ''}>
+        {formatPrice(salePrice)}
+      </span>
+    </span>
+  )
+}
 
 function ProductImage({ product }: { product: StoreProduct }) {
   const [isLoaded, setIsLoaded] = useState(!product.image)
@@ -46,6 +68,7 @@ function ProductImage({ product }: { product: StoreProduct }) {
 }
 
 export function ShopSection() {
+  const offerActive = isDiwaliOfferActive()
   const [selectedProduct, setSelectedProduct] = useState<StoreProduct | null>(null)
   const [selectedVariantId, setSelectedVariantId] = useState<ProductVariant['id']>('attar')
   const [quantity, setQuantity] = useState(1)
@@ -161,9 +184,22 @@ export function ShopSection() {
   }
 
   const bagTotal = bag.reduce(
+    (total, item) => total + getDiwaliPrice(item.variant.price) * item.quantity,
+    0
+  )
+  const bagRegularTotal = bag.reduce(
     (total, item) => total + item.variant.price * item.quantity,
     0
   )
+  const bagSavings = bag.reduce(
+    (total, item) =>
+      total + (item.variant.price - getDiwaliPrice(item.variant.price)) * item.quantity,
+    0
+  )
+  const selectedUnitPrice = selectedVariant
+    ? getDiwaliPrice(selectedVariant.price)
+    : 0
+  const selectedLineTotal = selectedUnitPrice * quantity
 
   const shippingFee = deliveryCountry === 'India'
     ? shopCatalog.fees.indiaShipping
@@ -243,6 +279,12 @@ export function ShopSection() {
           <p className="mt-5 text-xs tracking-wide text-foreground/55">
             Cash on Delivery · Free shipping in India · ₹49 COD handling fee
           </p>
+          {offerActive && (
+            <p className="mx-auto mt-5 max-w-2xl border border-primary/40 bg-primary/5 px-4 py-3 text-sm text-foreground/80">
+              <span className="font-medium text-primary">{diwaliOffer.name}: Save {diwaliOffer.discountPercent}%</span>
+              {' '}on every attar, automatically applied. Offer ends 8 November 2026.
+            </p>
+          )}
         </div>
 
         <div
@@ -263,6 +305,11 @@ export function ShopSection() {
                 }`}
               >
                 <ProductImage product={product} />
+                {offerActive && (
+                  <p className="-mt-2 mb-3 text-[10px] uppercase tracking-[0.15em] text-primary">
+                    Diwali Offer · Save {diwaliOffer.discountPercent}%
+                  </p>
+                )}
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <Caption className="text-foreground/45">{product.hindi}</Caption>
@@ -351,8 +398,8 @@ export function ShopSection() {
                               {variant.size}
                             </span>
                           </span>
-                          <span className="text-sm text-primary">
-                            {formatPrice(variant.price)}
+                          <span className="flex flex-col items-end gap-1 text-sm text-primary">
+                            <SalePrice regularPrice={variant.price} />
                           </span>
                         </button>
                       )
@@ -384,18 +431,28 @@ export function ShopSection() {
                 </div>
                 <div className="mt-4 flex items-center justify-between text-sm">
                   <span className="text-foreground/55">Item subtotal</span>
-                  <span className="font-serif text-2xl text-foreground">
-                    {formatPrice(selectedVariant.price * quantity)}
+                  <span className="flex flex-col items-end font-serif text-2xl text-foreground">
+                    {offerActive && (
+                      <del className="text-sm text-foreground/40">
+                        {formatPrice(selectedVariant.price * quantity)}
+                      </del>
+                    )}
+                    <span>{formatPrice(selectedLineTotal)}</span>
                   </span>
                 </div>
+                {offerActive && (
+                  <p className="mt-2 text-right text-xs text-primary">
+                    You save {formatPrice((selectedVariant.price - selectedUnitPrice) * quantity)} with Diwali Offer
+                  </p>
+                )}
                 <button
                   type="button"
                   onClick={addToBag}
                   className="mt-5 hidden min-h-12 w-full bg-primary px-5 text-xs uppercase tracking-[0.18em] text-primary-foreground transition-opacity hover:opacity-90 lg:block"
                 >
                   {recentlyAddedKey === `${selectedProduct.slug}:${selectedVariant.id}`
-                    ? `Added ✓ · Add another · ${formatPrice(selectedVariant.price * quantity)}`
-                    : `Add ${selectedProduct.name} to bag · ${formatPrice(selectedVariant.price * quantity)}`}
+                    ? `Added ✓ · Add another · ${formatPrice(selectedLineTotal)}`
+                    : `Add ${selectedProduct.name} to bag · ${formatPrice(selectedLineTotal)}`}
                 </button>
                 <p aria-live="polite" className="mt-3 min-h-5 text-sm text-primary">
                   {bagNotice}
@@ -440,7 +497,7 @@ export function ShopSection() {
                       {item.product.name} · {item.variant.name}
                     </p>
                     <p className="mt-1 text-xs text-foreground/50">
-                      {item.variant.size} · {formatPrice(item.variant.price)} each
+                      {item.variant.size} · <SalePrice regularPrice={item.variant.price} className="inline-flex gap-2" /> each
                     </p>
                   </div>
                   <div className="flex items-center gap-4">
@@ -463,7 +520,12 @@ export function ShopSection() {
                       className="h-10 w-16 border border-border bg-background px-2 text-center text-sm text-foreground"
                     />
                     <span className="min-w-20 text-right text-sm text-foreground">
-                      {formatPrice(item.variant.price * item.quantity)}
+                      {offerActive && (
+                        <del className="mr-2 text-foreground/40">
+                          {formatPrice(item.variant.price * item.quantity)}
+                        </del>
+                      )}
+                      {formatPrice(getDiwaliPrice(item.variant.price) * item.quantity)}
                     </span>
                     <button
                       type="button"
@@ -579,8 +641,20 @@ export function ShopSection() {
                 <div className="mb-5 space-y-3 border-b border-border pb-5">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground/55">Items subtotal</span>
-                    <span className="text-foreground">{formatPrice(bagTotal)}</span>
+                    <span className="text-foreground">{formatPrice(bagSavings > 0 ? bagRegularTotal : bagTotal)}</span>
                   </div>
+                  {bagSavings > 0 && (
+                    <>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-primary">Diwali Offer savings</span>
+                        <span className="text-primary">−{formatPrice(bagSavings)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-foreground/55">Items subtotal after offer</span>
+                        <span className="text-foreground">{formatPrice(bagTotal)}</span>
+                      </div>
+                    </>
+                  )}
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground/55">Delivery</span>
                     <span className="text-foreground">
@@ -685,8 +759,7 @@ export function ShopSection() {
                 {selectedProduct.name} · {selectedVariant.name}
               </p>
               <p className="text-xs text-foreground/55">
-                {quantity} × {formatPrice(selectedVariant.price)} ·{' '}
-                {formatPrice(selectedVariant.price * quantity)}
+                {quantity} × {formatPrice(selectedUnitPrice)} · {formatPrice(selectedLineTotal)}
               </p>
             </div>
             {recentlyAddedKey === `${selectedProduct.slug}:${selectedVariant.id}` ? (

@@ -1,3 +1,5 @@
+import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
+
 /**
  * Structured Data Schemas for SEO and Search Engine Understanding
  * All schemas use JSON-LD format embedded in <head>
@@ -116,31 +118,8 @@ export const createProductSchema = (product: {
     price: number
     size: string
   }>
-}) => ({
-  '@context': 'https://schema.org',
-  '@type': 'Product',
-  '@id': `${product.url}#product`,
-  name: product.name,
-  description: `${product.description} ${ingredientTestingStatement}`,
-  url: product.url,
-  ...(product.image && { image: `https://kannaujattar.co.in${product.image}` }),
-  category: 'Natural Attar',
-  brand: {
-    '@type': 'Brand',
-    name: 'Kannauj Attar',
-  },
-  manufacturer: {
-    '@type': 'Organization',
-    name: 'Kannauj Attar',
-    url: 'https://kannaujattar.co.in',
-  },
-  offers: {
-    '@type': 'AggregateOffer',
-    lowPrice: Math.min(...product.offers.map((offer) => offer.price)),
-    highPrice: Math.max(...product.offers.map((offer) => offer.price)),
-    priceCurrency: 'INR',
-    offerCount: product.offers.length,
-    url: product.url,
+}) => {
+  const shippingAndReturns = {
     availability: 'https://schema.org/InStock',
     shippingDetails: {
       '@type': 'OfferShippingDetails',
@@ -165,8 +144,55 @@ export const createProductSchema = (product: {
       description:
         'Returns are accepted within 7 days for unused, sealed products. Kannauj Attar pays the return shipping cost.',
     },
-  },
-})
+  }
+  const saleActive = isDiwaliOfferActive()
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `${product.url}#product`,
+    name: product.name,
+    description: `${product.description} ${ingredientTestingStatement}${saleActive ? ` ${diwaliOffer.discountPercent}% off for a limited time with our Diwali Offer.` : ''}`,
+    url: product.url,
+    ...(product.image && { image: `https://kannaujattar.co.in${product.image}` }),
+    category: 'Natural Attar',
+    brand: {
+      '@type': 'Brand',
+      name: 'Kannauj Attar',
+    },
+    manufacturer: {
+      '@type': 'Organization',
+      name: 'Kannauj Attar',
+      url: 'https://kannaujattar.co.in',
+    },
+    offers: saleActive
+      ? product.offers.map((offer) => ({
+          '@type': 'Offer',
+          name: `${product.name} ${offer.name} · ${offer.size}`,
+          price: getDiwaliPrice(offer.price),
+          priceCurrency: 'INR',
+          url: product.url,
+          validFrom: diwaliOffer.validFrom,
+          priceValidUntil: diwaliOffer.validThrough,
+          priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            priceType: 'https://schema.org/StrikethroughPrice',
+            price: offer.price,
+            priceCurrency: 'INR',
+          },
+          ...shippingAndReturns,
+        }))
+      : {
+          '@type': 'AggregateOffer',
+          lowPrice: Math.min(...product.offers.map((offer) => offer.price)),
+          highPrice: Math.max(...product.offers.map((offer) => offer.price)),
+          priceCurrency: 'INR',
+          offerCount: product.offers.length,
+          url: product.url,
+          ...shippingAndReturns,
+        },
+  }
+}
 
 /**
  * Combine all schemas for root layout

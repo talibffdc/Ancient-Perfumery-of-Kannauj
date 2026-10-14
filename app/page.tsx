@@ -14,6 +14,8 @@ import type { Metadata } from 'next'
 import { gallerySchema } from '@/lib/gallery-photos'
 import { qualityTestingFaqSchema } from '@/lib/schema'
 
+export const revalidate = 3600
+
 export const metadata: Metadata = {
   description:
     'Shop natural attars handcrafted in Kannauj using traditional Deg Bhapka distillation. Our in-house quality analysis lab checks ingredient quality during production.',

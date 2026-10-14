@@ -111,6 +111,15 @@ Verify the sender domain in Resend before setting
 testing and has recipient restrictions. Set
 `INQUIRY_NOTIFICATION_EMAIL` to the inbox that should receive contact inquiries.
 
+## Diwali promotion
+
+The Diwali offer is configured in `lib/diwali-offer.ts`: 10% off product prices
+from 14 October through 8 November 2026 (India time), with no coupon code or
+minimum order. The checkout API recalculates sale prices on the server. India
+shipping remains free and the ₹49 COD fee is unchanged. Product pages use
+hourly revalidation so the offer markup and visible prices expire automatically.
+Do not extend the offer without updating its dates and deploying the change.
+
 ## 4. Order and dispatch tracking
 
 Each order is appended to `Orders` with a unique order ID, timestamp, customer

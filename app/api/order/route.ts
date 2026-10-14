@@ -3,6 +3,7 @@ import { after } from 'next/server'
 import { z } from 'zod'
 
 import { shopCatalog } from '@/lib/shop-catalog'
+import { getDiwaliPrice } from '@/lib/diwali-offer'
 
 const orderRequestSchema = z.object({
   idempotencyKey: z.string().uuid(),
@@ -169,6 +170,7 @@ export async function POST(request: Request) {
       return Response.json({ error: 'One of the selected products is no longer available.' }, { status: 400 })
     }
 
+    const unitPrice = getDiwaliPrice(variant.price)
     orderItems.push({
       productSlug: product.slug,
       productName: product.name,
@@ -176,8 +178,8 @@ export async function POST(request: Request) {
       variantName: variant.name,
       size: variant.size,
       quantity: requestedItem.quantity,
-      unitPrice: variant.price,
-      lineTotal: variant.price * requestedItem.quantity,
+      unitPrice,
+      lineTotal: unitPrice * requestedItem.quantity,
     })
   }
 
