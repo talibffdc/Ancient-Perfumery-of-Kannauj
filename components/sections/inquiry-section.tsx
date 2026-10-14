@@ -142,6 +142,7 @@ export function InquirySection() {
     const formData = new FormData(form)
     const name = formData.get('name') as string
     const email = formData.get('email') as string
+    const phone = formData.get('phone') as string
     const message = formData.get('message') as string
 
     setIsSubmitting(true)
@@ -151,7 +152,7 @@ export function InquirySection() {
       const response = await fetch('/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, phone, message }),
       })
 
       // Ensure we can parse the response
@@ -275,7 +276,9 @@ export function InquirySection() {
             
             {/* Main invitation */}
             <h2 className="header-item font-serif text-3xl font-light leading-relaxed tracking-wide text-foreground/90 md:text-4xl lg:text-5xl opacity-0">
-              Begin the conversation
+              <a href="#inquiry-form" className="focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary">
+                Begin the conversation
+              </a>
             </h2>
             
             {/* Poetic subtext */}
@@ -287,6 +290,7 @@ export function InquirySection() {
           {/* The form - intimate and minimal */}
           <form 
             ref={formRef}
+            id="inquiry-form"
             className="space-y-12 md:space-y-16"
             onSubmit={handleSubmit}
           >
@@ -344,6 +348,42 @@ export function InquirySection() {
                     : "border-foreground/10 hover:border-foreground/20"
                 )}
                 placeholder="Your email"
+              />
+              <div className="focus-line absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-primary/50" />
+            </div>
+
+            {/* Phone field */}
+            <div className="form-field group relative opacity-0">
+              <label
+                htmlFor="inquiry-phone"
+                className={cn(
+                  "absolute left-0 font-sans text-xs uppercase tracking-[0.2em] transition-all duration-500",
+                  focusedField === 'phone' ? "text-primary/70" : "text-foreground/30"
+                )}
+                style={{ top: '-1.5rem' }}
+              >
+                Phone number <span aria-hidden="true">*</span>
+              </label>
+              <input
+                id="inquiry-phone"
+                type="tel"
+                name="phone"
+                autoComplete="tel"
+                inputMode="tel"
+                required
+                minLength={8}
+                maxLength={20}
+                pattern="[0-9+() -]{8,20}"
+                onFocus={(e) => handleFocus('phone', e.target)}
+                onBlur={(e) => handleBlur(e.target)}
+                className={cn(
+                  "w-full border-0 border-b bg-transparent py-4 font-serif text-lg text-foreground/80 placeholder-foreground/20 outline-none transition-all duration-500",
+                  focusedField === 'phone'
+                    ? "border-primary/40"
+                    : "border-foreground/10 hover:border-foreground/20"
+                )}
+                placeholder="Your phone number"
+                aria-required="true"
               />
               <div className="focus-line absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-primary/50" />
             </div>

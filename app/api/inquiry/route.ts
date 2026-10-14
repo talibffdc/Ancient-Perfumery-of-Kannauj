@@ -1,28 +1,50 @@
 import { Resend } from 'resend'
 import { z } from 'zod'
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY)
-
-// Validation schema
 const inquirySchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please provide a valid email address'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
+  name: z.string().trim().min(2, 'Name must be at least 2 characters'),
+  email: z.string().trim().email('Please provide a valid email address'),
+  phone: z
+    .string()
+    .trim()
+    .min(8, 'Please provide a valid phone number')
+    .max(20, 'Please provide a valid phone number')
+    .regex(/^[0-9+() -]+$/, 'Please provide a valid phone number'),
+  message: z.string().trim().min(10, 'Message must be at least 10 characters'),
 })
+
+const escapeHtml = (value: string) =>
+  value.replace(/[&<>"']/g, (character) => {
+    const entities: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }
+    return entities[character]
+  })
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-
-    // Validate request
     const validatedData = inquirySchema.parse(body)
-    const { name, email, message } = validatedData
+    const { name, email, phone, message } = validatedData
+    const apiKey = process.env.RESEND_API_KEY
 
-    // Send email via Resend
+    if (!apiKey) {
+      console.error('Inquiry email is not configured: RESEND_API_KEY is missing')
+      return Response.json(
+        { success: false, error: 'The contact form is temporarily unavailable. Please try again later.' },
+        { status: 503 }
+      )
+    }
+
+    const resend = new Resend(apiKey)
+
     const response = await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: 'talibffdc@gmail.com',
+      from: process.env.INQUIRY_NOTIFICATION_FROM ?? 'onboarding@resend.dev',
+      to: process.env.INQUIRY_NOTIFICATION_EMAIL ?? 'talibffdc@gmail.com',
       subject: 'New Inquiry Received',
       html: `
         <div style="font-family: serif; line-height: 1.8; color: #333; max-width: 600px;">
@@ -35,7 +57,7 @@ export async function POST(request: Request) {
               From
             </p>
             <p style="margin: 0; font-size: 16px; color: #333;">
-              ${name}
+              ${escapeHtml(name)}
             </p>
           </div>
           
@@ -44,8 +66,19 @@ export async function POST(request: Request) {
               Email
             </p>
             <p style="margin: 0; font-size: 16px; color: #333;">
-              <a href="mailto:${email}" style="color: #8b6f47; text-decoration: none;">
-                ${email}
+              <a href="mailto:${escapeHtml(email)}" style="color: #8b6f47; text-decoration: none;">
+                ${escapeHtml(email)}
+              </a>
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <p style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: #999;">
+              Phone
+            </p>
+            <p style="margin: 0; font-size: 16px; color: #333;">
+              <a href="tel:${escapeHtml(phone)}" style="color: #8b6f47; text-decoration: none;">
+                ${escapeHtml(phone)}
               </a>
             </p>
           </div>
@@ -55,7 +88,7 @@ export async function POST(request: Request) {
               Message
             </p>
             <p style="margin: 0; font-size: 16px; color: #333; white-space: pre-wrap;">
-              ${message}
+              ${escapeHtml(message)}
             </p>
           </div>
           
@@ -84,7 +117,6 @@ export async function POST(request: Request) {
       { status: 200 }
     )
   } catch (error) {
-    // Handle validation errors
     if (error instanceof z.ZodError) {
       const firstError = error.errors[0]
       return Response.json(
@@ -96,7 +128,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Handle other errors
     console.error('Inquiry API error:', error)
     return Response.json(
       {

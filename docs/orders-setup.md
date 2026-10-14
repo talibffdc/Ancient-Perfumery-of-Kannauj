@@ -92,6 +92,25 @@ Production environment; do not prefix them with `NEXT_PUBLIC_`. Redeploy the
 production site after changing environment variables. The contact-form recipient
 is configured separately in `app/api/inquiry/route.ts`.
 
+The inquiry form requires a phone number and sends the name, email, phone, and
+message through Resend. Configure these server-only variables for the contact
+form:
+
+```dotenv
+RESEND_API_KEY=re_your_resend_api_key
+INQUIRY_NOTIFICATION_EMAIL=your-inbox@example.com
+INQUIRY_NOTIFICATION_FROM=website@your-verified-domain.com
+```
+
+Create the API key in Resend, then add it as `RESEND_API_KEY` in local
+`.env.local` and in Vercel → Project → Settings → Environment Variables. Add it
+to Production (and Preview/Development only if those environments need to send
+mail), then redeploy. Never use a `NEXT_PUBLIC_` prefix or commit the key.
+Verify the sender domain in Resend before setting
+`INQUIRY_NOTIFICATION_FROM`; the default `onboarding@resend.dev` sender is for
+testing and has recipient restrictions. Set
+`INQUIRY_NOTIFICATION_EMAIL` to the inbox that should receive contact inquiries.
+
 ## 4. Order and dispatch tracking
 
 Each order is appended to `Orders` with a unique order ID, timestamp, customer
