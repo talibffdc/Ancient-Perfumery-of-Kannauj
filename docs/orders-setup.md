@@ -111,6 +111,25 @@ Verify the sender domain in Resend before setting
 testing and has recipient restrictions. Set
 `INQUIRY_NOTIFICATION_EMAIL` to the inbox that should receive contact inquiries.
 
+## Custom fragrance orders
+
+The custom fragrance builder is available at
+`/create-your-own-natural-fragrance`. Its selectable note references are limited
+to Rose, Jasmine, Saffron, Sandalwood, Vetiver (Khus), and Oud already listed on
+the site; the customer brief is a preference, not an ingredient-stock promise or
+guaranteed formula. Custom sizes are fixed server-side at 3 ml ₹999, 6 ml ₹1,399,
+and 12 ml ₹2,199. These prices do not receive the Diwali offer. India shipping
+remains free and COD handling remains ₹49.
+
+Custom notes, family, intensity, occasion, description, avoid-list, and
+instructions are included in the order notification email and a dedicated
+`Custom Fragrance Brief` column in the Orders sheet. To enable order capture,
+replace the Apps Script with the updated `scripts/google-sheets-orders.gs`, run
+`setupOrdersSheet` once so the new column is added to the existing Orders tab,
+then deploy a new Web app version while retaining the same `/exec` URL and
+secret. Existing orders/columns are retained. Confirm final blend feasibility
+with the perfumer before preparation.
+
 ## Diwali promotion
 
 The Diwali offer is configured in `lib/diwali-offer.ts`: 10% off product prices

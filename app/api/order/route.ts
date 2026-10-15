@@ -4,6 +4,27 @@ import { z } from 'zod'
 
 import { shopCatalog } from '@/lib/shop-catalog'
 import { getDiwaliPrice } from '@/lib/diwali-offer'
+import {
+  CUSTOM_FRAGRANCE_SLUG,
+  customFragranceFamilies,
+  customFragranceIntensities,
+  customFragranceNotes,
+  customFragranceOccasions,
+  customFragranceProduct,
+  type CustomFragranceBrief,
+} from '@/lib/custom-fragrance'
+
+const customFragranceBriefSchema = z.object({
+  description: z.string().trim().min(10).max(1000),
+  topNotes: z.array(z.enum(customFragranceNotes)).max(3),
+  middleNotes: z.array(z.enum(customFragranceNotes)).max(3),
+  baseNotes: z.array(z.enum(customFragranceNotes)).max(3),
+  fragranceFamilies: z.array(z.enum(customFragranceFamilies)).max(3),
+  intensity: z.enum(customFragranceIntensities).optional(),
+  occasion: z.enum(customFragranceOccasions).optional(),
+  avoid: z.string().max(300).optional(),
+  instructions: z.string().max(500).optional(),
+})
 
 const orderRequestSchema = z.object({
   idempotencyKey: z.string().uuid(),
@@ -20,6 +41,7 @@ const orderRequestSchema = z.object({
     productSlug: z.string().min(1).max(80),
     variantId: z.string().min(1).max(80),
     quantity: z.number().int().min(1).max(10),
+    customBrief: customFragranceBriefSchema.optional(),
   })).min(1).max(30),
   website: z.string().max(0).optional(),
 })
@@ -63,6 +85,7 @@ type ConfirmedOrder = {
     size: string
     quantity: number
     lineTotal: number
+    customBrief?: CustomFragranceBrief
   }>
   subtotal: number
   shippingFee: number
@@ -76,9 +99,23 @@ async function sendOrderNotification(
   sender: string,
   resendApiKey: string
 ) {
+  const customBriefHtml = (brief: CustomFragranceBrief) => `
+    <div style="margin:12px 0;padding:12px;border-left:2px solid #8b6f47;background:#faf8f5">
+      <strong>Custom fragrance brief · perfumer review</strong>
+      <p><strong>Description:</strong><br>${escapeHtml(brief.description)}</p>
+      <p><strong>Top:</strong> ${escapeHtml(brief.topNotes.join(', ') || 'No preference')}<br>
+      <strong>Middle:</strong> ${escapeHtml(brief.middleNotes.join(', ') || 'No preference')}<br>
+      <strong>Base:</strong> ${escapeHtml(brief.baseNotes.join(', ') || 'No preference')}</p>
+      <p><strong>Families:</strong> ${escapeHtml(brief.fragranceFamilies.join(', ') || 'No preference')}<br>
+      <strong>Intensity:</strong> ${escapeHtml(brief.intensity ?? 'No preference')}<br>
+      <strong>Occasion:</strong> ${escapeHtml(brief.occasion ?? 'No preference')}<br>
+      <strong>Avoid:</strong> ${escapeHtml(brief.avoid || 'Nothing specified')}<br>
+      <strong>Additional instructions:</strong> ${escapeHtml(brief.instructions || 'None')}</p>
+    </div>
+  `
   const itemsHtml = order.items.map((item) => `
     <tr>
-      <td style="padding:10px;border-bottom:1px solid #e5e5e5">${escapeHtml(item.productName)} · ${escapeHtml(item.variantName)} (${escapeHtml(item.size)})</td>
+      <td style="padding:10px;border-bottom:1px solid #e5e5e5">${escapeHtml(item.productName)} · ${escapeHtml(item.variantName)} (${escapeHtml(item.size)})${item.customBrief ? customBriefHtml(item.customBrief) : ''}</td>
       <td style="padding:10px;border-bottom:1px solid #e5e5e5;text-align:center">${item.quantity}</td>
       <td style="padding:10px;border-bottom:1px solid #e5e5e5;text-align:right">${formatRupees(item.lineTotal)}</td>
     </tr>
@@ -163,14 +200,23 @@ export async function POST(request: Request) {
 
   const orderItems = []
   for (const requestedItem of input.items) {
-    const product = shopCatalog.products.find((entry) => entry.slug === requestedItem.productSlug)
+    const isCustomFragrance = requestedItem.productSlug === CUSTOM_FRAGRANCE_SLUG
+    const product = isCustomFragrance
+      ? customFragranceProduct
+      : shopCatalog.products.find((entry) => entry.slug === requestedItem.productSlug)
     const variant = product?.variants.find((entry) => entry.id === requestedItem.variantId)
 
     if (!product || !variant) {
       return Response.json({ error: 'One of the selected products is no longer available.' }, { status: 400 })
     }
+    if (isCustomFragrance && !requestedItem.customBrief) {
+      return Response.json({ error: 'Please include the custom fragrance brief.' }, { status: 400 })
+    }
+    if (!isCustomFragrance && requestedItem.customBrief) {
+      return Response.json({ error: 'A fragrance brief can only be attached to a custom fragrance.' }, { status: 400 })
+    }
 
-    const unitPrice = getDiwaliPrice(variant.price)
+    const unitPrice = isCustomFragrance ? variant.price : getDiwaliPrice(variant.price)
     orderItems.push({
       productSlug: product.slug,
       productName: product.name,
@@ -180,6 +226,7 @@ export async function POST(request: Request) {
       quantity: requestedItem.quantity,
       unitPrice,
       lineTotal: unitPrice * requestedItem.quantity,
+      ...(requestedItem.customBrief && { customBrief: requestedItem.customBrief }),
     })
   }
 

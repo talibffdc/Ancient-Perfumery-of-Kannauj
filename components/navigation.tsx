@@ -2,23 +2,26 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
 
 interface NavigationProps {
   className?: string
 }
 
 const navLinks = [
-  { label: 'Heritage', href: '#heritage' },
   { label: 'Process', href: '#process' },
   { label: 'Gallery', href: '#gallery' },
   { label: 'Ingredients', href: '#ingredients' },
-  { label: 'Philosophy', href: '#philosophy' },
   { label: 'Collection', href: '#collection' },
   { label: 'Shop', href: '#shop' },
+  { label: 'Create a Fragrance', href: '/create-your-own-natural-fragrance' },
 ]
 
 export function Navigation({ className }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const sectionHref = (href: string) =>
+    href.startsWith('/') || pathname === '/' ? href : `/${href}`
 
   return (
     <header
@@ -30,7 +33,7 @@ export function Navigation({ className }: NavigationProps) {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-8 lg:px-12">
         {/* Logo */}
         <a
-          href="#hero"
+          href={sectionHref('#hero')}
           aria-label="Go to top"
           className="font-serif text-lg md:text-xl tracking-widest text-foreground transition-colors duration-300 hover:text-primary"
         >
@@ -42,7 +45,7 @@ export function Navigation({ className }: NavigationProps) {
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
-                href={link.href}
+                href={sectionHref(link.href)}
                 className="font-sans text-xs uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:text-primary"
               >
                 {link.label}
@@ -53,7 +56,7 @@ export function Navigation({ className }: NavigationProps) {
 
         {/* Inquiry Button - Desktop */}
         <a
-          href="#inquiry"
+          href={sectionHref('#inquiry')}
           className="hidden font-sans text-xs uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:text-primary lg:block"
         >
           Begin a Conversation
@@ -109,7 +112,7 @@ export function Navigation({ className }: NavigationProps) {
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
-                href={link.href}
+                href={sectionHref(link.href)}
                 onClick={() => setIsMenuOpen(false)}
                 className="font-serif text-2xl tracking-wide text-foreground transition-colors duration-300 hover:text-primary"
               >
@@ -119,7 +122,7 @@ export function Navigation({ className }: NavigationProps) {
           ))}
           <li className="mt-8">
             <a
-              href="#inquiry"
+              href={sectionHref('#inquiry')}
               onClick={() => setIsMenuOpen(false)}
               className="font-sans text-xs uppercase tracking-[0.25em] text-primary"
             >

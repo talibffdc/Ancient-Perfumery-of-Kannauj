@@ -2,16 +2,11 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import Link from 'next/link'
+import { useCart } from '@/components/cart-provider'
 import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline, Title } from '@/components/typography'
 import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
 import { shopCatalog, type ProductVariant, type StoreProduct } from '@/lib/shop-catalog'
-
-type OrderItem = {
-  product: StoreProduct
-  variant: ProductVariant
-  quantity: number
-}
 
 const products = shopCatalog.products
 
@@ -21,6 +16,9 @@ const formatPrice = (price: number) =>
     currency: 'INR',
     maximumFractionDigits: 0,
   }).format(price)
+
+const getCartUnitPrice = (item: { variant: ProductVariant; customBrief?: unknown }) =>
+  item.customBrief ? item.variant.price : getDiwaliPrice(item.variant.price)
 
 function SalePrice({
   regularPrice,
@@ -69,10 +67,10 @@ function ProductImage({ product }: { product: StoreProduct }) {
 
 export function ShopSection() {
   const offerActive = isDiwaliOfferActive()
+  const { items: bag, addItem, updateQuantity, removeItem, clearCart } = useCart()
   const [selectedProduct, setSelectedProduct] = useState<StoreProduct | null>(null)
   const [selectedVariantId, setSelectedVariantId] = useState<ProductVariant['id']>('attar')
   const [quantity, setQuantity] = useState(1)
-  const [bag, setBag] = useState<OrderItem[]>([])
   const [bagNotice, setBagNotice] = useState('')
   const [checkoutNotice, setCheckoutNotice] = useState('')
   const [recentlyAddedKey, setRecentlyAddedKey] = useState<string | null>(null)
@@ -83,6 +81,7 @@ export function ShopSection() {
   const productsRef = useRef<HTMLDivElement>(null)
   const optionsRef = useRef<HTMLDivElement>(null)
   const bagRef = useRef<HTMLDivElement>(null)
+  const checkoutRef = useRef<HTMLFormElement>(null)
   const placedOrderRef = useRef<HTMLDivElement>(null)
 
   const selectedVariant = selectedProduct?.variants.find(
@@ -109,6 +108,21 @@ export function ShopSection() {
     if (!selectedProduct) return
     optionsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [selectedProduct])
+
+  useEffect(() => {
+    if (!bag.length) return
+    const targetRef =
+      window.location.hash === '#checkout'
+        ? checkoutRef
+        : window.location.hash === '#cart'
+          ? bagRef
+          : null
+    if (!targetRef) return
+
+    window.requestAnimationFrame(() => {
+      targetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }, [bag.length])
 
   useEffect(() => {
     if (!placedOrder) return
@@ -139,23 +153,7 @@ export function ShopSection() {
   const addToBag = () => {
     if (!selectedProduct || !selectedVariant) return
 
-    setBag((currentBag) => {
-      const existingItemIndex = currentBag.findIndex(
-        (item) =>
-          item.product.slug === selectedProduct.slug &&
-          item.variant.id === selectedVariant.id
-      )
-
-      if (existingItemIndex === -1) {
-        return [...currentBag, { product: selectedProduct, variant: selectedVariant, quantity }]
-      }
-
-      return currentBag.map((item, index) =>
-        index === existingItemIndex
-          ? { ...item, quantity: Math.min(10, item.quantity + quantity) }
-          : item
-      )
-    })
+    addItem({ product: selectedProduct, variant: selectedVariant, quantity })
     setBagNotice(`${selectedProduct.name} · ${selectedVariant.name} added to your bag.`)
     setRecentlyAddedKey(`${selectedProduct.slug}:${selectedVariant.id}`)
     window.requestAnimationFrame(() => {
@@ -163,37 +161,28 @@ export function ShopSection() {
     })
   }
 
-  const updateBagQuantity = (productSlug: string, variantId: ProductVariant['id'], nextQuantity: number) => {
+  const updateBagQuantity = (lineId: string, nextQuantity: number) => {
     if (!Number.isInteger(nextQuantity) || nextQuantity < 1 || nextQuantity > 10) return
 
-    setBag((currentBag) =>
-      currentBag.map((item) =>
-        item.product.slug === productSlug && item.variant.id === variantId
-          ? { ...item, quantity: nextQuantity }
-          : item
-      )
-    )
+    updateQuantity(lineId, nextQuantity)
   }
 
-  const removeFromBag = (productSlug: string, variantId: ProductVariant['id']) => {
-    setBag((currentBag) =>
-      currentBag.filter(
-        (item) => item.product.slug !== productSlug || item.variant.id !== variantId
-      )
-    )
+  const removeFromBag = (lineId: string) => {
+    removeItem(lineId)
   }
 
   const bagTotal = bag.reduce(
-    (total, item) => total + getDiwaliPrice(item.variant.price) * item.quantity,
+    (total, item) => total + getCartUnitPrice(item) * item.quantity,
     0
   )
   const bagRegularTotal = bag.reduce(
-    (total, item) => total + item.variant.price * item.quantity,
+    (total, item) => total + getCartUnitPrice(item) * item.quantity +
+      (item.customBrief ? 0 : (item.variant.price - getDiwaliPrice(item.variant.price)) * item.quantity),
     0
   )
   const bagSavings = bag.reduce(
     (total, item) =>
-      total + (item.variant.price - getDiwaliPrice(item.variant.price)) * item.quantity,
+      total + (item.customBrief ? 0 : (item.variant.price - getDiwaliPrice(item.variant.price)) * item.quantity),
     0
   )
   const selectedUnitPrice = selectedVariant
@@ -239,6 +228,7 @@ export function ShopSection() {
             productSlug: item.product.slug,
             variantId: item.variant.id,
             quantity: item.quantity,
+            ...(item.customBrief && { customBrief: item.customBrief }),
           })),
         }),
       })
@@ -252,7 +242,7 @@ export function ShopSection() {
       setPlacedOrder({ id: result.orderId, emailWarning: result.emailWarning })
       checkoutAttemptId.current = null
       setSelectedProduct(null)
-      setBag([])
+      clearCart()
       setCheckoutNotice('')
     } catch {
       setCheckoutNotice('Network error. Your order was not confirmed. Please check your connection and try again.')
@@ -279,6 +269,12 @@ export function ShopSection() {
           <p className="mt-5 text-xs tracking-wide text-foreground/55">
             Cash on Delivery · Free shipping in India · ₹49 COD handling fee
           </p>
+          <Link
+            href="/create-your-own-natural-fragrance"
+            className="mt-5 inline-flex min-h-11 items-center border-b border-primary/60 pb-1 text-xs uppercase tracking-[0.14em] text-primary hover:text-foreground"
+          >
+            Create your own natural fragrance <span aria-hidden="true" className="ml-3">→</span>
+          </Link>
           {offerActive && (
             <p className="mx-auto mt-5 max-w-2xl border border-primary/40 bg-primary/5 px-4 py-3 text-sm text-foreground/80">
               <span className="font-medium text-primary">{diwaliOffer.name}: Save {diwaliOffer.discountPercent}%</span>
@@ -465,6 +461,7 @@ export function ShopSection() {
         {bag.length > 0 && (
           <div
             ref={bagRef}
+            id="cart"
             className="mt-10 scroll-mt-24 border border-border bg-background p-5 md:p-10"
           >
             <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-border pb-5">
@@ -489,7 +486,7 @@ export function ShopSection() {
             <ul className="divide-y divide-border">
               {bag.map((item) => (
                 <li
-                  key={`${item.product.slug}-${item.variant.id}`}
+                  key={item.lineId}
                   className="flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
@@ -497,39 +494,57 @@ export function ShopSection() {
                       {item.product.name} · {item.variant.name}
                     </p>
                     <p className="mt-1 text-xs text-foreground/50">
-                      {item.variant.size} · <SalePrice regularPrice={item.variant.price} className="inline-flex gap-2" /> each
+                      {item.variant.size} ·{' '}
+                      {item.customBrief
+                        ? formatPrice(item.variant.price)
+                        : <SalePrice regularPrice={item.variant.price} className="inline-flex gap-2" />}
+                      {' '}each
                     </p>
+                    {item.customBrief && (
+                      <details className="mt-3 max-w-xl text-xs text-foreground/60">
+                        <summary className="cursor-pointer text-primary">Review fragrance brief</summary>
+                        <div className="mt-2 space-y-1 leading-relaxed">
+                          <p><strong>Request:</strong> {item.customBrief.description}</p>
+                          <p><strong>Top:</strong> {item.customBrief.topNotes.join(', ') || 'No preference'}</p>
+                          <p><strong>Middle:</strong> {item.customBrief.middleNotes.join(', ') || 'No preference'}</p>
+                          <p><strong>Base:</strong> {item.customBrief.baseNotes.join(', ') || 'No preference'}</p>
+                          <p><strong>Families:</strong> {item.customBrief.fragranceFamilies.join(', ') || 'No preference'}</p>
+                          <p><strong>Intensity:</strong> {item.customBrief.intensity || 'No preference'} · <strong>Occasion:</strong> {item.customBrief.occasion || 'No preference'}</p>
+                          {item.customBrief.avoid && <p><strong>Avoid:</strong> {item.customBrief.avoid}</p>}
+                          {item.customBrief.instructions && <p><strong>Instructions:</strong> {item.customBrief.instructions}</p>}
+                        </div>
+                      </details>
+                    )}
                   </div>
                   <div className="flex items-center gap-4">
-                    <label className="sr-only" htmlFor={`quantity-${item.product.slug}-${item.variant.id}`}>
+                    <label className="sr-only" htmlFor={`quantity-${item.lineId}`}>
                       Quantity of {item.product.name} {item.variant.name}
                     </label>
                     <input
-                      id={`quantity-${item.product.slug}-${item.variant.id}`}
+                      id={`quantity-${item.lineId}`}
                       type="number"
                       min={1}
                       max={10}
                       value={item.quantity}
                       onChange={(event) =>
                         updateBagQuantity(
-                          item.product.slug,
-                          item.variant.id,
+                          item.lineId,
                           Number(event.target.value)
                         )
                       }
                       className="h-10 w-16 border border-border bg-background px-2 text-center text-sm text-foreground"
                     />
                     <span className="min-w-20 text-right text-sm text-foreground">
-                      {offerActive && (
+                      {offerActive && !item.customBrief && (
                         <del className="mr-2 text-foreground/40">
                           {formatPrice(item.variant.price * item.quantity)}
                         </del>
                       )}
-                      {formatPrice(getDiwaliPrice(item.variant.price) * item.quantity)}
+                      {formatPrice(getCartUnitPrice(item) * item.quantity)}
                     </span>
                     <button
                       type="button"
-                      onClick={() => removeFromBag(item.product.slug, item.variant.id)}
+                      onClick={() => removeFromBag(item.lineId)}
                       className="text-xs text-foreground/50 underline underline-offset-4 hover:text-foreground"
                       aria-label={`Remove ${item.product.name} ${item.variant.name} from bag`}
                     >
@@ -540,7 +555,12 @@ export function ShopSection() {
               ))}
             </ul>
 
-            <form onSubmit={handlePlaceOrder} className="mt-8 grid gap-8 border-t border-border pt-8 lg:grid-cols-2">
+            <form
+              ref={checkoutRef}
+              id="checkout"
+              onSubmit={handlePlaceOrder}
+              className="mt-8 grid scroll-mt-28 gap-8 border-t border-border pt-8 lg:grid-cols-2"
+            >
               <div className="space-y-4">
                 <p className="mb-5 text-xs uppercase tracking-[0.2em] text-foreground/60">
                   Delivery details

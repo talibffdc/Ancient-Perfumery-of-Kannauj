@@ -23,6 +23,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/create-your-own-natural-fragrance`,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
     ...shopCatalog.products.map((product) => ({
       url: `${baseUrl}/products/${product.slug}`,
       changeFrequency: 'monthly' as const,

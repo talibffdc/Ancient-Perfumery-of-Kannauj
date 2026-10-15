@@ -117,7 +117,8 @@ export const createProductSchema = (product: {
     name: string
     price: number
     size: string
-  }>
+  }>,
+  discountEligible?: boolean
 }) => {
   const shippingAndReturns = {
     availability: 'https://schema.org/InStock',
@@ -145,7 +146,7 @@ export const createProductSchema = (product: {
         'Returns are accepted within 7 days for unused, sealed products. Kannauj Attar pays the return shipping cost.',
     },
   }
-  const saleActive = isDiwaliOfferActive()
+  const saleActive = product.discountEligible !== false && isDiwaliOfferActive()
 
   return {
     '@context': 'https://schema.org',

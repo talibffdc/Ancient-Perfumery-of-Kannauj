@@ -24,6 +24,7 @@ const HEADERS = [
   'Tracking Number',
   'Dispatch Date',
   'Internal Notes',
+  'Custom Fragrance Brief',
 ];
 
 function setupOrdersSheet() {
@@ -39,11 +40,13 @@ function setupOrdersSheet() {
   sheet.setColumnWidth(7, 260);
   sheet.setColumnWidth(11, 360);
   sheet.setColumnWidth(23, 240);
+  sheet.setColumnWidth(24, 420);
   if (!sheet.getFilter()) {
     sheet.getRange(1, 1, sheet.getMaxRows(), HEADERS.length).createFilter();
   }
   const statusRows = Math.max(sheet.getMaxRows() - 1, 1);
   sheet.getRange(2, 11, statusRows, 1).setWrap(true);
+  sheet.getRange(2, 24, statusRows, 1).setWrap(true);
   sheet.getRange(2, 12, statusRows, 4).setNumberFormat('"₹"#,##0.00');
   const orderStatusRule = SpreadsheetApp.newDataValidation()
     .requireValueInList(['New', 'Confirmed', 'Packed', 'Dispatched', 'Delivered', 'Cancelled'], true)
@@ -118,6 +121,21 @@ function doPost(event) {
         ' × ' + item.quantity + ' @ ₹' + item.unitPrice +
         ' = ₹' + item.lineTotal;
     }).join('\n');
+    const customBriefSummary = order.items
+      .filter(function(item) { return item.customBrief; })
+      .map(function(item) {
+        const brief = item.customBrief;
+        return item.productName + ' (' + item.size + ')\n' +
+          'Description: ' + brief.description + '\n' +
+          'Top notes: ' + brief.topNotes.join(', ') + '\n' +
+          'Middle notes: ' + brief.middleNotes.join(', ') + '\n' +
+          'Base notes: ' + brief.baseNotes.join(', ') + '\n' +
+          'Families: ' + brief.fragranceFamilies.join(', ') + '\n' +
+          'Intensity: ' + (brief.intensity || 'No preference') + '\n' +
+          'Occasion: ' + (brief.occasion || 'No preference') + '\n' +
+          'Avoid: ' + (brief.avoid || 'Nothing specified') + '\n' +
+          'Additional instructions: ' + (brief.instructions || 'None');
+      }).join('\n\n');
     const customer = order.customer;
     const row = [
       safeCell_(order.orderId),
@@ -143,6 +161,7 @@ function doPost(event) {
       '',
       '',
       '',
+      safeCell_(customBriefSummary),
     ];
 
     sheet.appendRow(row);
@@ -165,8 +184,15 @@ function getOrdersSheet_() {
     sheet.setFrozenRows(1);
   } else {
     const currentHeaders = sheet.getRange(1, 1, 1, HEADERS.length).getValues()[0];
-    if (currentHeaders[0] !== HEADERS[0]) {
-      throw new Error('Orders sheet has unexpected headers; refusing to append.');
+    for (let index = 0; index < HEADERS.length - 1; index += 1) {
+      if (currentHeaders[index] !== HEADERS[index]) {
+        throw new Error('Orders sheet has unexpected headers; refusing to append.');
+      }
+    }
+    if (!currentHeaders[HEADERS.length - 1]) {
+      sheet.getRange(1, HEADERS.length).setValue(HEADERS[HEADERS.length - 1]);
+    } else if (currentHeaders[HEADERS.length - 1] !== HEADERS[HEADERS.length - 1]) {
+      throw new Error('Custom brief column has an unexpected header; refusing to append.');
     }
   }
   return sheet;

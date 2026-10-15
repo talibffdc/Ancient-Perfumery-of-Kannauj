@@ -2,9 +2,12 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
 
 export function Footer() {
   const [isVisible, setIsVisible] = useState(false)
+  const pathname = usePathname()
+  const sectionHref = (href: string) => pathname === '/' ? href : `/${href}`
   const footerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -71,12 +74,18 @@ export function Footer() {
             {['Heritage', 'Process', 'Gallery', 'Collection', 'Shop', 'Inquiry'].map((item) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={sectionHref(`#${item.toLowerCase()}`)}
                 className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
               >
                 {item}
               </a>
             ))}
+            <a
+              href="/create-your-own-natural-fragrance"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Create a Fragrance
+            </a>
           </nav>
 
           {/* Location reference */}
