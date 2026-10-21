@@ -4,6 +4,7 @@ import { Footer } from '@/components/footer'
 import { Navigation } from '@/components/navigation'
 import { customFragranceProduct } from '@/lib/custom-fragrance'
 import { createProductSchema } from '@/lib/schema'
+import { createBreadcrumbSchema } from '@/lib/journal-schema'
 
 const canonical = 'https://kannaujattar.co.in/create-your-own-natural-fragrance'
 const description =
@@ -13,15 +14,6 @@ export const metadata: Metadata = {
   title: 'Create Your Own Natural Perfume Online | Kannauj Attar',
   description,
   alternates: { canonical },
-  keywords: [
-    'create your own perfume online',
-    'custom natural perfume',
-    'personalized attar',
-    'custom attar online',
-    'natural fragrance customization',
-    'Kannauj attar',
-    'custom perfume India',
-  ],
   openGraph: {
     type: 'website',
     url: canonical,
@@ -39,7 +31,7 @@ export const metadata: Metadata = {
 const productSchema = createProductSchema({
   name: customFragranceProduct.name,
   description:
-    'A made-to-order fragrance brief reviewed by a perfumer for blending feasibility. Customers can choose 3 ml, 6 ml, or 12 ml.',
+    'Submit a fragrance preference brief for perfumer review of availability and suitability. Choose a 3 ml, 6 ml, or 12 ml size.',
   slug: customFragranceProduct.slug,
   url: canonical,
   offers: customFragranceProduct.variants.map((variant) => ({
@@ -48,7 +40,15 @@ const productSchema = createProductSchema({
     size: variant.size,
   })),
   discountEligible: false,
+  availability: null,
+  includeMerchantReturnPolicy: false,
+  includeIngredientTestingStatement: false,
 })
+
+const breadcrumbSchema = createBreadcrumbSchema([
+  { name: 'Home', item: 'https://kannaujattar.co.in' },
+  { name: 'Create Your Own Natural Fragrance', item: canonical },
+])
 
 export default function CreateYourOwnNaturalFragrancePage() {
   return (
@@ -62,6 +62,12 @@ export default function CreateYourOwnNaturalFragrancePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(productSchema).replace(/</g, '\\u003c'),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c'),
         }}
       />
     </>

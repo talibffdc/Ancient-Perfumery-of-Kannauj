@@ -239,7 +239,7 @@ function ClosingTransition() {
         {/* Hindi closing whisper */}
         <span 
           className={cn(
-            "mt-8 font-serif text-xs tracking-[0.4em] text-foreground/35 transition-all delay-1000 duration-[2000ms]",
+            "closing-spotlight-text relative mt-8 rounded-full px-6 py-3 font-serif text-2xl font-medium tracking-[0.24em] text-foreground transition-all delay-1000 duration-[2000ms] md:text-3xl",
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           )}
         >

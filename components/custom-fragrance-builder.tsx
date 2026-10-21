@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/components/cart-provider'
 import { SectionContainer } from '@/components/cinematic-section'
@@ -145,7 +146,7 @@ export function CustomFragranceBuilder() {
           </nav>
 
           <Caption className="text-primary">A personal fragrance brief</Caption>
-          <Headline className="mt-4 text-balance">Create Your Own Natural Fragrance</Headline>
+          <Headline as="h1" className="mt-4 text-balance">Create Your Own Natural Fragrance</Headline>
           <BodyText className="mt-5 max-w-2xl text-foreground/60">
             Share the scent you imagine, choose note references and select a size.
             Our perfumer will review the brief for suitability and availability
@@ -160,6 +161,40 @@ export function CustomFragranceBuilder() {
             India shipping is free. Cash on Delivery has a ₹49 handling fee.
             Custom fragrance prices are final and are not part of the Diwali offer.
           </p>
+
+          <section aria-labelledby="custom-fragrance-guide" className="mt-10 border-y border-border py-8">
+            <h2 id="custom-fragrance-guide" className="font-serif text-2xl text-foreground">
+              How to create your own perfume online
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-foreground/65">
+              Use this custom natural perfume builder to describe a scent and send
+              a personalized attar brief to the perfumer. It is a guided way to
+              request custom attar online; your choices communicate preferences,
+              not a guaranteed formula or exact match.
+            </p>
+            <ol className="mt-5 space-y-3 text-sm leading-relaxed text-foreground/65">
+              <li><strong className="text-foreground/85">1. Describe your idea.</strong> Tell us about the mood, occasion, intensity, and smells you like or want to avoid.</li>
+              <li><strong className="text-foreground/85">2. Choose preferences.</strong> Select fragrance families and optional top, middle, and base note references. Top notes describe the opening, middle notes the heart, and base notes the deeper foundation of a scent.</li>
+              <li><strong className="text-foreground/85">3. Review and order.</strong> Choose a size, add the brief to your cart, and complete checkout with your delivery details. The perfumer reviews suitability and availability before confirming a blend for preparation.</li>
+            </ol>
+            <p className="mt-5 text-sm leading-relaxed text-foreground/65">
+              Current note references are Rose, Jasmine, Saffron, Sandalwood,
+              Vetiver (Khus), and Oud. These are references already described on
+              the site; selection does not confirm stock or suitability. Learn
+              about{' '}
+              <Link href="/products/gulab" className="text-primary underline underline-offset-4">rose attar</Link>,{' '}
+              <Link href="/products/jasmine" className="text-primary underline underline-offset-4">jasmine attar</Link>,{' '}
+              <Link href="/products/zafran" className="text-primary underline underline-offset-4">saffron attar</Link>,{' '}
+              <Link href="/products/ruh-khus" className="text-primary underline underline-offset-4">vetiver attar</Link>,{' '}
+              <Link href="/products/oud" className="text-primary underline underline-offset-4">oud attar</Link>, and{' '}
+              <Link href="/#ingredients" className="text-primary underline underline-offset-4">the ingredient references</Link>.
+            </p>
+            <p className="mt-5 text-sm leading-relaxed text-foreground/65">
+              The 6 ml custom fragrance option is ₹1,399; 3 ml is ₹999 and 12 ml
+              is ₹2,199. Prices are shown before adding an item to your cart.
+              India shipping is free, and Cash on Delivery adds a ₹49 handling fee.
+            </p>
+          </section>
 
           <ol aria-label="Fragrance builder steps" className="mt-10 grid grid-cols-3 border-y border-border">
             {['Your idea', 'Note preferences', 'Review & size'].map((label, index) => (

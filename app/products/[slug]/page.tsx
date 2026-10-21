@@ -8,6 +8,7 @@ import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline, Title } from '@/components/typography'
 import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
 import { createProductSchema, ingredientTestingStatement } from '@/lib/schema'
+import { createBreadcrumbSchema } from '@/lib/journal-schema'
 import { shopCatalog } from '@/lib/shop-catalog'
 
 export const revalidate = 3600
@@ -70,6 +71,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       size: variant.size,
     })),
   })
+  const breadcrumbSchema = createBreadcrumbSchema([
+    { name: 'Home', item: 'https://kannaujattar.co.in' },
+    { name: 'Attars', item: 'https://kannaujattar.co.in/#shop' },
+    { name: `${product.name} Attar`, item: canonical },
+  ])
 
   return (
     <>
@@ -99,7 +105,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <div>
               <Caption className="text-primary">{product.hindi} · Kannauj Attar</Caption>
-              <Headline className="mt-4">{product.name} Attar</Headline>
+              <Headline as="h1" className="mt-4">{product.name} Attar</Headline>
               <BodyText className="mt-5 text-foreground/60">{product.note}</BodyText>
               {offerActive && (
                 <p className="mt-5 border border-primary/40 bg-primary/5 px-4 py-3 text-sm text-foreground/80">
@@ -155,6 +161,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
               >
                 Choose and order
               </Link>
+              <p className="mt-5 text-sm leading-relaxed text-foreground/60">
+                Looking for a fragrance shaped around your preferences?{' '}
+                <Link
+                  href="/create-your-own-natural-fragrance"
+                  className="text-primary underline underline-offset-4"
+                >
+                  Create a custom fragrance brief
+                </Link>
+                {' '}for perfumer review.
+              </p>
             </div>
           </div>
         </SectionContainer>
@@ -164,6 +180,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c'),
         }}
       />
     </>

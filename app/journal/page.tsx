@@ -38,7 +38,7 @@ export default function JournalLandingPage() {
         <SectionContainer size="lg">
           <div className="max-w-4xl text-center">
             <Subhead className="mb-6">Journal</Subhead>
-            <Headline className="text-balance">
+            <Headline as="h1" className="text-balance">
               Notes on craft, place, and natural perfumery.
             </Headline>
             <BodyText className="mx-auto mt-8 max-w-2xl text-foreground/60">

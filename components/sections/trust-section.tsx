@@ -1,13 +1,14 @@
 import { SectionContainer } from '@/components/cinematic-section'
 import { Caption, Title } from '@/components/typography'
 import { qualityTestingFaqs } from '@/lib/schema'
+import Link from 'next/link'
 
 const trustPoints = [
-  '100% Pure Natural Attars',
-  'Government Certified & Lab Tested',
-  'Certificate provided with every order',
-  'Alcohol Free — No Synthetics',
-  'Made in Kannauj using Deg Bhapka distillation',
+  'Traditional Kannauj perfumery and Deg Bhapka heritage',
+  'In-house ingredient quality checks during production',
+  'Batch-wise testing reports provided to customers',
+  'Perfumery team members with relevant training at FFDC, Kannauj',
+  'Clear product information to support informed purchasing',
 ]
 
 export function TrustSection() {
@@ -25,6 +26,27 @@ export function TrustSection() {
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-foreground/60">
             Our in-house quality analysis lab checks the ingredients used in our
             attars as the making process progresses.
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-foreground/60">
+            Members of our perfumery team have received relevant training at the{' '}
+            <a
+              href="https://www.ffdcindia.org/en"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-4"
+            >
+              Fragrance &amp; Flavour Development Centre (FFDC), Kannauj
+            </a>
+            . This describes individual training and does not imply FFDC endorses
+            or certifies Kannauj Attar or its products.
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-foreground/60">
+            We provide batch-wise testing reports to customers. For questions
+            about the applicable report for a product,{' '}
+            <Link href="/#inquiry" className="text-primary underline underline-offset-4">
+              contact our team
+            </Link>
+            . Ask us about the report details for your product or order.
           </p>
         </div>
 

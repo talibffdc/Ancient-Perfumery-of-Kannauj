@@ -14,7 +14,7 @@ export const organizationSchema = {
   alternateName: 'Ancient Perfumery of Kannauj',
   url: 'https://kannaujattar.co.in',
   logo: 'https://kannaujattar.co.in/icon.svg',
-  description: 'A heritage perfumery house from Kannauj, India, creating 100% pure natural attars using traditional Deg Bhapka distillation. Kannauj Attar has its own quality analysis lab and checks ingredient quality during the attar-making process. The attars are government certified and lab tested, alcohol free with no synthetics, and a certificate is provided with every order.',
+  description: 'A Kannauj perfumery house drawing on traditional Deg Bhapka distillation and regional perfumery heritage. The business says it checks ingredient quality in its in-house quality analysis lab and provides batch-wise testing reports to customers. Members of its perfumery team have received relevant training at FFDC, Kannauj; this does not imply FFDC certifies or endorses the company or its products.',
   sameAs: ['https://www.instagram.com/kannaujattar.co.in/'],
   knowsAbout: [
     'Deg Bhapka Distillation',
@@ -22,11 +22,10 @@ export const organizationSchema = {
     'Natural Perfumery',
     'Botanical Distillation',
     'Heritage Fragrance Craftsmanship',
-    'Government-certified attars',
-    'Laboratory-tested attars',
-    'In-house quality analysis of attar ingredients',
+    'Perfumery training at FFDC, Kannauj',
+    'In-house ingredient quality checks',
+    'Batch-wise testing reports for customers',
     'Kannauj Deg Bhapka attar distillation',
-    'Alcohol-free attars without synthetics',
   ],
 }
 
@@ -44,29 +43,19 @@ export const websiteSchema = {
   },
 }
 
-export const brandSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Brand',
-  name: 'Kannauj Attar',
-  url: 'https://kannaujattar.co.in',
-  logo: 'https://kannaujattar.co.in/icon.svg',
-  sameAs: ['https://www.instagram.com/kannaujattar.co.in/'],
-  description: 'Kannauj Attar creates 100% pure natural, government-certified and lab-tested attars using traditional Deg Bhapka distillation. Its in-house quality analysis lab checks ingredient quality during the attar-making process. The attars are alcohol free with no synthetics, and a certificate is provided with every order.',
-}
-
 export const ingredientTestingStatement =
   'Kannauj Attar has its own quality analysis lab and checks the quality of ingredients used to make attar as the production process progresses.'
 
 export const qualityTestingFaqs = [
   {
-    question: 'Are the ingredients used in Kannauj Attar tested in-house?',
+    question: 'Does Kannauj Attar provide batch-wise testing reports?',
     answer:
-      'Yes. Kannauj Attar has its own quality analysis lab and checks the quality of ingredients used to make attar.',
+      'Kannauj Attar says it provides batch-wise testing reports to customers. Contact the team to ask about the report applicable to a product or order.',
   },
   {
-    question: 'When are ingredient quality checks carried out?',
+    question: 'Are ingredient quality checks carried out in-house?',
     answer:
-      'Ingredient quality checks take place alongside the attar-making process, so materials can be assessed as production progresses.',
+      'The business says its in-house quality analysis lab checks ingredient quality as the attar-making process progresses.',
   },
 ]
 
@@ -118,42 +107,57 @@ export const createProductSchema = (product: {
     price: number
     size: string
   }>,
-  discountEligible?: boolean
+  discountEligible?: boolean,
+  availability?: string | null,
+  includeMerchantReturnPolicy?: boolean,
+  includeIngredientTestingStatement?: boolean
 }) => {
-  const shippingAndReturns = {
-    availability: 'https://schema.org/InStock',
-    shippingDetails: {
-      '@type': 'OfferShippingDetails',
-      shippingDestination: {
-        '@type': 'DefinedRegion',
-        addressCountry: 'IN',
-      },
-      shippingRate: {
-        '@type': 'MonetaryAmount',
-        value: 0,
-        currency: 'INR',
-      },
+  const shippingDetails = {
+    '@type': 'OfferShippingDetails',
+    shippingDestination: {
+      '@type': 'DefinedRegion',
+      addressCountry: 'IN',
     },
-    hasMerchantReturnPolicy: {
-      '@type': 'MerchantReturnPolicy',
-      applicableCountry: 'IN',
-      returnPolicyCategory:
-        'https://schema.org/MerchantReturnFiniteReturnWindow',
-      merchantReturnDays: 7,
-      returnMethod: 'https://schema.org/ReturnByMail',
-      returnFees: 'https://schema.org/FreeReturn',
-      description:
-        'Returns are accepted within 7 days for unused, sealed products. Kannauj Attar pays the return shipping cost.',
+    shippingRate: {
+      '@type': 'MonetaryAmount',
+      value: 0,
+      currency: 'INR',
     },
   }
+  const offerDetails = {
+    ...(product.availability && { availability: product.availability }),
+    shippingDetails,
+    ...(product.includeMerchantReturnPolicy !== false && {
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'IN',
+        returnPolicyCategory:
+          'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 7,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+        description:
+          'Returns are accepted within 7 days for unused, sealed products. Kannauj Attar pays the return shipping cost.',
+      },
+    }),
+  }
   const saleActive = product.discountEligible !== false && isDiwaliOfferActive()
+  const productDescription = [
+    product.description,
+    product.includeIngredientTestingStatement === false
+      ? ''
+      : ingredientTestingStatement,
+    saleActive
+      ? `${diwaliOffer.discountPercent}% off for a limited time with our Diwali Offer.`
+      : '',
+  ].filter(Boolean).join(' ')
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     '@id': `${product.url}#product`,
     name: product.name,
-    description: `${product.description} ${ingredientTestingStatement}${saleActive ? ` ${diwaliOffer.discountPercent}% off for a limited time with our Diwali Offer.` : ''}`,
+    description: productDescription,
     url: product.url,
     ...(product.image && { image: `https://kannaujattar.co.in${product.image}` }),
     category: 'Natural Attar',
@@ -181,7 +185,7 @@ export const createProductSchema = (product: {
             price: offer.price,
             priceCurrency: 'INR',
           },
-          ...shippingAndReturns,
+          ...offerDetails,
         }))
       : {
           '@type': 'AggregateOffer',
@@ -190,7 +194,7 @@ export const createProductSchema = (product: {
           priceCurrency: 'INR',
           offerCount: product.offers.length,
           url: product.url,
-          ...shippingAndReturns,
+          ...offerDetails,
         },
   }
 }
@@ -201,6 +205,5 @@ export const createProductSchema = (product: {
 export const getAllSchemas = () => [
   organizationSchema,
   websiteSchema,
-  brandSchema,
   kannaujPlaceSchema,
 ]

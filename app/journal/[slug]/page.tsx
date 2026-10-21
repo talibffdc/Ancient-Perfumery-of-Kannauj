@@ -114,7 +114,7 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
 
           <div className="max-w-4xl">
             <Caption>{article.category}</Caption>
-            <Headline className="mt-4 text-balance">{article.title}</Headline>
+            <Headline as="h1" className="mt-4 text-balance">{article.title}</Headline>
             <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
               <span>{article.author}</span>
               <span aria-hidden="true">·</span>
