@@ -142,8 +142,15 @@
     "name": "Harsingar",
     "hindi": "हरसिंगार",
     "note": "A delicate, nostalgic floral with a soft orange warmth.",
-    "image": "/images/product-harsingar.jpg",
-    "imageAlt": "Harsingar flowers prepared for natural attar making in Kannauj",
+    "image": "/images/harsringar%20flower%20kannaujattar.png",
+    "imageAlt": "Harsingar flowers for Harsingar attar from Kannauj",
+    "productionUpdates": [
+      {
+        "updatedAt": "2026-10-22",
+        "status": "In progress",
+        "summary": "The current Harsingar attar preparation session is in progress, using sandalwood oil as the base."
+      }
+    ],
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 }

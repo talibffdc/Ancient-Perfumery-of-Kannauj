@@ -7,6 +7,12 @@ export interface ProductVariant {
   price: number
 }
 
+export interface ProductionUpdate {
+  updatedAt: string
+  status: string
+  summary: string
+}
+
 export interface StoreProduct {
   slug: string
   name: string
@@ -14,6 +20,7 @@ export interface StoreProduct {
   note: string
   image: string
   imageAlt?: string
+  productionUpdates?: ProductionUpdate[]
   variants: ProductVariant[]
 }
 
