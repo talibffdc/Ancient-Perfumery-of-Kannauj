@@ -15,6 +15,10 @@ export const organizationSchema = {
   alternateName: siteConfig.alternateName,
   url: siteConfig.siteUrl,
   logo: absoluteUrl(siteConfig.logoPath),
+  address: {
+    '@type': 'PostalAddress',
+    ...siteConfig.address,
+  },
   description: 'A Kannauj perfumery house drawing on traditional Deg Bhapka distillation and regional perfumery heritage. The business says it checks ingredient quality in its in-house quality analysis lab and provides batch-wise testing reports to customers. Members of its perfumery team have received relevant training at FFDC, Kannauj; this does not imply FFDC certifies or endorses the company or its products.',
   sameAs: [siteConfig.socials.instagram],
   knowsAbout: [
@@ -28,6 +32,23 @@ export const organizationSchema = {
     'Batch-wise testing reports for customers',
     'Kannauj Deg Bhapka attar distillation',
   ],
+}
+
+export const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': absoluteUrl('/#localbusiness'),
+  name: siteConfig.brandName,
+  url: siteConfig.siteUrl,
+  image: absoluteUrl(siteConfig.logoPath),
+  address: {
+    '@type': 'PostalAddress',
+    ...siteConfig.address,
+  },
+  parentOrganization: {
+    '@id': absoluteUrl('/#organization'),
+  },
+  sameAs: [siteConfig.socials.instagram],
 }
 
 export const websiteSchema = {
@@ -87,7 +108,6 @@ export const kannaujPlaceSchema = {
     '@type': 'PostalAddress',
     addressLocality: siteConfig.address.addressLocality,
     addressRegion: siteConfig.address.addressRegion,
-    postalCode: '209625',
     addressCountry: siteConfig.address.addressCountry,
   },
   knowsAbout: 'Traditional Attar Production',
@@ -205,6 +225,7 @@ export const createProductSchema = (product: {
  */
 export const getAllSchemas = () => [
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
   kannaujPlaceSchema,
 ]
