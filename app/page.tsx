@@ -9,6 +9,7 @@ import { TrustSection } from '@/components/sections/trust-section'
 import { CollectionSection } from '@/components/sections/collection-section'
 import { ShopSection } from '@/components/sections/shop-section'
 import { InquirySection } from '@/components/sections/inquiry-section'
+import { HomepageIntroSection } from '@/components/sections/homepage-intro-section'
 import { Footer } from '@/components/footer'
 import type { Metadata } from 'next'
 import { gallerySchema } from '@/lib/gallery-photos'
@@ -18,7 +19,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   description:
-    'Shop natural attars handcrafted in Kannauj using traditional Deg Bhapka distillation. Our in-house quality analysis lab checks ingredient quality during production.',
+    'Shop Kannauj attars made with traditional Deg Bhapka distillation. Explore rose, mitti and more, and find a fragrance for you.',
   alternates: {
     canonical: '/',
   },
@@ -75,6 +76,9 @@ export default function HomePage() {
 
       {/* Inquiry */}
       <InquirySection />
+
+      {/* Added search and shopping guide */}
+      <HomepageIntroSection />
 
       {/* Footer */}
       <Footer />

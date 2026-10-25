@@ -81,10 +81,28 @@ export const qualityTestingFaqs = [
   },
 ]
 
+export const homepageAdditionalFaqs = [
+  {
+    question: 'What is Kannauj attar?',
+    answer:
+      'Attar is a botanical fragrance oil. Kannauj Attar describes its traditional Deg Bhapka distillation process in the Process section of this website.',
+  },
+  {
+    question: 'How can I choose an attar?',
+    answer:
+      'Explore the attar collection, read each fragrance description, and open a product page to review its available forms, bottle sizes, and prices before ordering.',
+  },
+  {
+    question: 'What are the shipping terms for orders in India?',
+    answer:
+      'India shipping is free. Cash on Delivery orders have a ₹49 handling fee.',
+  },
+]
+
 export const qualityTestingFaqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: qualityTestingFaqs.map(({ question, answer }) => ({
+  mainEntity: [...qualityTestingFaqs, ...homepageAdditionalFaqs].map(({ question, answer }) => ({
     '@type': 'Question',
     name: question,
     acceptedAnswer: {
