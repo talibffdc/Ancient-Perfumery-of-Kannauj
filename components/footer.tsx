@@ -87,6 +87,18 @@ export function Footer() {
             >
               Create a Fragrance
             </a>
+            <a
+              href="/journal"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Journal
+            </a>
+            <a
+              href="/shipping-returns"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Shipping &amp; Returns
+            </a>
           </nav>
 
           {/* Location reference */}

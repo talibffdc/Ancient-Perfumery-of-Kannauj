@@ -5,7 +5,7 @@ import { galleryPhotos } from '@/lib/gallery-photos'
 import { absoluteUrl } from '@/lib/site-config'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = absoluteUrl('')
+  const baseUrl = absoluteUrl('').replace(/\/$/, '')
   const homepageImages = Array.from(new Set([
     '/heritage-deg-vessel.webp',
     ...galleryPhotos.map((photo) => photo.src),
@@ -28,6 +28,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/create-your-own-natural-fragrance`,
       changeFrequency: 'monthly',
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/shipping-returns`,
+      changeFrequency: 'yearly',
+      priority: 0.4,
     },
     ...shopCatalog.products.map((product) => ({
       url: `${baseUrl}/products/${product.slug}`,

@@ -15,6 +15,7 @@ const navLinks = [
   { label: 'Collection', href: '#collection' },
   { label: 'Shop', href: '#shop' },
   { label: 'Create a Fragrance', href: '/create-your-own-natural-fragrance' },
+  { label: 'Journal', href: '/journal' },
 ]
 
 export function Navigation({ className }: NavigationProps) {
