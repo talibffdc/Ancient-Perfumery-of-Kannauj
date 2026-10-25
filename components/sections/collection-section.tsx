@@ -40,7 +40,7 @@ const collection: Fragrance[] = [
     hindi: 'मिट्टी अत्तर',
     poeticLine: 'Rain touching earth after months of waiting.',
     narrative: 'We bake the clay of dried riverbeds, then coax its essence into sandalwood. This is the scent of relief—of parched ground finally drinking, of the first monsoon drop after endless summer. Memory of homecoming.',
-    image: '/images/mittiattar.png',
+    image: '/images/mittiattar.webp',
     atmosphere: {
       gradient: 'from-[oklch(0.16_0.04_55)] to-[oklch(0.11_0.01_60)]',
       accentColor: 'text-[oklch(0.68_0.12_55)]'
@@ -51,7 +51,7 @@ const collection: Fragrance[] = [
     hindi: 'शमामा',
     poeticLine: 'Forty ingredients. One conversation.',
     narrative: 'The most complex attar in existence. Forty precious materials—flowers, woods, resins, spices—distilled together over months. Each wearing reveals new facets. It does not repeat itself. It grows with you.',
-    image: '/images/shamamaattarkannaujattar.jpg',
+    image: '/images/shamamaattarkannaujattar.webp',
     atmosphere: {
       gradient: 'from-[oklch(0.12_0.03_40)] to-[oklch(0.10_0.01_60)]',
       accentColor: 'text-[oklch(0.65_0.10_45)]'
@@ -62,7 +62,7 @@ const collection: Fragrance[] = [
     hindi: 'हिना अत्तर',
     poeticLine: 'Stillness held in amber light.',
     narrative: 'Warm, resinous, meditative. Hina is the scent of inner quiet—of temple incense and late afternoon sun through wooden shutters. It does not demand attention. It accompanies contemplation.',
-    image: '/images/hinattarkannauj.jpg',
+    image: '/images/hinattarkannauj.webp',
     atmosphere: {
       gradient: 'from-[oklch(0.15_0.05_70)] to-[oklch(0.11_0.01_60)]',
       accentColor: 'text-[oklch(0.70_0.10_70)]'
@@ -178,6 +178,8 @@ function FragrancePresentation({ fragrance, index }: {
                 <img
                   src={fragrance.image}
                   alt={fragrance.name}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover grayscale-[0.15] contrast-[1.05]"
                 />
               </div>
@@ -311,7 +313,7 @@ export function CollectionSection() {
     <section 
       ref={sectionRef}
       id="collection" 
-      className="relative bg-background"
+      className="relative overflow-x-clip bg-background"
     >
       {/* Section Header */}
       <div ref={headerRef} className="relative z-10 px-6 md:px-12 pt-32 md:pt-48 pb-16 md:pb-24">

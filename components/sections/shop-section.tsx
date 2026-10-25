@@ -50,6 +50,8 @@ function ProductImage({ product }: { product: StoreProduct }) {
         <img
           src={product.image}
           alt={product.imageAlt ?? `${product.name} natural attar from Kannauj`}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           onLoad={() => setIsLoaded(true)}
           onError={() => setIsLoaded(true)}

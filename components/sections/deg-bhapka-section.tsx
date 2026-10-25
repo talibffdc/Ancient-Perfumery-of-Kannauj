@@ -127,6 +127,8 @@ function Act({ act, index }: ActProps) {
             <img
               src={act.image}
               alt={act.title}
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover grayscale-[0.2] contrast-[1.05]"
             />
 

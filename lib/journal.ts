@@ -26,7 +26,7 @@ export const journalArticles: JournalArticle[] = [
     seoTitle: 'Harsingar Flower Benefits, Uses & Fragrance',
     description:
       'Explore Harsingar flower benefits, traditional uses, its delicate Night Jasmine fragrance, and the potential of Harsingar attar and floral water.',
-    image: '/images/harsringar flower kannaujattar.png',
+    image: '/images/harsingar-flower-kannaujattar.webp',
     imageAlt: 'Harsingar flowers for attar and floral water development in Kannauj',
     author: 'Kannauj Attar',
     category: 'Natural Ingredients / Flower Stories',
@@ -87,7 +87,7 @@ export const journalArticles: JournalArticle[] = [
     seoTitle: 'Harsingar Attar: A Rare Floral Treasure from Kannauj',
     description:
       'Discover the delicate beauty of Harsingar attar and floral water, explored through traditional Kannauj perfumery, careful testing and fragrance craftsmanship.',
-    image: '/images/harsringar flower kannaujattar.png',
+    image: '/images/harsingar-flower-kannaujattar.webp',
     imageAlt: 'Harsingar flowers for attar and floral water development in Kannauj',
     author: 'Kannauj Attar',
     category: 'Craft',
@@ -181,7 +181,7 @@ export const journalArticles: JournalArticle[] = [
     seoTitle: 'Harsingar Flower Attar & Floral Water: The Process',
     description:
       'Explore how Kannauj Attar is studying Harsingar flowers through laboratory testing and traditional Deg-Bhapka distillation to develop attar and floral water.',
-    image: '/images/harsringar flower kannaujattar.png',
+    image: '/images/harsingar-flower-kannaujattar.webp',
     imageAlt: 'Harsingar flowers for traditional attar and floral water development in Kannauj',
     author: 'Kannauj Attar',
     category: 'Craft',
@@ -563,7 +563,7 @@ export const journalArticles: JournalArticle[] = [
     seoTitle: 'Harsingar Attar: Flower Testing Before Distillation',
     description:
       'Harsingar, or Parijat, is a delicate seasonal flower with a distinctive fragrance. Discover why laboratory feasibility testing is an important first step in developing its attar and fragrant floral water.',
-    image: '/images/harsringar flower kannaujattar.png',
+    image: '/images/harsingar-flower-kannaujattar.webp',
     imageAlt: 'Harsingar flowers for traditional attar and floral water development in Kannauj',
     author: 'Kannauj Attar',
     category: 'Craft',

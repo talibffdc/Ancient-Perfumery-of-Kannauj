@@ -13,7 +13,7 @@ const processSteps = [
     number: '02',
     title: 'Preparation',
     description: 'Flowers placed gently into copper degs, layered with sacred intention.',
-    image: '/images/preparerose.png',
+    image: '/images/preparerose.webp',
   },
   {
     number: '03',
@@ -63,6 +63,8 @@ export function ProcessSection() {
               <img
                 src={step.image}
                 alt={`${step.title} process`}
+                loading="lazy"
+                decoding="async"
                 className="mb-6 h-48 w-full bg-muted/10 object-contain"
               />
               <Caption className="text-primary">{step.number}</Caption>

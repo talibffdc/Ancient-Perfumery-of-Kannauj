@@ -48,7 +48,7 @@
     "name": "Shamama",
     "hindi": "शमामा",
     "note": "A layered conversation of botanicals, spice, and woods.",
-    "image": "/images/shamamaattarkannaujattar.jpg",
+    "image": "/images/shamamaattarkannaujattar.webp",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1699 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2099 }
@@ -72,7 +72,7 @@
     "name": "Mitti",
     "hindi": "मिट्टी",
     "note": "The unmistakable scent of rain meeting sun-warmed earth.",
-    "image": "/images/mittiattar.png",
+    "image": "/images/mittiattar.webp",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 999 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1399 }
@@ -117,7 +117,7 @@
     "name": "Hina",
     "hindi": "हीना",
     "note": "A warm, resinous blend made for moments of stillness.",
-    "image": "/images/hinattarkannauj.jpg",
+    "image": "/images/hinattarkannauj.webp",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1899 },
@@ -142,7 +142,7 @@
     "name": "Harsingar",
     "hindi": "हरसिंगार",
     "note": "A delicate, nostalgic floral with a soft orange warmth.",
-    "image": "/images/harsringar%20flower%20kannaujattar.png",
+    "image": "/images/harsingar-flower-kannaujattar.webp",
     "imageAlt": "Harsingar flowers for Harsingar attar from Kannauj",
     "productionUpdates": [
       {

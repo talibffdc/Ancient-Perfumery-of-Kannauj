@@ -7,7 +7,7 @@ export const galleryPhotos = [
     description: 'Roses gathered as botanical material for traditional natural attar making in Kannauj, India.',
   },
   {
-    src: '/images/preparerose.png',
+    src: '/images/preparerose.webp',
     alt: 'Rose petals prepared by hand beside a traditional Kannauj distillation vessel',
     title: 'Petals, prepared by hand',
     note: 'Careful preparation before distillation',
@@ -28,7 +28,7 @@ export const galleryPhotos = [
     description: 'A view inside a traditional Kannauj perfumery workshop, where heat and distillation vessels are part of attar making.',
   },
   {
-    src: '/images/mittiattar.png',
+    src: '/images/mittiattar.webp',
     alt: 'Earthen materials used to create mitti attar in Kannauj',
     title: 'The scent of mitti',
     note: 'Earth-inspired Kannauj perfumery',
