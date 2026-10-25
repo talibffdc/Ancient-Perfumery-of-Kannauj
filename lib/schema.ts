@@ -1,4 +1,5 @@
 import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
+import { absoluteUrl, siteConfig } from '@/lib/site-config'
 
 /**
  * Structured Data Schemas for SEO and Search Engine Understanding
@@ -9,13 +10,13 @@ import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-o
 export const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  '@id': 'https://kannaujattar.co.in/#organization',
-  name: 'Kannauj Attar',
-  alternateName: 'Ancient Perfumery of Kannauj',
-  url: 'https://kannaujattar.co.in',
-  logo: 'https://kannaujattar.co.in/icon.svg',
+  '@id': absoluteUrl('/#organization'),
+  name: siteConfig.brandName,
+  alternateName: siteConfig.alternateName,
+  url: siteConfig.siteUrl,
+  logo: absoluteUrl(siteConfig.logoPath),
   description: 'A Kannauj perfumery house drawing on traditional Deg Bhapka distillation and regional perfumery heritage. The business says it checks ingredient quality in its in-house quality analysis lab and provides batch-wise testing reports to customers. Members of its perfumery team have received relevant training at FFDC, Kannauj; this does not imply FFDC certifies or endorses the company or its products.',
-  sameAs: ['https://www.instagram.com/kannaujattar.co.in/'],
+  sameAs: [siteConfig.socials.instagram],
   knowsAbout: [
     'Deg Bhapka Distillation',
     'Traditional Attar Production',
@@ -32,14 +33,14 @@ export const organizationSchema = {
 export const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  '@id': 'https://kannaujattar.co.in/#website',
-  name: 'Kannauj Attar',
-  alternateName: 'Ancient Perfumery of Kannauj',
-  url: 'https://kannaujattar.co.in',
+  '@id': absoluteUrl('/#website'),
+  name: siteConfig.brandName,
+  alternateName: siteConfig.alternateName,
+  url: siteConfig.siteUrl,
   inLanguage: 'en-IN',
   description: 'Official website of Kannauj Attar - authentic natural attar and ancient perfumery house from India.',
   publisher: {
-    '@id': 'https://kannaujattar.co.in/#organization',
+    '@id': absoluteUrl('/#organization'),
   },
 }
 
@@ -75,7 +76,7 @@ export const qualityTestingFaqSchema = {
 export const kannaujPlaceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Place',
-  name: 'Kannauj',
+  name: siteConfig.address.addressLocality,
   description: 'Ancient perfumery capital of India, heritage center for traditional attar and fragrance production. Home to Kannauj Attar.',
   geo: {
     '@type': 'GeoCoordinates',
@@ -84,10 +85,10 @@ export const kannaujPlaceSchema = {
   },
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Kannauj',
-    addressRegion: 'Uttar Pradesh',
+    addressLocality: siteConfig.address.addressLocality,
+    addressRegion: siteConfig.address.addressRegion,
     postalCode: '209625',
-    addressCountry: 'IN',
+    addressCountry: siteConfig.address.addressCountry,
   },
   knowsAbout: 'Traditional Attar Production',
 }
@@ -159,16 +160,16 @@ export const createProductSchema = (product: {
     name: product.name,
     description: productDescription,
     url: product.url,
-    ...(product.image && { image: `https://kannaujattar.co.in${product.image}` }),
+    ...(product.image && { image: absoluteUrl(product.image) }),
     category: 'Natural Attar',
     brand: {
       '@type': 'Brand',
-      name: 'Kannauj Attar',
+      name: siteConfig.brandName,
     },
     manufacturer: {
       '@type': 'Organization',
-      name: 'Kannauj Attar',
-      url: 'https://kannaujattar.co.in',
+      name: siteConfig.brandName,
+      url: siteConfig.siteUrl,
     },
     offers: saleActive
       ? product.offers.map((offer) => ({

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
+import { siteConfig } from '@/lib/site-config'
 
 export function Footer() {
   const [isVisible, setIsVisible] = useState(false)
@@ -137,7 +138,7 @@ export function Footer() {
             {/* Subtle social references - no icons, just text */}
             <div className="flex gap-8">
               <a 
-                href="https://www.instagram.com/kannaujattar.co.in/"
+                href={siteConfig.socials.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/40 transition-colors duration-500 hover:text-foreground/60"
@@ -145,7 +146,7 @@ export function Footer() {
                 Instagram
               </a>
               <a 
-                href="https://wa.me/919598295267"
+                href={siteConfig.socials.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/40 transition-colors duration-500 hover:text-foreground/60"

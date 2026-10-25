@@ -1,3 +1,5 @@
+import { absoluteUrl } from '@/lib/site-config'
+
 export function createArticleSchema(data: {
   url: string
   title: string
@@ -27,7 +29,7 @@ export function createArticleSchema(data: {
       name: data.publisherName,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://kannaujattar.co.in/icon.svg',
+        url: absoluteUrl('/icon.svg'),
       },
     },
     datePublished: data.publishedAt,

@@ -11,6 +11,7 @@ import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-o
 import { createProductSchema, ingredientTestingStatement } from '@/lib/schema'
 import { createBreadcrumbSchema } from '@/lib/journal-schema'
 import { shopCatalog } from '@/lib/shop-catalog'
+import { absoluteUrl, siteConfig } from '@/lib/site-config'
 
 export const revalidate = 3600
 
@@ -28,14 +29,14 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) return { title: 'Product not found | Kannauj Attar' }
 
-  const canonical = `https://kannaujattar.co.in/products/${product.slug}`
+  const canonical = absoluteUrl(`/products/${product.slug}`)
   const offerActive = isDiwaliOfferActive()
   const title = product.slug === 'harsingar'
-    ? 'Harsingar Flower Attar from Kannauj | Kannauj Attar'
-    : `${product.name} Attar | Kannauj Attar`
+    ? `Harsingar Flower Attar from Kannauj | ${siteConfig.brandName}`
+    : `${product.name} Attar | ${siteConfig.brandName}`
   const description = product.slug === 'harsingar'
     ? `Harsingar flower attar from Kannauj, in 3 ml and Sandali 3 ml. Current session: being prepared on a sandalwood-oil base.${offerActive ? ` Save ${diwaliOffer.discountPercent}% until 8 November 2026.` : ''}`
-    : `Buy ${product.name} attar from Kannauj Attar. Handcrafted using Deg Bhapka distillation, with ingredient quality checks in our in-house lab.${offerActive ? ` Save ${diwaliOffer.discountPercent}% with the Diwali Offer until 8 November 2026.` : ''}`
+    : `Buy ${product.name} attar from ${siteConfig.brandName}. Handcrafted using Deg Bhapka distillation, with ingredient quality checks in our in-house lab.${offerActive ? ` Save ${diwaliOffer.discountPercent}% with the Diwali Offer until 8 November 2026.` : ''}`
 
   return {
     title,
@@ -63,7 +64,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = shopCatalog.products.find((entry) => entry.slug === slug)
   if (!product) notFound()
 
-  const canonical = `https://kannaujattar.co.in/products/${product.slug}`
+  const canonical = absoluteUrl(`/products/${product.slug}`)
   const offerActive = isDiwaliOfferActive()
   const schema = createProductSchema({
     name: product.name,
@@ -78,8 +79,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     })),
   })
   const breadcrumbSchema = createBreadcrumbSchema([
-    { name: 'Home', item: 'https://kannaujattar.co.in' },
-    { name: 'Attars', item: 'https://kannaujattar.co.in/#shop' },
+    { name: 'Home', item: absoluteUrl('/') },
+    { name: 'Attars', item: absoluteUrl('/#shop') },
     { name: `${product.name} Attar`, item: canonical },
   ])
 
@@ -115,7 +116,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
 
             <div>
-              <Caption className="text-primary">{product.hindi} · Kannauj Attar</Caption>
+              <Caption className="text-primary">{product.hindi} · {siteConfig.brandName}</Caption>
               <Headline as="h1" className="mt-4">{product.name} Attar</Headline>
               <BodyText className="mt-5 text-foreground/60">{product.note}</BodyText>
               {offerActive && (
@@ -164,7 +165,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 Cash on Delivery available in India · Free India shipping · ₹49 COD fee.
               </p>
               <p className="mt-2 text-xs leading-relaxed text-foreground/50">
-                Returns accepted within 7 days for unused, sealed products. Return shipping is paid by Kannauj Attar.
+                Returns accepted within 7 days for unused, sealed products. Return shipping is paid by {siteConfig.brandName}.
               </p>
               <Link
                 href={`/?product=${encodeURIComponent(product.slug)}#shop`}

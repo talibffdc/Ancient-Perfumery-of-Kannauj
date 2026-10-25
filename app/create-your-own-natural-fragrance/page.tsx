@@ -5,25 +5,26 @@ import { Navigation } from '@/components/navigation'
 import { customFragranceProduct } from '@/lib/custom-fragrance'
 import { createProductSchema } from '@/lib/schema'
 import { createBreadcrumbSchema } from '@/lib/journal-schema'
+import { absoluteUrl, siteConfig } from '@/lib/site-config'
 
-const canonical = 'https://kannaujattar.co.in/create-your-own-natural-fragrance'
+const canonical = absoluteUrl('/create-your-own-natural-fragrance')
 const description =
   'Create a personalized fragrance inspired by your preferences. Choose your favourite notes, describe your ideal scent, and explore custom fragrance options from Kannauj Attar.'
 
 export const metadata: Metadata = {
-  title: 'Create Your Own Natural Perfume Online | Kannauj Attar',
+  title: `Create Your Own Natural Perfume Online | ${siteConfig.brandName}`,
   description,
   alternates: { canonical },
   openGraph: {
     type: 'website',
     url: canonical,
-    title: 'Create Your Own Natural Perfume Online | Kannauj Attar',
+    title: `Create Your Own Natural Perfume Online | ${siteConfig.brandName}`,
     description,
-    siteName: 'Kannauj Attar',
+    siteName: siteConfig.brandName,
   },
   twitter: {
     card: 'summary',
-    title: 'Create Your Own Natural Perfume Online | Kannauj Attar',
+    title: `Create Your Own Natural Perfume Online | ${siteConfig.brandName}`,
     description,
   },
 }
@@ -46,7 +47,7 @@ const productSchema = createProductSchema({
 })
 
 const breadcrumbSchema = createBreadcrumbSchema([
-  { name: 'Home', item: 'https://kannaujattar.co.in' },
+  { name: 'Home', item: absoluteUrl('/') },
   { name: 'Create Your Own Natural Fragrance', item: canonical },
 ])
 

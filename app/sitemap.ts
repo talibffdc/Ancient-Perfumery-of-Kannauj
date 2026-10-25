@@ -2,9 +2,10 @@ import type { MetadataRoute } from 'next'
 import { getAllJournalArticles } from '@/lib/journal'
 import { shopCatalog } from '@/lib/shop-catalog'
 import { galleryPhotos } from '@/lib/gallery-photos'
+import { absoluteUrl } from '@/lib/site-config'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://kannaujattar.co.in'
+  const baseUrl = absoluteUrl('')
   const homepageImages = Array.from(new Set([
     '/heritage-deg-vessel.webp',
     ...galleryPhotos.map((photo) => photo.src),

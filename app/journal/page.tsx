@@ -3,6 +3,7 @@ import { Headline, BodyText, Subhead } from '@/components/typography'
 import { JournalCard } from '@/components/journal/journal-card'
 import { getAllJournalArticles } from '@/lib/journal'
 import type { Metadata } from 'next'
+import { absoluteUrl } from '@/lib/site-config'
 
 export const metadata: Metadata = {
   title: 'Journal | Kannauj Attar',
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: 'Journal | Kannauj Attar',
     description:
       'Explore the journal of Kannauj Attar — a quiet library of notes on natural perfumery, attar craft, and traditional fragrance practice.',
-    url: 'https://kannaujattar.co.in/journal',
+    url: absoluteUrl('/journal'),
     type: 'website',
   },
   twitter: {

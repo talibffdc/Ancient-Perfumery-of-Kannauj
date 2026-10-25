@@ -95,24 +95,24 @@ export const galleryPhotos = [
 export const gallerySchema = {
   '@context': 'https://schema.org',
   '@type': 'ImageGallery',
-  '@id': 'https://kannaujattar.co.in/#traditional-attar-gallery',
+  '@id': absoluteUrl('/#traditional-attar-gallery'),
   name: 'Kannauj Attar Traditional Deg Bhapka Distillation Photo Gallery',
   description: 'Original Kannauj Attar photographs of traditional attar making, botanical preparation, workshop vessels, and Deg Bhapka distillation in Kannauj, India.',
-  url: 'https://kannaujattar.co.in/#gallery',
+  url: absoluteUrl('/#gallery'),
   creator: {
-    '@id': 'https://kannaujattar.co.in/#organization',
+    '@id': absoluteUrl('/#organization'),
   },
   image: galleryPhotos.map((photo) => ({
     '@type': 'ImageObject',
-    contentUrl: `https://kannaujattar.co.in${photo.src}`,
-    url: `https://kannaujattar.co.in${photo.src}`,
+    contentUrl: absoluteUrl(photo.src),
+    url: absoluteUrl(photo.src),
     name: photo.title,
     description: photo.description,
     creator: {
-      '@id': 'https://kannaujattar.co.in/#organization',
+      '@id': absoluteUrl('/#organization'),
     },
     copyrightHolder: {
-      '@id': 'https://kannaujattar.co.in/#organization',
+      '@id': absoluteUrl('/#organization'),
     },
     copyrightNotice: 'Original photograph supplied by Kannauj Attar.',
     contentLocation: {
@@ -121,3 +121,4 @@ export const gallerySchema = {
     },
   })),
 }
+import { absoluteUrl } from '@/lib/site-config'

@@ -8,6 +8,7 @@ import { SectionContainer, CinematicSection } from '@/components/cinematic-secti
 import { Headline, BodyText, Title, Caption, Subhead } from '@/components/typography'
 import { getJournalArticleBySlug, getRelatedArticles, getJournalArticleSlugs, getReadingTime, formatPublishedDate } from '@/lib/journal'
 import { createArticleSchema, createBreadcrumbSchema } from '@/lib/journal-schema'
+import { absoluteUrl, siteConfig } from '@/lib/site-config'
 
 interface JournalArticlePageProps {
   params: Promise<{
@@ -27,10 +28,10 @@ export async function generateMetadata({ params }: JournalArticlePageProps): Pro
 
   if (!article) notFound()
 
-  const canonicalUrl = `https://kannaujattar.co.in/journal/${article.slug}`
+  const canonicalUrl = absoluteUrl(`/journal/${article.slug}`)
   const seoTitle = article.seoTitle ?? `${article.title} | Journal | Kannauj Attar`
   const socialImage = article.image
-    ? `https://kannaujattar.co.in${article.image}`
+    ? absoluteUrl(article.image)
     : undefined
 
   return {
@@ -63,23 +64,23 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
 
   const readingTime = getReadingTime(article)
   const relatedArticles = getRelatedArticles(article, 2)
-  const articleUrl = `https://kannaujattar.co.in/journal/${article.slug}`
+  const articleUrl = absoluteUrl(`/journal/${article.slug}`)
   const schema = createArticleSchema({
     url: articleUrl,
     title: article.title,
     description: article.description,
     author: article.author,
-    publisherName: 'Kannauj Attar',
+    publisherName: siteConfig.brandName,
     publishedAt: article.publishedAt,
     category: article.category,
     readingTimeMinutes: readingTime,
     image: article.image
-      ? `https://kannaujattar.co.in${article.image}`
+      ? absoluteUrl(article.image)
       : undefined,
   })
   const breadcrumbSchema = createBreadcrumbSchema([
-    { name: 'Home', item: 'https://kannaujattar.co.in' },
-    { name: 'Journal', item: 'https://kannaujattar.co.in/journal' },
+    { name: 'Home', item: absoluteUrl('/') },
+    { name: 'Journal', item: absoluteUrl('/journal') },
     { name: article.title, item: articleUrl },
   ])
 
