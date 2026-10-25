@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -14,6 +15,8 @@ interface JournalArticlePageProps {
   }>
 }
 
+export const dynamicParams = false
+
 export async function generateStaticParams() {
   return getJournalArticleSlugs().map((slug) => ({ slug }))
 }
@@ -22,28 +25,29 @@ export async function generateMetadata({ params }: JournalArticlePageProps): Pro
   const resolvedParams = await params
   const article = getJournalArticleBySlug(resolvedParams.slug)
 
-  if (!article) {
-    return {
-      title: 'Journal entry not found | Kannauj Attar',
-      description: 'The requested journal entry could not be found.',
-    }
-  }
+  if (!article) notFound()
 
   const canonicalUrl = `https://kannaujattar.co.in/journal/${article.slug}`
+  const seoTitle = article.seoTitle ?? `${article.title} | Journal | Kannauj Attar`
+  const socialImage = article.image
+    ? `https://kannaujattar.co.in${article.image}`
+    : undefined
 
   return {
-    title: `${article.title} | Journal | Kannauj Attar`,
+    title: seoTitle,
     description: article.description,
     openGraph: {
-      title: `${article.title} | Journal | Kannauj Attar`,
+      title: seoTitle,
       description: article.description,
       url: canonicalUrl,
       type: 'article',
+      ...(socialImage && { images: [{ url: socialImage, alt: article.imageAlt ?? article.title }] }),
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${article.title} | Journal | Kannauj Attar`,
+      title: seoTitle,
       description: article.description,
+      ...(socialImage && { images: [socialImage] }),
     },
     alternates: {
       canonical: canonicalUrl,
@@ -55,20 +59,7 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
   const resolvedParams = await params
   const article = getJournalArticleBySlug(resolvedParams.slug)
 
-  if (!article) {
-    return (
-      <main>
-        <CinematicSection className="bg-background section-padding-lg">
-          <SectionContainer size="lg">
-            <Headline className="text-foreground">Missing article</Headline>
-            <BodyText className="mt-6 text-foreground/60">
-              {JSON.stringify(resolvedParams)}
-            </BodyText>
-          </SectionContainer>
-        </CinematicSection>
-      </main>
-    )
-  }
+  if (!article) notFound()
 
   const readingTime = getReadingTime(article)
   const relatedArticles = getRelatedArticles(article, 2)
@@ -82,6 +73,9 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
     publishedAt: article.publishedAt,
     category: article.category,
     readingTimeMinutes: readingTime,
+    image: article.image
+      ? `https://kannaujattar.co.in${article.image}`
+      : undefined,
   })
   const breadcrumbSchema = createBreadcrumbSchema([
     { name: 'Home', item: 'https://kannaujattar.co.in' },
@@ -125,13 +119,46 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
             <BodyText className="mt-10 text-foreground/60">{article.description}</BodyText>
           </div>
 
+          {article.image && (
+            <div className="relative mt-12 aspect-[16/9] w-full overflow-hidden bg-muted/30">
+              <Image
+                src={article.image}
+                alt={article.imageAlt ?? article.title}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 960px"
+                className="object-cover"
+              />
+            </div>
+          )}
+
           <article className="mt-12 space-y-14">
             {article.content.map((block, index) => {
               if (block.type === 'subhead') {
-                return (
+                return block.level === 3 ? (
+                  <Title key={index} as="h3" className="text-2xl text-foreground">
+                    {block.text}
+                  </Title>
+                ) : (
                   <Title key={index} as="h2" className="text-3xl text-foreground">
                     {block.text}
                   </Title>
+                )
+              }
+
+              if (block.type === 'list') {
+                const List = block.ordered ? 'ol' : 'ul'
+                return (
+                  <List
+                    key={index}
+                    className={`list-inside space-y-3 pl-2 text-base leading-relaxed tracking-wide text-foreground/60 md:text-lg ${
+                      block.ordered ? 'list-decimal' : 'list-disc'
+                    }`}
+                  >
+                    {block.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </List>
                 )
               }
 
@@ -146,11 +173,42 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
                 )
               }
 
-              return (
-                <BodyText key={index} className="text-foreground/60">
-                  {block.text}
-                </BodyText>
-              )
+              if (block.type === 'paragraph' && block.links?.length) {
+                const linkedParts: React.ReactNode[] = []
+                let remainingText = block.text
+                let partIndex = 0
+
+                for (const link of block.links) {
+                  const linkIndex = remainingText.indexOf(link.text)
+                  if (linkIndex < 0) continue
+
+                  if (linkIndex > 0) {
+                    linkedParts.push(remainingText.slice(0, linkIndex))
+                  }
+                  linkedParts.push(
+                    <a
+                      key={`${index}-link-${partIndex}`}
+                      href={link.url}
+                      className="text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+                    >
+                      {link.text}
+                    </a>
+                  )
+                  remainingText = remainingText.slice(linkIndex + link.text.length)
+                  partIndex += 1
+                }
+
+                if (partIndex > 0) {
+                  linkedParts.push(remainingText)
+                  return (
+                    <BodyText key={index} className="text-foreground/60">
+                      {linkedParts}
+                    </BodyText>
+                  )
+                }
+              }
+
+              return <BodyText key={index} className="text-foreground/60">{block.text}</BodyText>
             })}
           </article>
 
