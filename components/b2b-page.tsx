@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { B2BInquiryForm } from '@/components/b2b-inquiry-form'
 import { Footer } from '@/components/footer'
 import { Navigation } from '@/components/navigation'
 import { SectionContainer } from '@/components/cinematic-section'
@@ -44,9 +43,9 @@ export function B2BPage({ pageKey }: { pageKey: B2BPageKey }) {
           <BodyText className="mt-6 max-w-3xl">{page.intro}</BodyText>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <a href="#business-inquiry" className="inline-flex min-h-12 items-center bg-primary px-6 text-sm text-primary-foreground">
-              Send a business inquiry
-            </a>
+            <Link href="/#inquiry" className="inline-flex min-h-12 items-center bg-primary px-6 text-sm text-primary-foreground">
+              Use our contact form
+            </Link>
             <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center border border-border px-6 text-sm text-foreground/80">
               Ask on WhatsApp
             </a>
@@ -99,12 +98,17 @@ export function B2BPage({ pageKey }: { pageKey: B2BPageKey }) {
               <span id="business-inquiry-heading">Tell us about your requirement</span>
             </Title>
             <p className="mt-4 text-sm leading-relaxed text-foreground/70">
-              Share your product interest and quantity, or note if they are undecided. We will respond with details relevant to your inquiry; no unconfirmed terms are assumed.
+              Use the regular contact form and include your company, product interest and quantity in its message. We will respond with details relevant to your inquiry; no unconfirmed terms are assumed.
             </p>
             <p className="mt-3 text-sm text-foreground/70">
               Business address: Plot No. 308, Kannauj, Kannauj, Uttar Pradesh, India.
             </p>
-            <B2BInquiryForm productInterest={page.keyword} />
+            <Link
+              href="/#inquiry"
+              className="mt-6 inline-flex min-h-12 items-center bg-primary px-6 text-sm text-primary-foreground"
+            >
+              Open the regular contact form
+            </Link>
           </section>
         </SectionContainer>
       </main>
