@@ -3,6 +3,8 @@ import { getAllJournalArticles } from '@/lib/journal'
 import { shopCatalog } from '@/lib/shop-catalog'
 import { galleryPhotos } from '@/lib/gallery-photos'
 import { absoluteUrl } from '@/lib/site-config'
+import { b2bPages } from '@/lib/b2b-pages'
+import { categoryPages } from '@/lib/category-pages'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = absoluteUrl('').replace(/\/$/, '')
@@ -34,6 +36,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.4,
     },
+    {
+      url: `${baseUrl}/categories`,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    ...Object.keys(b2bPages).map((slug) => ({
+      url: `${baseUrl}/${slug}`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...Object.keys(categoryPages).map((slug) => ({
+      url: `${baseUrl}/${slug}`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     ...shopCatalog.products.map((product) => ({
       url: `${baseUrl}/products/${product.slug}`,
       changeFrequency: 'monthly' as const,

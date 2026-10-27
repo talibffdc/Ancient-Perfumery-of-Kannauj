@@ -16,6 +16,8 @@ const navLinks = [
   { label: 'Shop', href: '#shop' },
   { label: 'Create a Fragrance', href: '/create-your-own-natural-fragrance' },
   { label: 'Journal', href: '/journal' },
+  { label: 'Wholesale / Manufacturing', href: '/attar-manufacturer-in-kannauj' },
+  { label: 'Shop by Category', href: '/categories' },
 ]
 
 export function Navigation({ className }: NavigationProps) {

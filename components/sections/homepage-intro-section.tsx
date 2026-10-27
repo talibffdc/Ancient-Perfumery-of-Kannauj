@@ -109,6 +109,32 @@ export function HomepageIntroSection() {
             </BodyText>
           </div>
 
+          <section aria-labelledby="browse-and-business-heading" className="mt-10 border-t border-border/70 pt-8">
+            <Title as="h3">
+              <span id="browse-and-business-heading">Browse by interest or discuss a business requirement</span>
+            </Title>
+            <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+              <Link className="text-primary underline underline-offset-4" href="/categories">
+                Shop by attar category
+              </Link>
+              <Link className="text-primary underline underline-offset-4" href="/attar-for-men">
+                Attar for men
+              </Link>
+              <Link className="text-primary underline underline-offset-4" href="/attar-for-women">
+                Attar for women
+              </Link>
+              <Link className="text-primary underline underline-offset-4" href="/attar-manufacturer-in-kannauj">
+                Attar manufacturer in Kannauj
+              </Link>
+              <Link className="text-primary underline underline-offset-4" href="/wholesale-attar-supplier-india">
+                Wholesale attar supplier India
+              </Link>
+              <Link className="text-primary underline underline-offset-4" href="/private-label-perfume-manufacturer">
+                Private label perfume manufacturing
+              </Link>
+            </div>
+          </section>
+
           <section aria-labelledby="homepage-faq-heading" className="mt-16 border-t border-border/70 pt-10">
             <Title as="h3">
               <span id="homepage-faq-heading">Frequently asked questions</span>

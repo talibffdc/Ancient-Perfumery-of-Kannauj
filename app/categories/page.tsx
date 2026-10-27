@@ -60,6 +60,13 @@ export default function CategoriesPage() {
               ))}
             </ul>
           </section>
+          <p className="mt-10 text-sm text-foreground/70">
+            For business supply or manufacturing requests, visit{' '}
+            <Link href="/attar-manufacturer-in-kannauj" className="text-primary underline underline-offset-4">
+              Wholesale / Manufacturing
+            </Link>
+            .
+          </p>
         </SectionContainer>
       </main>
       <Footer />

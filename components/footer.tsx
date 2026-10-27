@@ -94,6 +94,18 @@ export function Footer() {
               Journal
             </a>
             <a
+              href="/attar-manufacturer-in-kannauj"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Wholesale / Manufacturing
+            </a>
+            <a
+              href="/categories"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Shop by Category
+            </a>
+            <a
               href="/shipping-returns"
               className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
             >
