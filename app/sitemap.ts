@@ -6,6 +6,40 @@ import { absoluteUrl } from '@/lib/site-config'
 import { b2bPages } from '@/lib/b2b-pages'
 import { categoryPages } from '@/lib/category-pages'
 
+type StaticPage = {
+  path: string
+  changeFrequency: NonNullable<MetadataRoute.Sitemap[number]['changeFrequency']>
+  priority: number
+}
+
+const staticPages: StaticPage[] = [
+  {
+    path: '/',
+    changeFrequency: 'weekly',
+    priority: 1,
+  },
+  {
+    path: '/journal',
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  },
+  {
+    path: '/create-your-own-natural-fragrance',
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  },
+  {
+    path: '/shipping-returns',
+    changeFrequency: 'yearly',
+    priority: 0.4,
+  },
+  {
+    path: '/categories',
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  },
+]
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = absoluteUrl('').replace(/\/$/, '')
   const homepageImages = Array.from(new Set([
@@ -14,33 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...shopCatalog.products.map((product) => product.image),
   ].filter(Boolean))).map((image) => `${baseUrl}${image}`)
 
-  return [
-    {
-      url: baseUrl,
-      changeFrequency: 'weekly',
-      priority: 1,
-      images: homepageImages,
-    },
-    {
-      url: `${baseUrl}/journal`,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/create-your-own-natural-fragrance`,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/shipping-returns`,
-      changeFrequency: 'yearly',
-      priority: 0.4,
-    },
-    {
-      url: `${baseUrl}/categories`,
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
+  const entries: MetadataRoute.Sitemap = [
+    ...staticPages.map(({ path, ...page }) => ({
+      url: `${baseUrl}${path}`,
+      ...page,
+      ...(path === '/' && { images: homepageImages }),
+    })),
     ...Object.keys(b2bPages).map((slug) => ({
       url: `${baseUrl}/${slug}`,
       changeFrequency: 'monthly' as const,
@@ -61,8 +74,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...getAllJournalArticles().map((article) => ({
       url: `${baseUrl}/journal/${article.slug}`,
+      lastModified: article.publishedAt,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),
   ]
+
+  return Array.from(new Map(entries.map((entry) => [entry.url, entry])).values())
 }

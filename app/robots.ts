@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next'
-import { absoluteUrl } from '@/lib/site-config'
+import { absoluteUrl, siteConfig } from '@/lib/site-config'
 
 export default function robots(): MetadataRoute.Robots {
   return {
+    host: siteConfig.siteUrl,
     rules: {
       userAgent: '*',
       allow: '/',
