@@ -11,13 +11,16 @@ interface NavigationProps {
 }
 
 const primaryLinks = [
+  { label: 'Collection', href: '#collection' },
+  { label: 'Shop', href: '#shop' },
+  { label: 'Journal', href: '/journal' },
+]
+
+const exploreLinks = [
   { label: 'Process', href: '#process' },
   { label: 'Gallery', href: '#gallery' },
   { label: 'Ingredients', href: '#ingredients' },
-  { label: 'Collection', href: '#collection' },
-  { label: 'Shop', href: '#shop' },
   { label: 'Create a Fragrance', href: '/create-your-own-natural-fragrance' },
-  { label: 'Journal', href: '/journal' },
 ]
 
 const businessLinks = [
@@ -30,7 +33,7 @@ const businessLinks = [
 
 export function Navigation({ className }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState<'categories' | 'business' | null>(null)
+  const [openDropdown, setOpenDropdown] = useState<'explore' | 'categories' | 'business' | null>(null)
   const pathname = usePathname()
   const sectionHref = (href: string) =>
     href.startsWith('/') || pathname === '/' ? href : `/${href}`
@@ -75,12 +78,33 @@ export function Navigation({ className }: NavigationProps) {
           <li className="relative">
             <button
               type="button"
+              aria-expanded={openDropdown === 'explore'}
+              aria-haspopup="menu"
+              onClick={() => setOpenDropdown(openDropdown === 'explore' ? null : 'explore')}
+              className={dropdownButtonClass}
+            >
+              Explore
+              <ChevronDown className={cn('size-3 transition-transform', openDropdown === 'explore' && 'rotate-180')} />
+            </button>
+            {openDropdown === 'explore' && (
+              <div role="menu" className="absolute right-0 top-full z-50 mt-3 min-w-56 border border-foreground/10 bg-background/98 p-2 shadow-lg">
+                {exploreLinks.map((link) => (
+                  <a key={link.href} href={sectionHref(link.href)} role="menuitem" className={cn(linkClass, 'block px-3 py-2 normal-case tracking-normal hover:bg-foreground/5')}>
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </li>
+          <li className="relative">
+            <button
+              type="button"
               aria-expanded={openDropdown === 'categories'}
               aria-haspopup="menu"
               onClick={() => setOpenDropdown(openDropdown === 'categories' ? null : 'categories')}
               className={dropdownButtonClass}
             >
-              Shop by Category
+              Categories
               <ChevronDown className={cn('size-3 transition-transform', openDropdown === 'categories' && 'rotate-180')} />
             </button>
             {openDropdown === 'categories' && (
@@ -104,7 +128,7 @@ export function Navigation({ className }: NavigationProps) {
               onClick={() => setOpenDropdown(openDropdown === 'business' ? null : 'business')}
               className={dropdownButtonClass}
             >
-              Wholesale / Manufacturing
+              Business
               <ChevronDown className={cn('size-3 transition-transform', openDropdown === 'business' && 'rotate-180')} />
             </button>
             {openDropdown === 'business' && (
@@ -191,11 +215,31 @@ export function Navigation({ className }: NavigationProps) {
           <li className="flex w-full max-w-sm flex-col items-center">
             <button
               type="button"
+              aria-expanded={openDropdown === 'explore'}
+              onClick={() => setOpenDropdown(openDropdown === 'explore' ? null : 'explore')}
+              className="inline-flex items-center gap-2 font-serif text-2xl tracking-wide text-foreground transition-colors hover:text-primary"
+            >
+              Explore
+              <ChevronDown className={cn('size-5 transition-transform', openDropdown === 'explore' && 'rotate-180')} />
+            </button>
+            {openDropdown === 'explore' && (
+              <div className="mt-4 flex flex-col items-center gap-3">
+                {exploreLinks.map((link) => (
+                  <a key={link.href} href={sectionHref(link.href)} onClick={closeMenu} className={cn(linkClass, 'normal-case tracking-normal')}>
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </li>
+          <li className="flex w-full max-w-sm flex-col items-center">
+            <button
+              type="button"
               aria-expanded={openDropdown === 'categories'}
               onClick={() => setOpenDropdown(openDropdown === 'categories' ? null : 'categories')}
               className="inline-flex items-center gap-2 font-serif text-2xl tracking-wide text-foreground transition-colors hover:text-primary"
             >
-              Shop by Category
+              Categories
               <ChevronDown className={cn('size-5 transition-transform', openDropdown === 'categories' && 'rotate-180')} />
             </button>
             {openDropdown === 'categories' && (
@@ -216,7 +260,7 @@ export function Navigation({ className }: NavigationProps) {
               onClick={() => setOpenDropdown(openDropdown === 'business' ? null : 'business')}
               className="inline-flex items-center gap-2 text-center font-serif text-2xl tracking-wide text-foreground transition-colors hover:text-primary"
             >
-              Wholesale / Manufacturing
+              Business
               <ChevronDown className={cn('size-5 transition-transform', openDropdown === 'business' && 'rotate-180')} />
             </button>
             {openDropdown === 'business' && (
