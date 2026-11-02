@@ -38,7 +38,7 @@ export function Navigation({ className }: NavigationProps) {
   const sectionHref = (href: string) =>
     href.startsWith('/') || pathname === '/' ? href : `/${href}`
   const linkClass =
-    'font-sans text-[10px] uppercase tracking-[0.14em] text-foreground/70 transition-colors duration-300 hover:text-primary'
+    'font-sans text-xs uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:text-primary'
   const dropdownButtonClass = cn(linkClass, 'inline-flex items-center gap-1')
 
   const closeMenu = () => {
@@ -58,7 +58,7 @@ export function Navigation({ className }: NavigationProps) {
         <a
           href={sectionHref('#hero')}
           aria-label="Go to top"
-          className="font-serif text-lg tracking-widest text-foreground transition-colors duration-300 hover:text-primary"
+          className="font-serif text-lg tracking-widest text-foreground transition-colors duration-300 hover:text-primary md:text-xl"
         >
           Kannauj
         </a>
@@ -146,7 +146,7 @@ export function Navigation({ className }: NavigationProps) {
         {/* Inquiry Button - Desktop */}
         <a
           href={sectionHref('#inquiry')}
-          className="hidden font-sans text-[10px] uppercase tracking-[0.14em] text-foreground/70 transition-colors duration-300 hover:text-primary xl:block"
+          className="hidden font-sans text-xs uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:text-primary xl:block"
         >
           Begin a Conversation
         </a>
