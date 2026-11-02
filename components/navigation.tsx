@@ -53,7 +53,7 @@ export function Navigation({ className }: NavigationProps) {
         className
       )}
     >
-      <nav className="mx-auto flex max-w-[90rem] items-center justify-between px-5 py-3 md:px-8 lg:px-10">
+      <nav className="mx-auto flex max-w-[90rem] items-center justify-between px-5 py-4 md:px-8 lg:px-10">
         {/* Logo */}
         <a
           href={sectionHref('#hero')}
