@@ -190,11 +190,11 @@ export const b2bPages: Record<B2BPageKey, B2BPageData> = {
     ],
   },
   'private-label-perfume-manufacturer': {
-    keyword: 'private label perfume manufacturer India',
-    title: 'Private Label Perfume Manufacturer India | Kannauj Attar',
+    keyword: 'private label perfume manufacturing India',
+    title: 'Private-Label Perfume Manufacturing in India | Kannauj Attar',
     description:
-      'Explore a private label perfume manufacturing discussion with our Kannauj plant. Share your brand, product direction and quantity requirements.',
-    h1: 'Private Label Perfume Manufacturer in India',
+      'Discuss alcohol-based and oil-based perfume manufacturing for your brand with our Kannauj plant. Share your product direction and requirements.',
+    h1: 'Private-Label Perfume Manufacturing in India',
     intro:
       'Kannauj Attar operates its own perfume manufacturing plant in Kannauj, Uttar Pradesh, and the plant makes perfumes for many brands. Our family also has a legacy in traditional Deg-Bhapka attar distillation. If you are exploring a private-label perfume project, share your brand context and product requirement so the team can respond with details relevant to your inquiry.',
     sections: [
@@ -243,7 +243,7 @@ export const b2bPages: Record<B2BPageKey, B2BPageData> = {
       {
         heading: 'Start a private-label conversation',
         paragraphs: [
-          'Use the inquiry form below to share your name, company, product interest, quantity and message. Include a reachable email address and phone number so the team can reply. You can also open WhatsApp for a short introduction. In either case, state that your request concerns private-label perfume manufacturing in India.',
+          'Use the inquiry form below to share your name, company, product interest, quantity and message. Include a reachable email address and phone number so the team can reply. You can also open WhatsApp for a short introduction. In either case, state whether your brand is exploring an alcohol-based or oil-based perfume project.',
           'If your project is closer to contract manufacturing or wholesale sourcing, related pages provide a more relevant starting point. You can also review the existing product pages for the fragrance names and descriptions currently shown on the site. After receiving your inquiry, the team can respond with the next details to discuss; no unconfirmed terms are implied by submitting the form.',
         ],
       },
