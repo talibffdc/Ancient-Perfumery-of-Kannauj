@@ -83,6 +83,17 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
     { name: 'Journal', item: absoluteUrl('/journal') },
     { name: article.title, item: articleUrl },
   ])
+  const faqSchema = article.faqs?.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: article.faqs.map(({ question, answer }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      }
+    : null
 
   return (
     <main>
@@ -213,6 +224,21 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
             })}
           </article>
 
+          {article.internalLinks?.length ? (
+            <section className="mt-16 border-t border-border pt-10">
+              <Subhead>Explore related pages</Subhead>
+              <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+                {article.internalLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-sm text-primary underline underline-offset-4">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
           {relatedArticles.length > 0 && (
             <section className="mt-24 border-t border-border pt-16">
               <div className="flex items-center justify-between gap-4">
@@ -252,6 +278,9 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      )}
     </main>
   )
 }

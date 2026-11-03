@@ -5,6 +5,7 @@ import { galleryPhotos } from '@/lib/gallery-photos'
 import { absoluteUrl } from '@/lib/site-config'
 import { b2bPages } from '@/lib/b2b-pages'
 import { categoryPages } from '@/lib/category-pages'
+import { internationalPages } from '@/lib/international-pages'
 
 type StaticPage = {
   path: string
@@ -60,6 +61,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     ...Object.keys(categoryPages).map((slug) => ({
+      url: `${baseUrl}/${slug}`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...Object.keys(internationalPages).map((slug) => ({
       url: `${baseUrl}/${slug}`,
       changeFrequency: 'monthly' as const,
       priority: 0.7,

@@ -1,3 +1,5 @@
+import { internationalJournalArticles } from '@/lib/international-journal'
+
 export type JournalArticleBlock =
   | { type: 'paragraph'; text: string; links?: { text: string; url: string }[] }
   | { type: 'quote'; text: string }
@@ -17,6 +19,8 @@ export interface JournalArticle {
   content: JournalArticleBlock[]
   tags: string[]
   relatedSlugs?: string[]
+  faqs?: { question: string; answer: string }[]
+  internalLinks?: { label: string; href: string }[]
 }
 
 export const journalArticles: JournalArticle[] = [
@@ -1087,6 +1091,7 @@ export const journalArticles: JournalArticle[] = [
     ],
     relatedSlugs: ['attars-in-kannauj'],
   },
+  ...internationalJournalArticles,
 ]
 
 export function getAllJournalArticles() {

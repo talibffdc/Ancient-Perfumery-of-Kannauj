@@ -87,6 +87,13 @@ export function CategoryPage({ pageKey }: { pageKey: CategoryPageKey }) {
               ))}
             </ul>
           </section>
+          <p className="mt-8 text-sm text-foreground/70">
+            Want to understand oil-based fragrance? Read our{' '}
+            <Link href="/alcohol-free-attar" className="text-primary underline underline-offset-4">
+              alcohol-free attar guide
+            </Link>
+            .
+          </p>
 
           <section aria-labelledby="category-faq" className="mt-14 border-t border-border pt-10">
             <Title as="h2">

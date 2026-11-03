@@ -132,6 +132,12 @@ export function HomepageIntroSection() {
               <Link className="text-primary underline underline-offset-4" href="/private-label-perfume-manufacturer">
                 Private label perfume manufacturing
               </Link>
+              <Link className="text-primary underline underline-offset-4" href="/alcohol-free-attar">
+                Alcohol-free attar guide
+              </Link>
+              <Link className="text-primary underline underline-offset-4" href="/private-label-attar-for-gulf-brands">
+                Private label attar for brands
+              </Link>
             </div>
           </section>
 

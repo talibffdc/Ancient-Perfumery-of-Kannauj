@@ -78,6 +78,16 @@ export function B2BPage({ pageKey }: { pageKey: B2BPageKey }) {
               ))}
             </ul>
           </section>
+          <section aria-labelledby="international-business-pages" className="mt-10">
+            <Title as="h2">
+              <span id="international-business-pages">Further reading</span>
+            </Title>
+            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+              <li><Link href="/private-label-attar-for-gulf-brands" className="text-sm text-primary underline underline-offset-4">Private label attar for brands</Link></li>
+              <li><Link href="/kannauj-attar-vs-arabic-attar" className="text-sm text-primary underline underline-offset-4">Kannauj attar vs Arabic attar</Link></li>
+              <li><Link href="/alcohol-free-attar" className="text-sm text-primary underline underline-offset-4">Alcohol-free attar guide</Link></li>
+            </ul>
+          </section>
 
           <section aria-labelledby="b2b-faq" className="mt-14 border-t border-border pt-10">
             <Title as="h2">
