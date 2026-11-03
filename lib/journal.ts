@@ -1055,8 +1055,39 @@ export const journalArticles: JournalArticle[] = [
         type: 'paragraph',
         text: 'This is the first of the journal’s quiet notes: a way to understand attar as a craft anchored by place, patience, and botanical truth.',
       },
+      {
+        type: 'subhead',
+        text: 'Reading Kannauj through the product pages',
+      },
+      {
+        type: 'paragraph',
+        text: 'The regional story becomes easier to follow when it is connected to individual fragrance materials. A rose attar begins with a recognisable floral idea, while Mitti offers an earthy memory and Ruh Khus brings a vetiver-centred direction. These products are not interchangeable examples of one smell; they show how a place can support different fragrance conversations. Their current product pages list the available forms and sizes, so a reader can move from heritage context to specific product information without assuming a formula that has not been published.',
+        links: [
+          { text: 'rose attar', url: '/products/gulab' },
+          { text: 'Mitti', url: '/products/mitti' },
+          { text: 'Ruh Khus', url: '/products/ruh-khus' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'A category page can provide another way into the collection. Seasonal and fragrance-led guides group existing listings for browsing, but the category label should not be treated as a guarantee about performance or who must wear a scent. Read the product description, compare the words that matter to you and ask the team when a detail is not confirmed. This is a quieter, more accurate way to understand Kannauj: start with the craft, then return to the actual product.',
+        links: [
+          { text: 'category page', url: '/categories' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'The same principle applies to business visitors. A traditional process story can introduce the region, while a manufacturing page explains how to begin a specific inquiry. Keeping those roles separate helps buyers understand what is known about the craft and what still needs to be discussed for a product or brand project.',
+        links: [
+          { text: 'manufacturing page', url: '/attar-manufacturer-in-kannauj' },
+        ],
+      },
     ],
     relatedSlugs: ['steam-and-sandalwood'],
+    internalLinks: [
+      { label: 'Harsingar attar: a rare floral treasure', href: '/journal/harsingar-attar-floral-treasure' },
+      { label: 'Attar gift ideas', href: '/journal/how-to-choose-attar-eid-festive-gift' },
+    ],
   },
   {
     slug: 'steam-and-sandalwood',
@@ -1088,8 +1119,43 @@ export const journalArticles: JournalArticle[] = [
         type: 'paragraph',
         text: 'The journal exists to hold these technical notes with the same restraint as the products themselves—minimal, precise, and true to the craft.',
       },
+      {
+        type: 'subhead',
+        text: 'From equipment to a finished fragrance',
+      },
+      {
+        type: 'paragraph',
+        text: 'The vessels explain the basic movement of the method, but they do not tell the whole story of a finished attar. The material placed in the deg, the receiving oil, the heat and the timing all belong to the discussion. A flower, an earthy material and a blended composition will not ask the distiller the same questions. This is why a process description should be read alongside a product description rather than used as a substitute for one.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Mitti is a useful product page to visit when thinking about an earthy fragrance memory, while Shamama shows how a listing can describe a layered relationship between botanicals, spice and woods. Oud provides another product direction through deep woods and resin. These links lead to current catalog pages with their own formats and sizes; they do not claim that every product follows one identical distillation sequence.',
+        links: [
+          { text: 'Mitti', url: '/products/mitti' },
+          { text: 'Shamama', url: '/products/shamama' },
+          { text: 'Oud', url: '/products/oud' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'Readers who want a broader introduction can also compare the alcohol-free attar guide, which explains the difference between an oil-based format and a spray without treating every product as one universal formula. The goal is simple: understand the traditional method, read the specific listing and ask a direct question when a commercial or ingredient detail matters.',
+        links: [
+          { text: 'alcohol-free attar guide', url: '/alcohol-free-attar' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'For a business visitor, Deg-Bhapka is useful context before beginning a manufacturing conversation. A traditional method and a contemporary perfume project can be discussed together, but the requested format and specification still need to be confirmed. Process knowledge gives the conversation depth; a clear brief gives it direction.',
+        links: [
+          { text: 'manufacturing conversation', url: '/perfume-contract-manufacturing' },
+        ],
+      },
     ],
     relatedSlugs: ['attars-in-kannauj'],
+    internalLinks: [
+      { label: 'Harsingar attar: a rare floral treasure', href: '/journal/harsingar-attar-floral-treasure' },
+      { label: 'Attar gift ideas', href: '/journal/how-to-choose-attar-eid-festive-gift' },
+    ],
   },
   ...internationalJournalArticles,
 ]

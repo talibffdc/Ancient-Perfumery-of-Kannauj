@@ -105,6 +105,27 @@ export function Footer() {
             >
               Shop by Category
             </a>
+            <span className="basis-full pt-4 text-center text-[10px] uppercase tracking-[0.2em] text-foreground/35">
+              Export &amp; Private Label
+            </span>
+            <a
+              href="/attar-exporter-india"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Attar Export
+            </a>
+            <a
+              href="/private-label-perfume-manufacturer"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Private Label Perfume
+            </a>
+            <a
+              href="/perfume-contract-manufacturing"
+              className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"
+            >
+              Contract Manufacturing
+            </a>
             <a
               href="/shipping-returns"
               className="relative font-sans text-xs uppercase tracking-[0.2em] text-foreground/55 transition-colors duration-500 hover:text-foreground/80"

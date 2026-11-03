@@ -18,7 +18,7 @@ const commonFaqs = (name: string, type: string) => [
   },
   {
     question: `How should I store ${name} attar?`,
-    answer: 'Keep the bottle closed and store it away from direct sunlight, heat and unnecessary moisture. The product container is the best place to keep it between uses.',
+    answer: 'Keep the bottle closed and store it away from direct sunlight, heat and unnecessary moisture. The original container is a practical place to keep it between uses.',
   },
   {
     question: `How is ${name} attar different from perfume spray?`,
@@ -34,7 +34,7 @@ export const productSeoContent: Record<string, ProductSeoContent> = {
     faqs: commonFaqs('Gulab', 'rose'),
     relatedProducts: [{ label: 'Jasmine Attar', href: '/products/jasmine' }, { label: 'Rajnigandha Attar', href: '/products/rajnigandha' }, { label: 'Kewda Attar', href: '/products/kewda' }],
     relatedCategories: [{ label: 'Attar for women', href: '/attar-for-women' }, { label: 'Summer attars', href: '/summer-attars' }],
-    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'Alcohol-free attar guide', href: '/alcohol-free-attar' }],
+    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'Alcohol-free attar guide', href: '/alcohol-free-attar' }, { label: 'How to choose an attar gift', href: '/journal/how-to-choose-attar-eid-festive-gift' }],
   },
   jasmine: {
     about:
@@ -43,7 +43,7 @@ export const productSeoContent: Record<string, ProductSeoContent> = {
     faqs: commonFaqs('Jasmine', 'jasmine'),
     relatedProducts: [{ label: 'Gulab Attar', href: '/products/gulab' }, { label: 'Rajnigandha Attar', href: '/products/rajnigandha' }, { label: 'Kewda Attar', href: '/products/kewda' }],
     relatedCategories: [{ label: 'Attar for women', href: '/attar-for-women' }, { label: 'Summer attars', href: '/summer-attars' }],
-    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'What is attar?', href: '/journal/what-is-attar' }],
+    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'What is attar?', href: '/journal/what-is-attar' }, { label: 'How to choose an attar gift', href: '/journal/how-to-choose-attar-eid-festive-gift' }],
   },
   zafran: {
     about:
@@ -133,6 +133,6 @@ export const productSeoContent: Record<string, ProductSeoContent> = {
     faqs: commonFaqs('Harsingar', 'Harsingar or Night Jasmine'),
     relatedProducts: [{ label: 'Jasmine Attar', href: '/products/jasmine' }, { label: 'Rajnigandha Attar', href: '/products/rajnigandha' }, { label: 'Gulab Attar', href: '/products/gulab' }],
     relatedCategories: [{ label: 'Attar for women', href: '/attar-for-women' }, { label: 'Summer attars', href: '/summer-attars' }],
-    relatedJournal: [{ label: 'Harsingar flower benefits and fragrance', href: '/journal/harsingar-flower-benefits-uses-fragrance' }, { label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }],
+    relatedJournal: [{ label: 'Harsingar flower benefits and fragrance', href: '/journal/harsingar-flower-benefits-uses-fragrance' }, { label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'Harsingar attar: a rare floral treasure', href: '/journal/harsingar-attar-floral-treasure' }],
   },
 }

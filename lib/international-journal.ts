@@ -24,6 +24,7 @@ export const internationalJournalArticles: JournalArticle[] = [
       { label: 'Alcohol-free attar guide', href: '/alcohol-free-attar' },
       { label: 'Mitti Attar', href: '/products/mitti' },
       { label: 'Shop by category', href: '/categories' },
+      { label: 'Harsingar attar: a rare floral treasure', href: '/journal/harsingar-attar-floral-treasure' },
     ],
     faqs: [
       { question: 'Is traditional attar alcohol-free?', answer: 'Traditional attar is generally understood as an oil-based fragrance rather than an alcohol spray. Check the individual product information.' },
@@ -106,6 +107,7 @@ export const internationalJournalArticles: JournalArticle[] = [
       { label: 'Gulab Attar', href: '/products/gulab' },
       { label: 'Attar manufacturer in Kannauj', href: '/attar-manufacturer-in-kannauj' },
       { label: 'Deg-Bhapka guide', href: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation' },
+      { label: 'Attar gift ideas', href: '/journal/how-to-choose-attar-eid-festive-gift' },
     ],
     faqs: [
       { question: 'What is the main difference between attar and perfume?', answer: 'Attar is generally an oil-based fragrance, while perfume can refer to several formats, commonly including alcohol-based sprays.' },
@@ -195,6 +197,7 @@ export const internationalJournalArticles: JournalArticle[] = [
       { label: 'Oud Attar', href: '/products/oud' },
       { label: 'Kannauj attar vs Arabic attar', href: '/kannauj-attar-vs-arabic-attar' },
       { label: 'Browse the collection', href: '/#shop' },
+      { label: 'Harsingar attar: a rare floral treasure', href: '/journal/harsingar-attar-floral-treasure' },
     ],
     faqs: [
       { question: 'Is oud the same as attar?', answer: 'No. Attar usually describes an oil-based fragrance format or traditional distillate, while oud refers to a fragrance material or scent direction.' },

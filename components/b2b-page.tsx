@@ -86,6 +86,8 @@ export function B2BPage({ pageKey }: { pageKey: B2BPageKey }) {
               <li><Link href="/private-label-attar-for-gulf-brands" className="text-sm text-primary underline underline-offset-4">Private label attar for brands</Link></li>
               <li><Link href="/kannauj-attar-vs-arabic-attar" className="text-sm text-primary underline underline-offset-4">Kannauj attar vs Arabic attar</Link></li>
               <li><Link href="/alcohol-free-attar" className="text-sm text-primary underline underline-offset-4">Alcohol-free attar guide</Link></li>
+              <li><Link href="/perfume-contract-manufacturing" className="text-sm text-primary underline underline-offset-4">Perfume contract manufacturing</Link></li>
+              <li><Link href="/attar-exporter-india" className="text-sm text-primary underline underline-offset-4">Attar export inquiries</Link></li>
             </ul>
           </section>
 

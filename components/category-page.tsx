@@ -94,6 +94,15 @@ export function CategoryPage({ pageKey }: { pageKey: CategoryPageKey }) {
             </Link>
             .
           </p>
+          <nav aria-label="Related category guides" className="mt-8 border-t border-border pt-8">
+            <p className="text-xs uppercase tracking-[0.15em] text-foreground/50">More category guides</p>
+            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+              <li><Link href="/attar-gift-sets" className="text-primary underline underline-offset-4">Attar gift ideas</Link></li>
+              <li><Link href="/attar-for-pooja" className="text-primary underline underline-offset-4">Attar for pooja</Link></li>
+              <li><Link href="/summer-attars" className="text-primary underline underline-offset-4">Summer attars</Link></li>
+              <li><Link href="/winter-attars" className="text-primary underline underline-offset-4">Winter attars</Link></li>
+            </ul>
+          </nav>
 
           <section aria-labelledby="category-faq" className="mt-14 border-t border-border pt-10">
             <Title as="h2">
