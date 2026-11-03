@@ -12,6 +12,7 @@ import { createProductSchema, ingredientTestingStatement } from '@/lib/schema'
 import { createBreadcrumbSchema } from '@/lib/journal-schema'
 import { shopCatalog } from '@/lib/shop-catalog'
 import { absoluteUrl, siteConfig } from '@/lib/site-config'
+import { productSeoContent } from '@/lib/product-seo-content'
 
 export const revalidate = 3600
 
@@ -83,6 +84,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
     { name: 'Attars', item: absoluteUrl('/#shop') },
     { name: `${product.name} Attar`, item: canonical },
   ])
+  const seoContent = productSeoContent[product.slug]
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: seoContent.faqs.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
+  }
 
   return (
     <>
@@ -263,6 +274,48 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </section>
           )}
+
+          <section aria-labelledby="about-this-attar" className="mt-16 border-t border-border pt-10 md:mt-20">
+            <Title as="h2"><span id="about-this-attar">About this attar</span></Title>
+            <BodyText className="mt-5 max-w-3xl text-foreground/65">{seoContent.about}</BodyText>
+
+            <div className="mt-10 grid gap-8 md:grid-cols-2">
+              <div>
+                <Title as="h3" className="text-2xl">How to wear</Title>
+                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-foreground/70">
+                  {seoContent.wearTips.map((tip) => <li key={tip}>{tip}</li>)}
+                </ul>
+              </div>
+              <div>
+                <Title as="h3" className="text-2xl">Frequently asked questions</Title>
+                <div className="mt-3 divide-y divide-border">
+                  {seoContent.faqs.map(({ question, answer }) => (
+                    <details key={question} className="py-3">
+                      <summary className="cursor-pointer text-sm font-medium">{question}</summary>
+                      <p className="mt-2 text-sm leading-relaxed text-foreground/65">{answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 grid gap-8 border-t border-border pt-8 md:grid-cols-3">
+              {[
+                ['Related products', seoContent.relatedProducts],
+                ['Shop by category', seoContent.relatedCategories],
+                ['Read next', seoContent.relatedJournal],
+              ].map(([heading, links]) => (
+                <div key={heading as string}>
+                  <Title as="h3" className="text-xl">{heading as string}</Title>
+                  <ul className="mt-3 space-y-2 text-sm">
+                    {(links as { label: string; href: string }[]).map((link) => (
+                      <li key={link.href}><Link href={link.href} className="text-primary underline underline-offset-4">{link.label}</Link></li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
         </SectionContainer>
       </main>
       <Footer />
@@ -270,6 +323,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c'),
         }}
       />
       <script

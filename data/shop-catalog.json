@@ -11,6 +11,7 @@
     "hindi": "गुलाब",
     "note": "A soft, richly floral rose distilled at dawn.",
     "image": "/images/gulabattar.jpg",
+    "imageAlt": "Gulab attar bottle - Kannauj Attar",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1299 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1699 },
@@ -118,6 +119,7 @@
     "hindi": "हीना",
     "note": "A warm, resinous blend made for moments of stillness.",
     "image": "/images/hinattarkannauj.webp",
+    "imageAlt": "Hina attar bottle - Kannauj Attar",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1899 },
