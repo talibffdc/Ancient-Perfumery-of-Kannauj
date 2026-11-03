@@ -256,6 +256,7 @@ export const internationalJournalArticles: JournalArticle[] = [
         paragraphs: [
           'Attar and oud answer different questions. Attar usually describes an oil-based fragrance format or traditional distillate. Oud points to a woody aromatic material or scent direction. They can appear together in one product name, but they are not interchangeable terms.',
           'Read the product description, ask what is confirmed and choose according to the fragrance character and application style you prefer. Kannauj Attar’s collection and Journal explain the traditional context while keeping the limits of product claims clear. That balance is more useful than presenting attar and oud as competing labels.',
+          'If you are comparing products, record the format, the published description and the questions that remain unanswered. This keeps a material comparison separate from assumptions about sourcing or performance and makes it easier to ask the team a precise product question.',
         ],
       },
     ]),
@@ -338,6 +339,7 @@ export const internationalJournalArticles: JournalArticle[] = [
         paragraphs: [
           'Choosing an attar as an Eid or festive gift is mainly about understanding the recipient and reading the product information. Compare floral, earthy, woody, resinous and blended descriptions; consider the oil application; and confirm current format and presentation. The current catalogue lists individual products, not a confirmed pre-made gift set.',
           'A careful gift does not need exaggerated promises. Share the Kannauj story accurately, ask questions where details are open and let the recipient’s own preference guide the final choice. Browse the collection, read the product pages and contact the team if the available information does not answer your question.',
+          'When in doubt, make the gift easy to understand: name the product, share the listed fragrance direction and explain that a small dab is the usual starting point for an oil fragrance. The recipient can then decide how and when they would like to wear it.',
         ],
       },
     ]),
@@ -412,6 +414,7 @@ export const internationalJournalArticles: JournalArticle[] = [
         heading: 'What the method does not prove',
         paragraphs: [
           'The presence of the word Deg-Bhapka does not prove a specific ingredient list, certification, health benefit, export arrangement or product performance. It identifies a traditional method and regional craft context. Buyers should still review the product information and ask what has been confirmed for the item or project they are considering.',
+          'A careful product question separates the method from the commercial details. Ask which item is being discussed, what form is listed and which information is confirmed for that item. Traditional context is valuable, but it should not be used to fill gaps in a product specification.',
           'The same caution applies to natural and alcohol-free language. Traditional attar is generally understood as oil-based, but the individual product should be checked. Clear boundaries make the story more trustworthy: describe the method, explain the confirmed business background and avoid inventing details that have not been supplied.',
         ],
       },
