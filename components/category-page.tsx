@@ -9,12 +9,14 @@ import {
   getCategoryProducts,
   type CategoryPageKey,
 } from '@/lib/category-pages'
+import { getDiwaliPrice, isDiwaliOfferActive, diwaliOffer } from '@/lib/diwali-offer'
 import { absoluteUrl } from '@/lib/site-config'
 
 export function CategoryPage({ pageKey }: { pageKey: CategoryPageKey }) {
   const page = getCategoryPage(pageKey)
   const products = getCategoryProducts(pageKey)
   const pageUrl = absoluteUrl(`/${pageKey}`)
+  const saleActive = isDiwaliOfferActive()
   const breadcrumbSchema = createBreadcrumbSchema([
     { name: 'Home', item: absoluteUrl('/') },
     { name: 'Shop by Category', item: absoluteUrl('/categories') },
@@ -33,6 +35,27 @@ export function CategoryPage({ pageKey }: { pageKey: CategoryPageKey }) {
         url: absoluteUrl(`/products/${product.slug}`),
         description: product.note,
         ...(product.image ? { image: absoluteUrl(product.image) } : {}),
+        offers: product.variants.map((variant) => {
+          return {
+            '@type': 'Offer',
+            name: `${product.name} ${variant.name} · ${variant.size}`,
+            price: saleActive ? getDiwaliPrice(variant.price) : variant.price,
+            priceCurrency: 'INR',
+            url: absoluteUrl(`/products/${product.slug}`),
+            ...(saleActive
+              ? {
+                  validFrom: diwaliOffer.validFrom,
+                  priceValidUntil: diwaliOffer.validThrough,
+                  priceSpecification: {
+                    '@type': 'UnitPriceSpecification',
+                    priceType: 'https://schema.org/StrikethroughPrice',
+                    price: variant.price,
+                    priceCurrency: 'INR',
+                  },
+                }
+              : {}),
+          }
+        }),
       },
     })),
   }
