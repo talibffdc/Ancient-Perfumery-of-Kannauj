@@ -188,7 +188,7 @@ export function Navigation({ className }: NavigationProps) {
         id="mobile-menu"
         aria-hidden={!isMenuOpen}
         className={cn(
-          'fixed inset-0 top-0 flex flex-col items-center justify-center bg-background transition-all duration-500 lg:hidden',
+          'fixed inset-0 top-0 flex flex-col items-center justify-start overflow-y-auto bg-background px-6 py-24 transition-all duration-500 lg:hidden',
           isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         )}
       >
@@ -200,7 +200,10 @@ export function Navigation({ className }: NavigationProps) {
         >
           Close
         </button>
-        <ul className="flex max-h-[80vh] flex-col items-center gap-6 overflow-y-auto py-8">
+        <p className="mb-5 text-center font-sans text-[10px] uppercase tracking-[0.2em] text-foreground/45">
+          Scroll to see more
+        </p>
+        <ul className="flex w-full max-w-sm flex-col items-center gap-6 pb-8">
           {primaryLinks.map((link) => (
             <li key={link.href}>
               <a
