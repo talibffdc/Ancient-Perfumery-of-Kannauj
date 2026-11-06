@@ -162,9 +162,17 @@ export const createProductSchema = (product: {
       value: 0,
       currency: 'INR',
     },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      transitTime: {
+        '@type': 'QuantitativeValue',
+        minValue: 3,
+        maxValue: 7,
+        unitCode: 'DAY',
+      },
+    },
   }
   const offerDetails = {
-    ...(product.availability && { availability: product.availability }),
     shippingDetails,
     ...(product.includeMerchantReturnPolicy !== false && {
       hasMerchantReturnPolicy: {
@@ -190,6 +198,31 @@ export const createProductSchema = (product: {
       ? `${diwaliOffer.discountPercent}% off for a limited time with our Diwali Offer.`
       : '',
   ].filter(Boolean).join(' ')
+  const availability =
+    product.availability === null
+      ? undefined
+      : product.availability ?? 'https://schema.org/InStock'
+  const createOffer = (offer: { name: string; price: number; size: string }) => ({
+    '@type': 'Offer',
+    name: `${product.name} ${offer.name} · ${offer.size}`,
+    price: saleActive ? getDiwaliPrice(offer.price) : offer.price,
+    priceCurrency: 'INR',
+    ...(availability ? { availability } : {}),
+    url: product.url,
+    ...(saleActive
+      ? {
+          validFrom: diwaliOffer.validFrom,
+          priceValidUntil: diwaliOffer.validThrough,
+          priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            priceType: 'https://schema.org/StrikethroughPrice',
+            price: offer.price,
+            priceCurrency: 'INR',
+          },
+        }
+      : {}),
+    ...offerDetails,
+  })
 
   return {
     '@context': 'https://schema.org',
@@ -209,32 +242,7 @@ export const createProductSchema = (product: {
       name: siteConfig.brandName,
       url: siteConfig.siteUrl,
     },
-    offers: saleActive
-      ? product.offers.map((offer) => ({
-          '@type': 'Offer',
-          name: `${product.name} ${offer.name} · ${offer.size}`,
-          price: getDiwaliPrice(offer.price),
-          priceCurrency: 'INR',
-          url: product.url,
-          validFrom: diwaliOffer.validFrom,
-          priceValidUntil: diwaliOffer.validThrough,
-          priceSpecification: {
-            '@type': 'UnitPriceSpecification',
-            priceType: 'https://schema.org/StrikethroughPrice',
-            price: offer.price,
-            priceCurrency: 'INR',
-          },
-          ...offerDetails,
-        }))
-      : {
-          '@type': 'AggregateOffer',
-          lowPrice: Math.min(...product.offers.map((offer) => offer.price)),
-          highPrice: Math.max(...product.offers.map((offer) => offer.price)),
-          priceCurrency: 'INR',
-          offerCount: product.offers.length,
-          url: product.url,
-          ...offerDetails,
-        },
+    offers: product.offers.map(createOffer),
   }
 }
 
