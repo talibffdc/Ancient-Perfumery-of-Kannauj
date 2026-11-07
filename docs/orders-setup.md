@@ -117,6 +117,12 @@ the expected order ID, amount and INR currency before saving the order to
 Google Sheets as paid. COD continues to save as unpaid with its existing ₹49
 fee.
 
+Order references use a hexadecimal suffix (`KA-YYYYMMDD-XXXXXXXXXXXX`) so they
+remain accepted by older Apps Script deployments while the Web App is being
+updated. After replacing the Apps Script code, deploy a new version and verify
+the exact `/exec` URL returns the current validation errors rather than the old
+`Invalid order payload` message.
+
 For production, switch the Razorpay dashboard to Live Mode, replace only these
 two environment values with the Live API credentials, and add them to Vercel's
 Production environment. Redeploy after changing them. Test with the test keys

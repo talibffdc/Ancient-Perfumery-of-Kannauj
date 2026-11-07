@@ -279,7 +279,17 @@ export async function POST(request: Request) {
     }
   }
   const datePart = new Date().toISOString().slice(0, 10).replaceAll('-', '')
-  const orderId = `KA-${datePart}-${input.idempotencyKey.replaceAll('-', '').slice(0, 12).toUpperCase()}`
+  // Keep the suffix hexadecimal for compatibility with older Apps Script deployments.
+  const idSuffix = input.idempotencyKey
+    .replaceAll('-', '')
+    .match(/[a-f0-9]/gi)
+    ?.join('')
+    .slice(0, 12)
+    .toUpperCase()
+  if (!idSuffix || idSuffix.length !== 12) {
+    return Response.json({ error: 'Could not create a valid order reference.' }, { status: 500 })
+  }
+  const orderId = `KA-${datePart}-${idSuffix}`
   const order = {
     orderId,
     createdAt: new Date().toISOString(),
