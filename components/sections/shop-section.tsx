@@ -8,6 +8,12 @@ import { BodyText, Caption, Headline, Title } from '@/components/typography'
 import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
 import { shopCatalog, type ProductVariant, type StoreProduct } from '@/lib/shop-catalog'
 
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => { open: () => void }
+  }
+}
+
 const products = shopCatalog.products
 
 const formatPrice = (price: number) =>
@@ -77,6 +83,7 @@ export function ShopSection() {
   const [checkoutNotice, setCheckoutNotice] = useState('')
   const [recentlyAddedKey, setRecentlyAddedKey] = useState<string | null>(null)
   const [deliveryCountry, setDeliveryCountry] = useState('India')
+  const [paymentMethod, setPaymentMethod] = useState<'COD' | 'ONLINE'>('COD')
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false)
   const [placedOrder, setPlacedOrder] = useState<{ id: string; emailWarning?: string } | null>(null)
   const checkoutAttemptId = useRef<string | null>(null)
@@ -198,6 +205,17 @@ export function ShopSection() {
   const codFee = deliveryCountry === 'India' ? shopCatalog.fees.indiaCodFee : 0
   const orderTotal = bagTotal + shippingFee + codFee
 
+  const loadRazorpay = async () => {
+    if (window.Razorpay) return
+    await new Promise<void>((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+      script.onload = () => resolve()
+      script.onerror = () => reject(new Error('Could not load Razorpay checkout.'))
+      document.body.appendChild(script)
+    })
+  }
+
   const handlePlaceOrder = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (isSubmittingOrder || bag.length === 0) return
@@ -208,30 +226,66 @@ export function ShopSection() {
     }
 
     const formData = new FormData(event.currentTarget)
+    const idempotencyKey = checkoutAttemptId.current ??= crypto.randomUUID()
+    const orderInput = {
+      idempotencyKey,
+      name: formData.get('name'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      address: formData.get('address'),
+      city: formData.get('city'),
+      region: formData.get('region'),
+      postalCode: formData.get('postalCode'),
+      country: deliveryCountry,
+      items: bag.map((item) => ({
+        productSlug: item.product.slug,
+        variantId: item.variant.id,
+        quantity: item.quantity,
+        ...(item.customBrief && { customBrief: item.customBrief }),
+      })),
+    }
     setIsSubmittingOrder(true)
-    setCheckoutNotice('Saving your order securely. Please keep this page open for a moment.')
+    setCheckoutNotice(paymentMethod === 'ONLINE' ? 'Opening secure payment checkout…' : 'Saving your order securely. Please keep this page open for a moment.')
 
     try {
+      let paymentDetails: { razorpayOrderId: string; razorpayPaymentId: string; razorpaySignature: string } | undefined
+      if (paymentMethod === 'ONLINE') {
+        await loadRazorpay()
+        const paymentResponse = await fetch('/api/payment/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idempotencyKey, items: orderInput.items }),
+        })
+        const paymentOrder = await paymentResponse.json()
+        if (!paymentResponse.ok || !window.Razorpay) throw new Error(paymentOrder.error || 'Online payment is unavailable.')
+        const Razorpay = window.Razorpay
+        paymentDetails = await new Promise((resolve, reject) => {
+          const checkout = new Razorpay({
+            key: paymentOrder.keyId,
+            amount: paymentOrder.amount,
+            currency: paymentOrder.currency,
+            name: 'Kannauj Attar',
+            description: 'Kannauj Attar order',
+            order_id: paymentOrder.orderId,
+            prefill: { name: orderInput.name, email: orderInput.email, contact: orderInput.phone },
+            handler: (result: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
+              resolve({
+                razorpayOrderId: result.razorpay_order_id,
+                razorpayPaymentId: result.razorpay_payment_id,
+                razorpaySignature: result.razorpay_signature,
+              }),
+            modal: { ondismiss: () => reject(new Error('Payment was cancelled.')) },
+          })
+          checkout.open()
+        })
+      }
       const response = await fetch('/api/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          idempotencyKey: checkoutAttemptId.current ??= crypto.randomUUID(),
-          name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          address: formData.get('address'),
-          city: formData.get('city'),
-          region: formData.get('region'),
-          postalCode: formData.get('postalCode'),
-          country: deliveryCountry,
-          paymentMethod: 'COD',
-          items: bag.map((item) => ({
-            productSlug: item.product.slug,
-            variantId: item.variant.id,
-            quantity: item.quantity,
-            ...(item.customBrief && { customBrief: item.customBrief }),
-          })),
+          ...orderInput,
+          paymentMethod,
+          ...paymentDetails,
         }),
       })
       const result = await response.json()
@@ -246,8 +300,8 @@ export function ShopSection() {
       setSelectedProduct(null)
       clearCart()
       setCheckoutNotice('')
-    } catch {
-      setCheckoutNotice('Network error. Your order was not confirmed. Please check your connection and try again.')
+    } catch (error) {
+      setCheckoutNotice(error instanceof Error ? error.message : 'Payment or order confirmation failed. Please try again.')
     } finally {
       setIsSubmittingOrder(false)
     }
@@ -653,9 +707,18 @@ export function ShopSection() {
                   </select>
                 </label>
                 {deliveryCountry === 'India' && (
-                  <div className="flex items-center justify-between border-t border-border pt-4 text-sm">
-                    <span className="text-foreground/55">Payment method</span>
-                    <span className="text-foreground">Cash on Delivery</span>
+                  <div className="border-t border-border pt-4 text-sm">
+                    <p className="text-foreground/55">Payment method</p>
+                    <div className="mt-3 flex flex-wrap gap-4">
+                      <label className="inline-flex items-center gap-2">
+                        <input type="radio" name="paymentMethod" value="COD" checked={paymentMethod === 'COD'} onChange={() => setPaymentMethod('COD')} />
+                        Cash on Delivery
+                      </label>
+                      <label className="inline-flex items-center gap-2">
+                        <input type="radio" name="paymentMethod" value="ONLINE" checked={paymentMethod === 'ONLINE'} onChange={() => setPaymentMethod('ONLINE')} />
+                        Pay online
+                      </label>
+                    </div>
                   </div>
                 )}
               </div>
@@ -690,7 +753,7 @@ export function ShopSection() {
                     </div>
                   )}
                   <div className="flex justify-between border-t border-border pt-3">
-                    <span className="text-foreground/70">Payable on delivery</span>
+                    <span className="text-foreground/70">{paymentMethod === 'COD' ? 'Payable on delivery' : 'Pay online'}</span>
                     <span className="font-serif text-3xl text-foreground">{formatPrice(orderTotal)}</span>
                   </div>
                 </div>
@@ -700,9 +763,9 @@ export function ShopSection() {
                   className="min-h-12 w-full bg-primary px-5 text-xs uppercase tracking-[0.18em] text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmittingOrder
-                    ? 'Placing your COD order…'
+                    ? paymentMethod === 'COD' ? 'Placing your COD order…' : 'Processing payment…'
                     : deliveryCountry === 'India'
-                      ? 'Place Cash on Delivery order'
+                      ? paymentMethod === 'COD' ? 'Place Cash on Delivery order' : 'Pay securely online'
                       : 'Online payment required · coming soon'}
                 </button>
                 <p aria-live="polite" className="mt-3 min-h-5 text-xs leading-relaxed text-primary">

@@ -75,6 +75,8 @@ changing them:
 ```dotenv
 GOOGLE_SHEETS_ORDERS_URL=https://script.google.com/macros/s/DEPLOYMENT_ID/exec
 GOOGLE_SHEETS_ORDERS_SECRET=THE_SAME_PRIVATE_RANDOM_VALUE_AS_SCRIPT_PROPERTY
+RAZORPAY_KEY_ID=rzp_test_your_key_id
+RAZORPAY_KEY_SECRET=your_test_key_secret
 ORDER_NOTIFICATION_EMAIL=talibffdc@gmail.com
 ORDER_NOTIFICATION_FROM=onboarding@resend.dev
 ```
@@ -91,6 +93,25 @@ arrive. Keep the API key and both notification settings in the Vercel
 Production environment; do not prefix them with `NEXT_PUBLIC_`. Redeploy the
 production site after changing environment variables. The contact-form recipient
 is configured separately in `app/api/inquiry/route.ts`.
+
+### Razorpay online payments
+
+The checkout supports both Cash on Delivery and Razorpay online payments for
+India. Add the test-mode `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` above to
+local `.env.local` and Vercel Preview/Development. The secret must never use a
+`NEXT_PUBLIC_` prefix, appear in browser code, or be committed.
+
+The browser opens Razorpay Checkout, but the server verifies the returned
+signature and then checks Razorpay's payment API for a `captured` payment with
+the expected order ID, amount and INR currency before saving the order to
+Google Sheets as paid. COD continues to save as unpaid with its existing ₹49
+fee.
+
+For production, switch the Razorpay dashboard to Live Mode, replace only these
+two environment values with the Live API credentials, and add them to Vercel's
+Production environment. Redeploy after changing them. Test with the test keys
+first; never paste secret keys into chat, source files, or client-side
+environment variables.
 
 The inquiry form requires a phone number and sends the name, email, phone, and
 message through Resend. Configure these server-only variables for the contact

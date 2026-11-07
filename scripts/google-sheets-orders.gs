@@ -205,7 +205,7 @@ function isValidOrder_(order) {
     order.customer &&
     Array.isArray(order.items) &&
     order.items.length > 0 &&
-    order.paymentMethod === 'Cash on Delivery' &&
+    (order.paymentMethod === 'Cash on Delivery' || order.paymentMethod === 'Razorpay') &&
     Number.isFinite(order.total)
   );
 }

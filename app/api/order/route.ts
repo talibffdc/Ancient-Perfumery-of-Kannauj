@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 import { shopCatalog } from '@/lib/shop-catalog'
 import { getDiwaliPrice } from '@/lib/diwali-offer'
+import { getRazorpayPayment, verifyRazorpaySignature } from '@/lib/razorpay'
 import {
   CUSTOM_FRAGRANCE_SLUG,
   customFragranceFamilies,
@@ -36,7 +37,10 @@ const orderRequestSchema = z.object({
   region: z.string().trim().min(2).max(100),
   postalCode: z.string().trim().regex(/^\d{6}$/),
   country: z.string().trim().min(2).max(80),
-  paymentMethod: z.literal('COD'),
+  paymentMethod: z.enum(['COD', 'ONLINE']),
+  razorpayOrderId: z.string().min(1).max(100).optional(),
+  razorpayPaymentId: z.string().min(1).max(100).optional(),
+  razorpaySignature: z.string().length(64).optional(),
   items: z.array(z.object({
     productSlug: z.string().min(1).max(80),
     variantId: z.string().min(1).max(80),
@@ -91,6 +95,8 @@ type ConfirmedOrder = {
   shippingFee: number
   codFee: number
   total: number
+  paymentMethod: string
+  paymentStatus: string
 }
 
 async function sendOrderNotification(
@@ -127,11 +133,11 @@ async function sendOrderNotification(
       from: sender,
       to: recipient,
       replyTo: order.customer.email,
-      subject: `New COD order ${order.orderId}`,
+      subject: `New ${order.paymentMethod} order ${order.orderId}`,
       html: `
         <div style="font-family:Arial,sans-serif;line-height:1.6;color:#27231f;max-width:720px">
-          <h1 style="font-family:Georgia,serif;font-weight:400">New Cash on Delivery Order</h1>
-          <p><strong>Order reference:</strong> ${order.orderId}<br><strong>Order status:</strong> New</p>
+          <h1 style="font-family:Georgia,serif;font-weight:400">New ${escapeHtml(order.paymentMethod)} Order</h1>
+          <p><strong>Order reference:</strong> ${order.orderId}<br><strong>Payment status:</strong> ${escapeHtml(order.paymentStatus)}<br><strong>Order status:</strong> New</p>
           <h2>Customer</h2>
           <p>${escapeHtml(order.customer.name)}<br><a href="mailto:${escapeHtml(order.customer.email)}">${escapeHtml(order.customer.email)}</a><br>${escapeHtml(order.customer.phone)}</p>
           <p>${escapeHtml(order.customer.address)}<br>${escapeHtml(order.customer.city)}, ${escapeHtml(order.customer.region)} ${escapeHtml(order.customer.postalCode)}<br>${escapeHtml(order.customer.country)}</p>
@@ -144,7 +150,7 @@ async function sendOrderNotification(
             Items: ${formatRupees(order.subtotal)}<br>
             Shipping: ${order.shippingFee === 0 ? 'Free' : formatRupees(order.shippingFee)}<br>
             COD fee: ${formatRupees(order.codFee)}<br>
-            <strong>Collect on delivery: ${formatRupees(order.total)}</strong>
+            <strong>${order.paymentMethod === 'Cash on Delivery' ? 'Collect on delivery' : 'Paid total'}: ${formatRupees(order.total)}</strong>
           </p>
           <hr>
           <p><strong>Dispatch:</strong> Pending · Update order status, courier, and tracking in the Orders sheet.</p>
@@ -197,6 +203,23 @@ export async function POST(request: Request) {
       { status: 400 }
     )
   }
+  if (input.paymentMethod === 'ONLINE') {
+    if (!input.razorpayOrderId || !input.razorpayPaymentId || !input.razorpaySignature) {
+      return Response.json({ error: 'Payment verification data is incomplete.' }, { status: 400 })
+    }
+    try {
+      if (!verifyRazorpaySignature({
+        orderId: input.razorpayOrderId,
+        paymentId: input.razorpayPaymentId,
+        signature: input.razorpaySignature,
+      })) {
+        return Response.json({ error: 'Payment verification failed.' }, { status: 400 })
+      }
+    } catch (error) {
+      console.error('Online payment verification failed:', error)
+      return Response.json({ error: 'Online payment verification is unavailable.' }, { status: 503 })
+    }
+  }
 
   const orderItems = []
   for (const requestedItem of input.items) {
@@ -232,8 +255,24 @@ export async function POST(request: Request) {
 
   const subtotal = orderItems.reduce((sum, item) => sum + item.lineTotal, 0)
   const shippingFee = shopCatalog.fees.indiaShipping
-  const codFee = shopCatalog.fees.indiaCodFee
+  const codFee = input.paymentMethod === 'COD' ? shopCatalog.fees.indiaCodFee : 0
   const total = subtotal + shippingFee + codFee
+  if (input.paymentMethod === 'ONLINE') {
+    try {
+      const payment = await getRazorpayPayment(input.razorpayPaymentId!)
+      if (
+        payment.status !== 'captured' ||
+        payment.order_id !== input.razorpayOrderId ||
+        payment.amount !== total * 100 ||
+        payment.currency !== 'INR'
+      ) {
+        return Response.json({ error: 'Payment amount or status could not be confirmed.' }, { status: 400 })
+      }
+    } catch (error) {
+      console.error('Razorpay payment status check failed:', error)
+      return Response.json({ error: 'Payment status could not be confirmed.' }, { status: 502 })
+    }
+  }
   const datePart = new Date().toISOString().slice(0, 10).replaceAll('-', '')
   const orderId = `KA-${datePart}-${input.idempotencyKey.replaceAll('-', '').slice(0, 12).toUpperCase()}`
   const order = {
@@ -255,8 +294,8 @@ export async function POST(request: Request) {
     codFee,
     total,
     currency: 'INR',
-    paymentMethod: 'Cash on Delivery',
-    paymentStatus: 'Unpaid — collect on delivery',
+    paymentMethod: input.paymentMethod === 'COD' ? 'Cash on Delivery' : 'Razorpay',
+    paymentStatus: input.paymentMethod === 'COD' ? 'Unpaid — collect on delivery' : 'Paid',
     orderStatus: 'New',
     dispatchStatus: 'Pending',
   }
