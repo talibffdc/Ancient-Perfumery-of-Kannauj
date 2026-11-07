@@ -13,7 +13,7 @@
     "image": "/images/gulabattar.jpg",
     "imageAlt": "Gulab attar bottle - Kannauj Attar",
     "variants": [
-      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1299 },
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1699 },
       { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1499 }
     ]
