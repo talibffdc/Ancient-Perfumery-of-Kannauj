@@ -56,8 +56,18 @@ function setupOrdersSheet() {
     .requireValueInList(['Pending', 'Packed', 'Dispatched', 'Delivered', 'Returned'], true)
     .setAllowInvalid(false)
     .build();
+  const paymentMethodRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(['Cash on Delivery', 'Razorpay'], true)
+    .setAllowInvalid(false)
+    .build();
+  const paymentStatusRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(['Unpaid — collect on delivery', 'Paid', 'Refunded', 'Failed'], true)
+    .setAllowInvalid(false)
+    .build();
   sheet.getRange(2, 18, statusRows, 1).setDataValidation(orderStatusRule);
   sheet.getRange(2, 19, statusRows, 1).setDataValidation(dispatchStatusRule);
+  sheet.getRange(2, 16, statusRows, 1).setDataValidation(paymentMethodRule);
+  sheet.getRange(2, 17, statusRows, 1).setDataValidation(paymentStatusRule);
 }
 
 function doGet() {
@@ -98,8 +108,10 @@ function doPost(event) {
     if (!expectedSecret || body.secret !== expectedSecret) {
       return jsonResponse_({ success: false, error: 'Unauthorized' });
     }
-    if (!isValidOrder_(body.order)) {
-      return jsonResponse_({ success: false, error: 'Invalid order payload' });
+    const validationError = validateOrder_(body.order);
+    if (validationError) {
+      console.error('Order validation failed: ' + validationError);
+      return jsonResponse_({ success: false, error: validationError });
     }
 
     lock.waitLock(20000);
@@ -198,16 +210,16 @@ function getOrdersSheet_() {
   return sheet;
 }
 
-function isValidOrder_(order) {
-  return Boolean(
-    order &&
-    /^KA-\d{8}-[A-F0-9]{12}$/.test(order.orderId) &&
-    order.customer &&
-    Array.isArray(order.items) &&
-    order.items.length > 0 &&
-    (order.paymentMethod === 'Cash on Delivery' || order.paymentMethod === 'Razorpay') &&
-    Number.isFinite(order.total)
-  );
+function validateOrder_(order) {
+  if (!order) return 'Missing order';
+  if (!/^KA-\d{8}-[A-F0-9]{12}$/i.test(String(order.orderId || ''))) return 'Invalid order ID';
+  if (!order.customer) return 'Missing customer';
+  if (!Array.isArray(order.items) || order.items.length === 0) return 'Missing order items';
+  if (order.paymentMethod !== 'Cash on Delivery' && order.paymentMethod !== 'Razorpay') {
+    return 'Unsupported payment method: ' + String(order.paymentMethod || '');
+  }
+  if (!Number.isFinite(Number(order.total))) return 'Invalid order total';
+  return '';
 }
 
 function safeCell_(value) {

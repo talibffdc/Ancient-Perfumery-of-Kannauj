@@ -397,7 +397,9 @@ export async function POST(request: Request) {
     console.error('Order spreadsheet did not confirm the order after retry:', lastSheetFailure ?? 'Unknown error')
     return Response.json(
       {
-        error: 'We could not confirm the order save. Please wait a moment and check your order status before submitting again.',
+        error: lastSheetFailure
+          ? `We could not confirm the order save: ${lastSheetFailure}. Please do not pay again; contact us with your payment reference.`
+          : 'We could not confirm the order save. Please wait a moment and check your order status before submitting again.',
         retryable: true,
       },
       { status: 502 }
