@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { shopCatalog } from '@/lib/shop-catalog'
 import { getDiwaliPrice } from '@/lib/diwali-offer'
 import { getRazorpayPayment, verifyRazorpaySignature } from '@/lib/razorpay'
+import { COUPON_CODE, FREE_GIFT_NAME, getCouponDiscount, qualifiesForFreeGift } from '@/lib/order-offer'
 import {
   CUSTOM_FRAGRANCE_SLUG,
   customFragranceFamilies,
@@ -29,6 +30,7 @@ const customFragranceBriefSchema = z.object({
 
 const orderRequestSchema = z.object({
   idempotencyKey: z.string().uuid(),
+  couponCode: z.string().max(40).optional(),
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(254),
   phone: z.string().trim().min(8).max(20).regex(/^[0-9+() -]+$/),
@@ -254,9 +256,12 @@ export async function POST(request: Request) {
   }
 
   const subtotal = orderItems.reduce((sum, item) => sum + item.lineTotal, 0)
+  const couponDiscount = getCouponDiscount(subtotal, input.couponCode)
+  const discountedSubtotal = subtotal - couponDiscount
   const shippingFee = shopCatalog.fees.indiaShipping
   const codFee = input.paymentMethod === 'COD' ? shopCatalog.fees.indiaCodFee : 0
-  const total = subtotal + shippingFee + codFee
+  const giftUnlocked = qualifiesForFreeGift(subtotal)
+  const total = discountedSubtotal + shippingFee + codFee
   if (input.paymentMethod === 'ONLINE') {
     try {
       const payment = await getRazorpayPayment(input.razorpayPaymentId!)
@@ -288,8 +293,23 @@ export async function POST(request: Request) {
       postalCode: input.postalCode,
       country: 'India',
     },
-    items: orderItems,
+    items: giftUnlocked
+      ? [
+          ...orderItems,
+          {
+            productSlug: 'complimentary-zafrani-rose-oudh',
+            productName: FREE_GIFT_NAME,
+            variantName: 'Complimentary gift',
+            size: '2 ml',
+            quantity: 1,
+            unitPrice: 0,
+            lineTotal: 0,
+          },
+        ]
+      : orderItems,
     subtotal,
+    couponCode: couponDiscount > 0 ? COUPON_CODE : undefined,
+    couponDiscount,
     shippingFee,
     codFee,
     total,

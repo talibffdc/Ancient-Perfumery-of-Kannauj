@@ -175,6 +175,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="mt-5 text-xs leading-relaxed text-foreground/50">
                 Cash on Delivery available in India · Free India shipping · ₹49 COD fee.
               </p>
+              <p className="mt-2 text-xs leading-relaxed text-primary">
+                Use coupon <strong>KANNAUJATTAR10</strong> at checkout for 10% off.
+                Pay online to save the ₹49 COD fee.
+              </p>
               <p className="mt-2 text-xs leading-relaxed text-foreground/50">
                 Returns accepted within 7 days for unused, sealed products. Return shipping is paid by {siteConfig.brandName}.
               </p>

@@ -160,7 +160,7 @@ function doPost(event) {
       '',
       '',
       '',
-      '',
+      order.couponCode ? 'Coupon ' + safeCell_(order.couponCode) + ': -₹' + Number(order.couponDiscount || 0) : '',
       safeCell_(customBriefSummary),
     ];
 

@@ -101,6 +101,16 @@ India. Add the test-mode `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` above to
 local `.env.local` and Vercel Preview/Development. The secret must never use a
 `NEXT_PUBLIC_` prefix, appear in browser code, or be committed.
 
+Online payment is the default checkout option and removes the ₹49 COD handling
+fee. Orders with an item subtotal of ₹3,149 or more also receive the
+complimentary 2 ml Natural Pure Zafrani Rose Oudh gift. This offer is configured
+to continue until manually changed.
+
+The checkout also accepts coupon code `KANNAUJATTAR10`. It gives 10% off the
+item subtotal after any active Diwali pricing; shipping and the COD fee are not
+discounted. The server recalculates and validates the coupon before creating or
+saving an order.
+
 The browser opens Razorpay Checkout, but the server verifies the returned
 signature and then checks Razorpay's payment API for a `captured` payment with
 the expected order ID, amount and INR currency before saving the order to

@@ -3,9 +3,11 @@ import { customFragranceProduct, CUSTOM_FRAGRANCE_SLUG } from '@/lib/custom-frag
 import { getDiwaliPrice } from '@/lib/diwali-offer'
 import { shopCatalog } from '@/lib/shop-catalog'
 import { createRazorpayOrder, getRazorpayKeyId } from '@/lib/razorpay'
+import { getCouponDiscount } from '@/lib/order-offer'
 
 const requestSchema = z.object({
   idempotencyKey: z.string().uuid(),
+  couponCode: z.string().max(40).optional(),
   items: z.array(z.object({
     productSlug: z.string().min(1).max(80),
     variantId: z.string().min(1).max(80),
@@ -34,8 +36,9 @@ export async function POST(request: Request) {
       if (!product || !variant) return Response.json({ error: 'One selected product is no longer available.' }, { status: 400 })
       amount += (item.productSlug === CUSTOM_FRAGRANCE_SLUG ? variant.price : getDiwaliPrice(variant.price)) * item.quantity
     }
+    const couponDiscount = getCouponDiscount(amount, parsed.data.couponCode)
     const razorpayOrder = await createRazorpayOrder({
-      amount: amount * 100,
+      amount: (amount - couponDiscount) * 100,
       receipt: `KA-${parsed.data.idempotencyKey.replaceAll('-', '').slice(0, 20)}`,
       notes: { idempotencyKey: parsed.data.idempotencyKey },
     })

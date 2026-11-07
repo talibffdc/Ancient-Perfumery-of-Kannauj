@@ -17,6 +17,11 @@ export function HomepageIntroSection() {
           </Headline>
 
           <div className="mt-8 space-y-6">
+            <p className="border border-primary/30 bg-primary/5 px-5 py-4 text-sm leading-relaxed text-foreground/75">
+              <strong className="text-primary">Save 10% on your Kannauj Attar order.</strong>{' '}
+              Apply coupon code <strong className="text-foreground">KANNAUJATTAR10</strong> at checkout.
+              Pay online to save the ₹49 Cash on Delivery fee as well.
+            </p>
             <BodyText>
               Kannauj attar brings together fragrance, botanical materials and a
               place known for traditional perfumery. At Kannauj Attar, our

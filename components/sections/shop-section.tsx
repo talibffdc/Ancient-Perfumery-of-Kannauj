@@ -7,6 +7,15 @@ import { SectionContainer } from '@/components/cinematic-section'
 import { BodyText, Caption, Headline, Title } from '@/components/typography'
 import { diwaliOffer, getDiwaliPrice, isDiwaliOfferActive } from '@/lib/diwali-offer'
 import { shopCatalog, type ProductVariant, type StoreProduct } from '@/lib/shop-catalog'
+import {
+  FREE_GIFT_NAME,
+  FREE_GIFT_THRESHOLD,
+  ONLINE_PAYMENT_SAVING,
+  COUPON_CODE,
+  COUPON_DISCOUNT_PERCENT,
+  getCouponDiscount,
+  qualifiesForFreeGift,
+} from '@/lib/order-offer'
 
 declare global {
   interface Window {
@@ -83,7 +92,9 @@ export function ShopSection() {
   const [checkoutNotice, setCheckoutNotice] = useState('')
   const [recentlyAddedKey, setRecentlyAddedKey] = useState<string | null>(null)
   const [deliveryCountry, setDeliveryCountry] = useState('India')
-  const [paymentMethod, setPaymentMethod] = useState<'COD' | 'ONLINE'>('COD')
+  const [paymentMethod, setPaymentMethod] = useState<'COD' | 'ONLINE'>('ONLINE')
+  const [couponInput, setCouponInput] = useState('')
+  const [appliedCoupon, setAppliedCoupon] = useState('')
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false)
   const [placedOrder, setPlacedOrder] = useState<{ id: string; emailWarning?: string } | null>(null)
   const checkoutAttemptId = useRef<string | null>(null)
@@ -202,8 +213,24 @@ export function ShopSection() {
   const shippingFee = deliveryCountry === 'India'
     ? shopCatalog.fees.indiaShipping
     : shopCatalog.fees.internationalShipping
-  const codFee = deliveryCountry === 'India' ? shopCatalog.fees.indiaCodFee : 0
-  const orderTotal = bagTotal + shippingFee + codFee
+  const codFee =
+    deliveryCountry === 'India' && paymentMethod === 'COD'
+      ? shopCatalog.fees.indiaCodFee
+      : 0
+  const couponDiscount = getCouponDiscount(bagTotal, appliedCoupon)
+  const orderTotal = bagTotal - couponDiscount + shippingFee + codFee
+  const giftUnlocked = qualifiesForFreeGift(bagTotal)
+  const giftRemaining = Math.max(FREE_GIFT_THRESHOLD - bagTotal, 0)
+
+  const applyCoupon = () => {
+    if (couponInput.trim().toUpperCase() === COUPON_CODE) {
+      setAppliedCoupon(COUPON_CODE)
+      setCheckoutNotice(`${COUPON_CODE} applied: ${COUPON_DISCOUNT_PERCENT}% off your items.`)
+    } else {
+      setAppliedCoupon('')
+      setCheckoutNotice('That coupon code is not valid.')
+    }
+  }
 
   const loadRazorpay = async () => {
     if (window.Razorpay) return
@@ -237,6 +264,7 @@ export function ShopSection() {
       region: formData.get('region'),
       postalCode: formData.get('postalCode'),
       country: deliveryCountry,
+      couponCode: appliedCoupon || undefined,
       items: bag.map((item) => ({
         productSlug: item.product.slug,
         variantId: item.variant.id,
@@ -254,7 +282,11 @@ export function ShopSection() {
         const paymentResponse = await fetch('/api/payment/order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ idempotencyKey, items: orderInput.items }),
+          body: JSON.stringify({
+            idempotencyKey,
+            couponCode: orderInput.couponCode,
+            items: orderInput.items,
+          }),
         })
         const paymentOrder = await paymentResponse.json()
         if (!paymentResponse.ok || !window.Razorpay) throw new Error(paymentOrder.error || 'Online payment is unavailable.')
@@ -323,7 +355,15 @@ export function ShopSection() {
             forms, bottle size, and price.
           </BodyText>
           <p className="mt-5 text-xs tracking-wide text-foreground/55">
-            Cash on Delivery · Free shipping in India · ₹49 COD handling fee
+            Pay online and save ₹{ONLINE_PAYMENT_SAVING} COD fee · Free shipping in India
+          </p>
+          <p className="mt-2 text-sm text-primary">
+            Use <strong>KANNAUJATTAR10</strong> at checkout for 10% off your attar order.
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-primary">
+            {giftUnlocked
+              ? `Offer unlocked: ${FREE_GIFT_NAME} included with this order.`
+              : `Shop for ₹${giftRemaining.toLocaleString('en-IN')} more to unlock a complimentary 2 ml Zafrani Rose Oudh.`}
           </p>
           <Link
             href="/create-your-own-natural-fragrance"
@@ -711,12 +751,12 @@ export function ShopSection() {
                     <p className="text-foreground/55">Payment method</p>
                     <div className="mt-3 flex flex-wrap gap-4">
                       <label className="inline-flex items-center gap-2">
-                        <input type="radio" name="paymentMethod" value="COD" checked={paymentMethod === 'COD'} onChange={() => setPaymentMethod('COD')} />
-                        Cash on Delivery
+                        <input type="radio" name="paymentMethod" value="ONLINE" checked={paymentMethod === 'ONLINE'} onChange={() => setPaymentMethod('ONLINE')} />
+                        <span>Pay online <span className="text-primary">(Save ₹{ONLINE_PAYMENT_SAVING})</span></span>
                       </label>
                       <label className="inline-flex items-center gap-2">
-                        <input type="radio" name="paymentMethod" value="ONLINE" checked={paymentMethod === 'ONLINE'} onChange={() => setPaymentMethod('ONLINE')} />
-                        Pay online
+                        <input type="radio" name="paymentMethod" value="COD" checked={paymentMethod === 'COD'} onChange={() => setPaymentMethod('COD')} />
+                        Cash on Delivery <span className="text-foreground/50">(+₹{ONLINE_PAYMENT_SAVING})</span>
                       </label>
                     </div>
                   </div>
@@ -746,10 +786,38 @@ export function ShopSection() {
                       {shippingFee === 0 ? 'Free' : formatPrice(shippingFee)}
                     </span>
                   </div>
+                  <div className="flex gap-2 border-t border-border pt-3">
+                    <input
+                      value={couponInput}
+                      onChange={(event) => setCouponInput(event.target.value)}
+                      placeholder="Coupon code"
+                      aria-label="Coupon code"
+                      className="h-10 min-w-0 flex-1 border border-border bg-background px-3 text-xs uppercase text-foreground outline-none focus:border-primary"
+                    />
+                    <button
+                      type="button"
+                      onClick={applyCoupon}
+                      className="h-10 border border-primary px-4 text-[10px] uppercase tracking-[0.14em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {couponDiscount > 0 && (
+                    <div className="flex justify-between text-sm text-primary">
+                      <span>{COUPON_CODE} discount</span>
+                      <span>−{formatPrice(couponDiscount)}</span>
+                    </div>
+                  )}
                   {codFee > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-foreground/55">                      COD fee</span>
                       <span className="text-foreground">{formatPrice(codFee)}</span>
+                    </div>
+                  )}
+                  {giftUnlocked && (
+                    <div className="flex justify-between text-sm text-primary">
+                      <span>Complimentary gift</span>
+                      <span>Included</span>
                     </div>
                   )}
                   <div className="flex justify-between border-t border-border pt-3">
@@ -772,8 +840,10 @@ export function ShopSection() {
                   {checkoutNotice}
                 </p>
                 <p className="text-[11px] leading-relaxed text-foreground/40">
-                  India delivery is free; the ₹49 COD fee is included above. International delivery
-                  is ₹3,000 and will be available after online payment is enabled.
+                  {paymentMethod === 'COD'
+                    ? 'India delivery is free; the ₹49 COD fee is included above.'
+                    : 'India delivery is free and the ₹49 COD fee is waived for online payment.'}{' '}
+                  International delivery is ₹3,000 and will be available after online payment is enabled.
                 </p>
               </div>
             </form>

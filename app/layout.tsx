@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   applicationName: siteConfig.brandName,
   title: `${siteConfig.brandName} | Handcrafted Natural Attars from Kannauj`,
   description: 'Explore handcrafted natural attars shaped by Kannauj’s traditional Deg Bhapka distillation. Discover Gulab, Jasmine, Zafran, Shamama, Mitti and more, with Cash on Delivery across India.',
+  keywords: ['Kannauj attar', 'natural attar', 'KANNAUJATTAR10 coupon', 'attar offer'],
   icons: {
     icon: '/icon.svg',
     apple: '/apple-icon.png',
