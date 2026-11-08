@@ -2,6 +2,7 @@ import { Resend } from 'resend'
 import { z } from 'zod'
 
 const inquirySchema = z.object({
+  inquiryId: z.string().uuid().optional(),
   name: z.string().trim().min(2, 'Name must be at least 2 characters'),
   email: z.string().trim().email('Please provide a valid email address'),
   phone: z
@@ -30,13 +31,42 @@ export async function POST(request: Request) {
     const body = await request.json()
     const validatedData = inquirySchema.parse(body)
     const { name, email, phone, message } = validatedData
+    const inquiryId = validatedData.inquiryId ?? crypto.randomUUID()
     const apiKey = process.env.RESEND_API_KEY
+    const sheetsUrl = process.env.GOOGLE_SHEETS_ORDERS_URL
+    const sheetsSecret = process.env.GOOGLE_SHEETS_ORDERS_SECRET
 
     if (!apiKey) {
       console.error('Inquiry email is not configured: RESEND_API_KEY is missing')
       return Response.json(
         { success: false, error: 'The contact form is temporarily unavailable. Please try again later.' },
         { status: 503 }
+      )
+    }
+
+    if (!sheetsUrl || !sheetsSecret) {
+      console.error('Inquiry spreadsheet is not configured.')
+      return Response.json(
+        { success: false, error: 'The inquiry form is temporarily unavailable. Please try again later.' },
+        { status: 503 }
+      )
+    }
+
+    const sheetResponse = await fetch(sheetsUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: sheetsSecret,
+        inquiry: { inquiryId, createdAt: new Date().toISOString(), name, email, phone, message },
+      }),
+      signal: AbortSignal.timeout(12_000),
+    })
+    const sheetResult = await sheetResponse.json() as { success?: boolean; error?: string }
+    if (!sheetResponse.ok || !sheetResult.success) {
+      console.error('Inquiry spreadsheet save failed:', sheetResult.error ?? sheetResponse.status)
+      return Response.json(
+        { success: false, error: 'We could not save your inquiry. Please try again.' },
+        { status: 502 }
       )
     }
 

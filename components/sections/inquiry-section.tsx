@@ -152,7 +152,7 @@ export function InquirySection() {
       const response = await fetch('/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, message }),
+        body: JSON.stringify({ inquiryId: crypto.randomUUID(), name, email, phone, message }),
       })
 
       // Ensure we can parse the response

@@ -30,17 +30,18 @@ empty `image` field with its exact public path.
 
 1. Open the provided spreadsheet and choose **Extensions → Apps Script**.
 2. Replace the editor contents with `scripts/google-sheets-orders.gs`, then save.
-   Order confirmation now returns immediately after the row is appended; row
-   formatting is kept out of the save request so a formatting error cannot make
-   a saved order appear unconfirmed.
+   This receiver stores orders in `Orders` and contact submissions in
+   `Inquiries`. Order confirmation now returns immediately after the row is
+   appended; row formatting is kept out of the save request so a formatting
+   error cannot make a saved order appear unconfirmed.
 3. In Apps Script, open **Project Settings → Script Properties** and add:
    - Property: `ORDER_WEBHOOK_SECRET`
    - Value: a private random value generated for this site. For example, run
      `openssl rand -hex 32` in a terminal. Do not put this value in the Apps
      Script source, spreadsheet cells, or client-side code.
 4. Run `setupOrdersSheet` once from the Apps Script editor and authorize access.
-   This creates and formats a separate `Orders` tab; it does not overwrite the
-   existing sheet tab.
+   This creates and formats the `Orders` and `Inquiries` tabs; it does not
+   overwrite existing sheet tabs with matching headers.
 5. Choose **Deploy → New deployment → Web app**:
    - Execute as: **Me**
    - Who has access: **Anyone**
@@ -93,6 +94,13 @@ arrive. Keep the API key and both notification settings in the Vercel
 Production environment; do not prefix them with `NEXT_PUBLIC_`. Redeploy the
 production site after changing environment variables. The contact-form recipient
 is configured separately in `app/api/inquiry/route.ts`.
+
+Contact form submissions are saved to the `Inquiries` tab using the same Apps
+Script URL and secret, and are also sent through Resend as before. The tab
+includes a status dropdown (`New`, `In progress`, `Replied`, `Closed`) for
+follow-up tracking. After adding this feature, paste the latest Apps Script,
+run `setupOrdersSheet` once, deploy a new Web App version, and redeploy Vercel
+before testing the contact form.
 
 ### Razorpay online payments
 

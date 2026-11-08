@@ -1,6 +1,17 @@
 const SPREADSHEET_ID = '1GgNw0XkZQk2_dO6FR3ltmjcUWvLx7iOdAbPvDk-Cr0c';
 const ORDERS_SHEET_NAME = 'Orders';
+const INQUIRIES_SHEET_NAME = 'Inquiries';
 const WEBHOOK_VERSION = '2026-11-08-hex-order-id-v2';
+const INQUIRY_HEADERS = [
+  'Inquiry ID',
+  'Inquiry Date (UTC)',
+  'Name',
+  'Email',
+  'Phone',
+  'Message',
+  'Status',
+  'Internal Notes',
+];
 const HEADERS = [
   'Order ID',
   'Order Date (UTC)',
@@ -30,6 +41,7 @@ const HEADERS = [
 
 function setupOrdersSheet() {
   const sheet = getOrdersSheet_();
+  const inquiriesSheet = getInquiriesSheet_();
   sheet.setFrozenRows(1);
   sheet.getRange(1, 1, 1, HEADERS.length)
     .setFontWeight('bold')
@@ -69,6 +81,26 @@ function setupOrdersSheet() {
   sheet.getRange(2, 19, statusRows, 1).setDataValidation(dispatchStatusRule);
   sheet.getRange(2, 16, statusRows, 1).setDataValidation(paymentMethodRule);
   sheet.getRange(2, 17, statusRows, 1).setDataValidation(paymentStatusRule);
+  inquiriesSheet.setFrozenRows(1);
+  inquiriesSheet.getRange(1, 1, 1, INQUIRY_HEADERS.length)
+    .setFontWeight('bold')
+    .setBackground('#35291f')
+    .setFontColor('#f5ead9')
+    .setWrap(true);
+  inquiriesSheet.setRowHeight(1, 42);
+  inquiriesSheet.autoResizeColumns(1, INQUIRY_HEADERS.length);
+  inquiriesSheet.setColumnWidth(6, 480);
+  inquiriesSheet.setColumnWidth(8, 240);
+  if (!inquiriesSheet.getFilter()) {
+    inquiriesSheet.getRange(1, 1, inquiriesSheet.getMaxRows(), INQUIRY_HEADERS.length).createFilter();
+  }
+  const inquiryRows = Math.max(inquiriesSheet.getMaxRows() - 1, 1);
+  inquiriesSheet.getRange(2, 6, inquiryRows, 1).setWrap(true);
+  const inquiryStatusRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(['New', 'In progress', 'Replied', 'Closed'], true)
+    .setAllowInvalid(false)
+    .build();
+  inquiriesSheet.getRange(2, 7, inquiryRows, 1).setDataValidation(inquiryStatusRule);
 }
 
 function doGet() {
@@ -84,6 +116,7 @@ function doGet() {
     }
 
     getOrdersSheet_();
+    getInquiriesSheet_();
     return jsonResponse_({
       success: true,
       status: 'ready',
@@ -109,6 +142,9 @@ function doPost(event) {
 
     if (!expectedSecret || body.secret !== expectedSecret) {
       return jsonResponse_({ success: false, error: 'Unauthorized' });
+    }
+    if (body.inquiry) {
+      return recordInquiry_(body.inquiry, lock);
     }
     const validationError = validateOrder_(body.order);
     if (validationError) {
@@ -192,6 +228,34 @@ function doPost(event) {
   }
 }
 
+function recordInquiry_(inquiry, lock) {
+  if (!inquiry || !inquiry.inquiryId || !inquiry.createdAt ||
+      !inquiry.name || !inquiry.email || !inquiry.phone || !inquiry.message) {
+    return jsonResponse_({ success: false, error: 'Invalid inquiry payload' });
+  }
+  lock.waitLock(20000);
+  const sheet = getInquiriesSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow > 1) {
+    const existing = sheet.getRange(2, 1, lastRow - 1, 1)
+      .createTextFinder(String(inquiry.inquiryId))
+      .matchEntireCell(true)
+      .findNext();
+    if (existing) return jsonResponse_({ success: true, duplicate: true });
+  }
+  sheet.appendRow([
+    safeCell_(inquiry.inquiryId),
+    safeCell_(inquiry.createdAt),
+    safeCell_(inquiry.name),
+    safeCell_(inquiry.email),
+    safeCell_(inquiry.phone),
+    safeCell_(inquiry.message),
+    'New',
+    '',
+  ]);
+  return jsonResponse_({ success: true, duplicate: false, inquiryId: inquiry.inquiryId });
+}
+
 function getOrdersSheet_() {
   const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   let sheet = spreadsheet.getSheetByName(ORDERS_SHEET_NAME);
@@ -212,6 +276,24 @@ function getOrdersSheet_() {
     } else if (currentHeaders[HEADERS.length - 1] !== HEADERS[HEADERS.length - 1]) {
       throw new Error('Custom brief column has an unexpected header; refusing to append.');
     }
+  }
+  return sheet;
+}
+
+function getInquiriesSheet_() {
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = spreadsheet.getSheetByName(INQUIRIES_SHEET_NAME);
+  if (!sheet) sheet = spreadsheet.insertSheet(INQUIRIES_SHEET_NAME);
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, INQUIRY_HEADERS.length).setValues([INQUIRY_HEADERS]);
+    sheet.setFrozenRows(1);
+  } else {
+    const currentHeaders = sheet.getRange(1, 1, 1, INQUIRY_HEADERS.length).getValues()[0];
+    INQUIRY_HEADERS.forEach(function(header, index) {
+      if (currentHeaders[index] !== header) {
+        throw new Error('Inquiries sheet has unexpected headers; refusing to append.');
+      }
+    });
   }
   return sheet;
 }
