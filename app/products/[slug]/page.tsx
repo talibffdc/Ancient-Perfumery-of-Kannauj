@@ -84,7 +84,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
     { name: 'Attars', item: absoluteUrl('/#shop') },
     { name: `${product.name} Attar`, item: canonical },
   ])
-  const seoContent = productSeoContent[product.slug]
+  const seoContent = productSeoContent[product.slug] ?? {
+    about: `${product.name} is listed in the current Kannauj Attar collection with the forms, sizes and prices shown above. Explore the available options and begin with a small application to understand how the fragrance develops on your skin.`,
+    wearTips: [
+      'Apply a small amount to a pulse point.',
+      'Allow the fragrance to settle before adding more.',
+      'Keep the bottle closed and away from direct sunlight.',
+      'Compare one fragrance at a time when testing.',
+    ],
+    faqs: [
+      {
+        question: `What is ${product.name}?`,
+        answer: `${product.name} is an oil-based fragrance listed in the current Kannauj Attar collection. The available forms and sizes are shown above.`,
+      },
+      {
+        question: `How should I apply ${product.name}?`,
+        answer: 'Apply a small dab to a pulse point and allow it to develop. Start with less and add only if needed.',
+      },
+    ],
+    relatedProducts: [],
+    relatedCategories: [],
+    relatedJournal: [],
+  }
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
