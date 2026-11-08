@@ -14,8 +14,8 @@
     "imageAlt": "Gulab attar bottle - Kannauj Attar",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1 },
-      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1699 },
-      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1499 }
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1799 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 2499 }
     ]
   },
   {
@@ -27,8 +27,8 @@
     "imageAlt": "Jasmine flowers used in Kannauj natural jasmine attar, handcrafted with traditional Deg Bhapka distillation",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
-      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 },
-      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1399 }
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1799 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 2899 }
     ]
   },
   {
@@ -39,9 +39,9 @@
     "image": "/images/product-zafran.webp",
     "imageAlt": "Saffron threads for Kannauj Zafran attar, handcrafted using traditional Deg Bhapka distillation",
     "variants": [
-      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1899 },
-      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2199 },
-      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1999 }
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2499 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 3299 }
     ]
   },
   {
@@ -52,7 +52,8 @@
     "image": "/images/shamamaattarkannaujattar.webp",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1699 },
-      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2099 }
+      { "id": "oudh", "name": "Oudh Shamama", "size": "3 ml", "price": 2499 },
+      { "id": "sandali", "name": "Sandali Shamama", "size": "3 ml", "price": 1989 }
     ]
   },
   {
@@ -65,7 +66,7 @@
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 },
-      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1399 }
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1999 }
     ]
   },
   {
@@ -86,8 +87,8 @@
     "note": "Cool, earthy vetiver with a calm, enduring character.",
     "image": "",
     "variants": [
-      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1399 },
-      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1799 }
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 999 },
+      { "id": "absolute", "name": "Absolute (Ruh)", "size": "3 ml", "price": 1499 }
     ]
   },
   {
@@ -98,8 +99,8 @@
     "image": "",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1999 },
-      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2399 },
-      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 2199 }
+      { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2899 },
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 3489 }
     ]
   },
   {
@@ -121,9 +122,9 @@
     "image": "/images/hinattarkannauj.webp",
     "imageAlt": "Hina attar bottle - Kannauj Attar",
     "variants": [
-      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1299 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1899 },
-      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1699 }
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 2499 }
     ]
   },
   {
@@ -136,7 +137,7 @@
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1299 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1699 },
-      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 1499 }
+      { "id": "absolute", "name": "Absolute", "size": "2 ml", "price": 2499 }
     ]
   },
   {
@@ -156,6 +157,17 @@
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1199 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1599 }
+    ]
+  },
+  {
+    "slug": "sandalwood",
+    "name": "Sandalwood",
+    "hindi": "चंदन",
+    "note": "Warm, smooth sandalwood with a soft, meditative depth.",
+    "image": "",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 999 },
+      { "id": "absolute", "name": "Sandalwood Oil (Absolute)", "size": "3 ml", "price": 1299 }
     ]
   }
   ]
