@@ -96,7 +96,11 @@ export function ShopSection() {
   const [couponInput, setCouponInput] = useState('')
   const [appliedCoupon, setAppliedCoupon] = useState('')
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false)
-  const [placedOrder, setPlacedOrder] = useState<{ id: string; emailWarning?: string } | null>(null)
+  const [placedOrder, setPlacedOrder] = useState<{
+    id: string
+    paymentMethod: 'COD' | 'ONLINE'
+    emailWarning?: string
+  } | null>(null)
   const checkoutAttemptId = useRef<string | null>(null)
   const productsRef = useRef<HTMLDivElement>(null)
   const optionsRef = useRef<HTMLDivElement>(null)
@@ -327,7 +331,11 @@ export function ShopSection() {
         return
       }
 
-      setPlacedOrder({ id: result.orderId, emailWarning: result.emailWarning })
+      setPlacedOrder({
+        id: result.orderId,
+        paymentMethod,
+        emailWarning: result.emailWarning,
+      })
       checkoutAttemptId.current = null
       setSelectedProduct(null)
       clearCart()
@@ -889,7 +897,9 @@ export function ShopSection() {
                 Order reference: <span className="font-medium text-foreground">{placedOrder.id}</span>
               </p>
               <p className="mt-4 text-sm text-foreground/55">
-                Payment method: Cash on Delivery. We’ll contact you to confirm dispatch details.
+                {placedOrder.paymentMethod === 'ONLINE'
+                  ? 'Payment method: Paid online via Razorpay. We’ll contact you with dispatch details.'
+                  : 'Payment method: Cash on Delivery. We’ll contact you to confirm dispatch details.'}
               </p>
               {placedOrder.emailWarning && (
                 <p className="mt-3 text-sm text-primary">{placedOrder.emailWarning}</p>
