@@ -169,6 +169,29 @@
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 999 },
       { "id": "absolute", "name": "Sandalwood Oil (Absolute)", "size": "3 ml", "price": 1299 }
     ]
+  },
+  {
+    "slug": "kesar-chandan",
+    "name": "Kesar Chandan",
+    "hindi": "केसर चंदन",
+    "note": "A warm saffron and sandalwood fragrance with a smooth, composed character.",
+    "image": "",
+    "imageAlt": "Kesar Chandan saffron sandalwood attar from Kannauj",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1399 }
+    ]
+  },
+  {
+    "slug": "lavender",
+    "name": "Lavender",
+    "hindi": "लैवेंडर",
+    "note": "A clean aromatic floral with a soft, calming fragrance profile.",
+    "image": "",
+    "imageAlt": "Lavender attar and absolute from Kannauj",
+    "variants": [
+      { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
+      { "id": "absolute", "name": "Absolute", "size": "3 ml", "price": 1999 }
+    ]
   }
   ]
 }

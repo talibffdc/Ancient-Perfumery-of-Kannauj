@@ -135,4 +135,22 @@ export const productSeoContent: Record<string, ProductSeoContent> = {
     relatedCategories: [{ label: 'Attar for women', href: '/attar-for-women' }, { label: 'Summer attars', href: '/summer-attars' }],
     relatedJournal: [{ label: 'Harsingar flower benefits and fragrance', href: '/journal/harsingar-flower-benefits-uses-fragrance' }, { label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'Harsingar attar: a rare floral treasure', href: '/journal/harsingar-attar-floral-treasure' }],
   },
+  'kesar-chandan': {
+    about:
+      'Kesar Chandan is a warm fragrance oil that brings saffron and sandalwood into one composed direction. Kesar, or saffron, is associated with a distinctive warm spice character, while chandan, or sandalwood, is known for its smooth woody profile. Together, the name gives this Kannauj fragrance a clear saffron-and-wood identity without suggesting a fixed formula beyond the product listing. The current catalog offers Kesar Chandan as a 3 ml Attar. Apply a small amount first and allow the fragrance to settle before deciding whether you want more. This page provides the current form, size and price, while the general description helps shoppers compare it with floral, woody and blended attars. It does not make claims about origin, concentration, longevity, certification or skin effects.',
+    wearTips: ['Start with one small dab on the wrist.', 'Try a second pulse point only after the first application settles.', 'Give the saffron and sandalwood character time to develop.', 'Compare it with a floral attar on a separate day.'],
+    faqs: commonFaqs('Kesar Chandan', 'a saffron and sandalwood fragrance'),
+    relatedProducts: [{ label: 'Sandalwood Attar', href: '/products/sandalwood' }, { label: 'Zafran Attar', href: '/products/zafran' }, { label: 'Mukhallat Attar', href: '/products/mukhallat' }],
+    relatedCategories: [{ label: 'Winter attars', href: '/winter-attars' }, { label: 'Long-lasting attars', href: '/long-lasting-attar' }],
+    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'What is attar?', href: '/journal/what-is-attar' }],
+  },
+  lavender: {
+    about:
+      'Lavender is an aromatic floral fragrance available in Attar and Absolute forms. Its familiar profile is often described through clean, herbal and softly floral impressions, making it a useful choice for someone exploring a lighter aromatic direction within an oil-based fragrance collection. The current Kannauj Attar catalog lists Lavender in 3 ml Attar and 3 ml Absolute options. Begin with a small application and let the fragrance develop on skin before adding more. This product page provides the exact current forms, size and prices. The description is intentionally practical and does not add unsupported claims about sourcing, therapeutic effects, duration, concentration or certification.',
+    wearTips: ['Apply a small dab to one wrist first.', 'Allow the aromatic floral profile to settle before reapplying.', 'Try the Attar and Absolute separately when comparing forms.', 'Store the bottle closed and away from direct sunlight.'],
+    faqs: commonFaqs('Lavender', 'a clean aromatic floral'),
+    relatedProducts: [{ label: 'Jasmine Attar', href: '/products/jasmine' }, { label: 'Rajnigandha Attar', href: '/products/rajnigandha' }, { label: 'Ruh Khus Attar', href: '/products/ruh-khus' }],
+    relatedCategories: [{ label: 'Summer attars', href: '/summer-attars' }, { label: 'Attar for women', href: '/attar-for-women' }],
+    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'Alcohol-free attar guide', href: '/alcohol-free-attar' }],
+  },
 }
