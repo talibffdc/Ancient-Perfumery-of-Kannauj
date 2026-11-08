@@ -121,7 +121,10 @@ Order references use a hexadecimal suffix (`KA-YYYYMMDD-XXXXXXXXXXXX`) so they
 remain accepted by older Apps Script deployments while the Web App is being
 updated. After replacing the Apps Script code, deploy a new version and verify
 the exact `/exec` URL returns the current validation errors rather than the old
-`Invalid order payload` message.
+`Invalid order payload` message. The current deployment should also include a
+`version` field in the health response. If that field is missing, Vercel is
+calling an older Apps Script deployment; create a new Web App version and
+redeploy Vercel before testing another payment.
 
 For production, switch the Razorpay dashboard to Live Mode, replace only these
 two environment values with the Live API credentials, and add them to Vercel's

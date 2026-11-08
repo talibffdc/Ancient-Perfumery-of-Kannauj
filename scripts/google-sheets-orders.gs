@@ -1,5 +1,6 @@
 const SPREADSHEET_ID = '1GgNw0XkZQk2_dO6FR3ltmjcUWvLx7iOdAbPvDk-Cr0c';
 const ORDERS_SHEET_NAME = 'Orders';
+const WEBHOOK_VERSION = '2026-11-08-hex-order-id-v2';
 const HEADERS = [
   'Order ID',
   'Order Date (UTC)',
@@ -86,7 +87,8 @@ function doGet() {
     return jsonResponse_({
       success: true,
       status: 'ready',
-      message: 'COD order receiver is ready.',
+      version: WEBHOOK_VERSION,
+      message: 'COD and Razorpay order receiver is ready.',
     });
   } catch (error) {
     console.error('Order receiver health check failed: ' + error);
@@ -111,7 +113,11 @@ function doPost(event) {
     const validationError = validateOrder_(body.order);
     if (validationError) {
       console.error('Order validation failed: ' + validationError);
-      return jsonResponse_({ success: false, error: validationError });
+      return jsonResponse_({
+        success: false,
+        error: validationError,
+        version: WEBHOOK_VERSION,
+      });
     }
 
     lock.waitLock(20000);

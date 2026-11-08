@@ -388,7 +388,9 @@ export async function POST(request: Request) {
               { status: 502 }
             )
           }
-          lastSheetFailure = result.error ?? 'Apps Script did not confirm saving the order'
+          lastSheetFailure = result.error === 'Invalid order payload'
+            ? 'The deployed Apps Script is outdated. Redeploy google-sheets-orders.gs and then redeploy Vercel.'
+            : result.error ?? 'Apps Script did not confirm saving the order'
         }
       }
     } catch (error) {
