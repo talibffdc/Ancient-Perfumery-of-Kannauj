@@ -85,7 +85,8 @@
     "name": "Ruh Khus",
     "hindi": "रूह ख़स",
     "note": "Cool, earthy vetiver with a calm, enduring character.",
-    "image": "",
+    "image": "/images/traditional_attar_extraction.webp",
+    "imageAlt": "Traditional attar extraction process representing Ruh Khus vetiver attar from Kannauj",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 999 },
       { "id": "absolute", "name": "Absolute (Ruh)", "size": "3 ml", "price": 1499 }
@@ -96,7 +97,8 @@
     "name": "Oud",
     "hindi": "ऊद",
     "note": "Deep woods and resin, composed with quiet intensity.",
-    "image": "",
+    "image": "/images/oud_wood_product_photo.webp",
+    "imageAlt": "Oud wood product image for Kannauj Oud attar",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1999 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 2899 },
@@ -108,7 +110,8 @@
     "name": "Mukhallat",
     "hindi": "मुख़ल्लत",
     "note": "A balanced blend where florals and woods meet.",
-    "image": "",
+    "image": "/images/mukhallat_ingredients_flatlay.webp",
+    "imageAlt": "Mukhallat attar ingredient flat lay representing a balanced floral and woody fragrance from Kannauj",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
       { "id": "sandali", "name": "Sandali Attar", "size": "3 ml", "price": 1899 }
@@ -164,7 +167,8 @@
     "name": "Sandalwood",
     "hindi": "चंदन",
     "note": "Warm, smooth sandalwood with a soft, meditative depth.",
-    "image": "",
+    "image": "/images/sandalwood_product_image.webp",
+    "imageAlt": "Sandalwood oil and attar product image from Kannauj",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 999 },
       { "id": "absolute", "name": "Sandalwood Oil (Absolute)", "size": "3 ml", "price": 1299 }
@@ -175,7 +179,7 @@
     "name": "Kesar Chandan",
     "hindi": "केसर चंदन",
     "note": "A warm saffron and sandalwood fragrance with a smooth, composed character.",
-    "image": "",
+    "image": "/images/Saffron%20and%20Sandalwood%20Distillery%20Still%20Life.png",
     "imageAlt": "Kesar Chandan saffron sandalwood attar from Kannauj",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1399 }
@@ -186,7 +190,7 @@
     "name": "Lavender",
     "hindi": "लैवेंडर",
     "note": "A clean aromatic floral with a soft, calming fragrance profile.",
-    "image": "",
+    "image": "/images/Sunlit%20Lavender%20Field.png",
     "imageAlt": "Lavender attar and absolute from Kannauj",
     "variants": [
       { "id": "attar", "name": "Attar", "size": "3 ml", "price": 1499 },
