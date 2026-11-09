@@ -404,7 +404,12 @@ export function ShopSection() {
                     : 'border-border bg-background hover:border-foreground/30'
                 }`}
               >
-                <ProductImage product={product} />
+                <Link
+                  href={`/products/${product.slug}`}
+                  className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <ProductImage product={product} />
+                </Link>
                 {offerActive && (
                   <p className="-mt-2 mb-3 text-[10px] uppercase tracking-[0.15em] text-primary">
                     Diwali Offer · Save {diwaliOffer.discountPercent}%
