@@ -37,6 +37,9 @@ export async function generateMetadata({ params }: JournalArticlePageProps): Pro
   return {
     title: seoTitle,
     description: article.description,
+    ...(article.primaryKeyword && {
+      keywords: [article.primaryKeyword, ...(article.secondaryKeywords ?? [])],
+    }),
     openGraph: {
       title: seoTitle,
       description: article.description,
@@ -167,10 +170,54 @@ export default async function JournalArticlePage({ params }: JournalArticlePageP
                       block.ordered ? 'list-decimal' : 'list-disc'
                     }`}
                   >
-                    {block.items.map((item) => (
-                      <li key={item}>{item}</li>
+                    {block.items.map((item, itemIndex) => (
+                      <li key={typeof item === 'string' ? item : `${item.strongPrefix}-${itemIndex}`}>
+                        {typeof item === 'string'
+                          ? item
+                          : <><strong>{item.strongPrefix}</strong>{item.text.slice(item.strongPrefix.length)}</>}
+                      </li>
                     ))}
                   </List>
+                )
+              }
+
+              if (block.type === 'table') {
+                return (
+                  <div key={index} className="overflow-x-auto">
+                    <table className="w-full border-collapse text-left text-sm leading-relaxed text-foreground/70">
+                      <thead>
+                        <tr className="border-b border-border">
+                          {block.headers.map((header) => (
+                            <th key={header} scope="col" className="px-4 py-3 font-medium text-foreground">
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {block.rows.map((row, rowIndex) => (
+                          <tr key={rowIndex} className="border-b border-border/70">
+                            {row.map((cell, cellIndex) => (
+                              <td key={`${rowIndex}-${cellIndex}`} className="px-4 py-3">{cell}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )
+              }
+
+              if (block.type === 'faq') {
+                return (
+                  <div key={index} className="space-y-5">
+                    {block.items.map(({ question, answer }) => (
+                      <div key={question}>
+                        <p className="font-semibold text-foreground/75">{question}</p>
+                        <BodyText className="mt-1 text-foreground/60">{answer}</BodyText>
+                      </div>
+                    ))}
+                  </div>
                 )
               }
 

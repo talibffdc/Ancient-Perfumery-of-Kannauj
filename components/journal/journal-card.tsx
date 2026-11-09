@@ -26,7 +26,7 @@ export function JournalCard({ article }: JournalCardProps) {
         </Title>
 
         <BodyText className="max-w-2xl text-foreground/60" size="sm">
-          {article.description}
+          {article.excerpt ?? article.description}
         </BodyText>
 
         <div className="mt-6">

@@ -14,6 +14,9 @@ import { absoluteUrl } from '@/lib/site-config'
 export function CategoryPage({ pageKey }: { pageKey: CategoryPageKey }) {
   const page = getCategoryPage(pageKey)
   const products = getCategoryProducts(pageKey)
+  const relatedReading = pageKey === 'attar-for-men' || pageKey === 'attar-for-women'
+    ? [{ label: 'Mukhallat attar ingredients: a guide to the classic blend', href: '/journal/mukhallat-attar-ingredients' }]
+    : []
   const pageUrl = absoluteUrl(`/${pageKey}`)
   const breadcrumbSchema = createBreadcrumbSchema([
     { name: 'Home', item: absoluteUrl('/') },
@@ -100,6 +103,20 @@ export function CategoryPage({ pageKey }: { pageKey: CategoryPageKey }) {
               <li><Link href="/winter-attars" className="text-primary underline underline-offset-4">Winter attars</Link></li>
             </ul>
           </nav>
+          {relatedReading.length > 0 && (
+            <section aria-label="Related reading" className="mt-8 border-t border-border pt-8">
+              <p className="text-xs uppercase tracking-[0.15em] text-foreground/50">Related reading</p>
+              <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+                {relatedReading.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} className="text-primary underline underline-offset-4">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <section aria-labelledby="category-faq" className="mt-14 border-t border-border pt-10">
             <Title as="h2">

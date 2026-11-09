@@ -52,7 +52,7 @@ export const productSeoContent: Record<string, ProductSeoContent> = {
     faqs: commonFaqs('Zafran', 'saffron-inspired spice'),
     relatedProducts: [{ label: 'Shamama Attar', href: '/products/shamama' }, { label: 'Hina Attar', href: '/products/hina' }, { label: 'Mukhallat Attar', href: '/products/mukhallat' }],
     relatedCategories: [{ label: 'Winter attars', href: '/winter-attars' }, { label: 'Attar for men', href: '/attar-for-men' }],
-    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'What is Deg-Bhapka?', href: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation' }],
+    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'What is Deg-Bhapka?', href: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation' }, { label: 'Mukhallat attar ingredients: a guide to the classic blend', href: '/journal/mukhallat-attar-ingredients' }],
   },
   shamama: {
     about:
@@ -97,7 +97,7 @@ export const productSeoContent: Record<string, ProductSeoContent> = {
     faqs: commonFaqs('Oud', 'oud and woody fragrance'),
     relatedProducts: [{ label: 'Ruh Khus Attar', href: '/products/ruh-khus' }, { label: 'Shamama Attar', href: '/products/shamama' }, { label: 'Hina Attar', href: '/products/hina' }],
     relatedCategories: [{ label: 'Winter attars', href: '/winter-attars' }, { label: 'Attar for men', href: '/attar-for-men' }],
-    relatedJournal: [{ label: 'Attar vs oud', href: '/journal/attar-vs-oud-what-is-the-difference' }, { label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }],
+    relatedJournal: [{ label: 'Attar vs oud', href: '/journal/attar-vs-oud-what-is-the-difference' }, { label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'Mukhallat attar ingredients: a guide to the classic blend', href: '/journal/mukhallat-attar-ingredients' }],
   },
   mukhallat: {
     about:
@@ -106,7 +106,7 @@ export const productSeoContent: Record<string, ProductSeoContent> = {
     faqs: commonFaqs('Mukhallat', 'a floral and woody blend'),
     relatedProducts: [{ label: 'Shamama Attar', href: '/products/shamama' }, { label: 'Hina Attar', href: '/products/hina' }, { label: 'Oud Attar', href: '/products/oud' }],
     relatedCategories: [{ label: 'Winter attars', href: '/winter-attars' }, { label: 'Attar gift sets', href: '/attar-gift-sets' }],
-    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'What is Deg-Bhapka?', href: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation' }],
+    relatedJournal: [{ label: 'Attar vs perfume', href: '/journal/attar-vs-perfume-key-differences' }, { label: 'What is Deg-Bhapka?', href: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation' }, { label: 'Mukhallat attar ingredients: a guide to the classic blend', href: '/journal/mukhallat-attar-ingredients' }],
   },
   hina: {
     about:

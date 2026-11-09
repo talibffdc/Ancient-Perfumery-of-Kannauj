@@ -66,6 +66,13 @@ export function InternationalPage({ pageKey }: { pageKey: InternationalPageKey }
                   <Link href={item.href} className="text-sm text-primary underline underline-offset-4">{item.label}</Link>
                 </li>
               ))}
+              {pageKey === 'alcohol-free-attar' && (
+                <li>
+                  <Link href="/journal/mukhallat-attar-ingredients" className="text-sm text-primary underline underline-offset-4">
+                    Mukhallat attar ingredients: a guide to the classic blend
+                  </Link>
+                </li>
+              )}
             </ul>
           </section>
           <section aria-labelledby="international-faq" className="mt-14 border-t border-border pt-10">

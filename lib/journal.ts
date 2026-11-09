@@ -4,13 +4,18 @@ export type JournalArticleBlock =
   | { type: 'paragraph'; text: string; links?: { text: string; url: string }[] }
   | { type: 'quote'; text: string }
   | { type: 'subhead'; text: string; level?: 2 | 3 }
-  | { type: 'list'; ordered?: boolean; items: string[] }
+  | { type: 'list'; ordered?: boolean; items: (string | { text: string; strongPrefix: string })[] }
+  | { type: 'table'; headers: string[]; rows: string[][] }
+  | { type: 'faq'; items: { question: string; answer: string }[] }
 
 export interface JournalArticle {
   slug: string
   title: string
   seoTitle?: string
+  excerpt?: string
   description: string
+  primaryKeyword?: string
+  secondaryKeywords?: string[]
   image?: string
   imageAlt?: string
   author: string
@@ -1157,6 +1162,188 @@ export const journalArticles: JournalArticle[] = [
       { label: 'Attar gift ideas', href: '/journal/how-to-choose-attar-eid-festive-gift' },
     ],
   },
+  {
+    slug: 'mukhallat-attar-ingredients',
+    title: 'Mukhallat Attar Ingredients: What Goes Into This Classic Blend',
+    seoTitle: 'Mukhallat Attar Ingredients: What Is Inside the Blend',
+    excerpt:
+      'A mukhallat is a composed blend of several attars and aromatic materials. Here are the classic ingredients, how the blend is made, and how to choose one.',
+    description:
+      'What is mukhallat attar? Learn the common ingredients, how a Kannauj-style blend comes together, and how to choose and wear it.',
+    primaryKeyword: 'mukhallat attar ingredients',
+    secondaryKeywords: ['what is mukhallat attar', 'mukhallat attar'],
+    image: '/images/mukhallat_ingredients_flatlay.webp',
+    imageAlt: 'Mukhallat attar bottle - Kannauj Attar',
+    author: 'Kannauj Attar',
+    category: 'Natural Ingredients / Attar Stories',
+    publishedAt: '2026-11-09',
+    tags: ['Mukhallat Attar', 'Attar Ingredients', 'Kannauj Perfumery', 'Natural Attar'],
+    relatedSlugs: ['what-is-deg-bhapka-traditional-kannauj-distillation', 'what-is-attar'],
+    faqs: [
+      {
+        question: 'What does mukhallat mean?',
+        answer: 'Mukhallat means "mixed" or "blended". In perfumery it describes an attar made by combining several attars and aromatic materials.',
+      },
+      {
+        question: 'Is mukhallat attar alcohol-free?',
+        answer: 'Traditional attars are oil-based and made without alcohol. Always check the details of the specific product you are buying.',
+      },
+      {
+        question: 'Is mukhallat attar for men or women?',
+        answer: 'Blends are not restricted by gender. Choose by scent character: rose-led blends tend to feel softer, oudh-led blends deeper and woodier.',
+      },
+      {
+        question: 'How is mukhallat different from a single-note attar?',
+        answer: 'A single-note attar is made from one material, such as rose or mitti. A mukhallat combines several for a more layered, composed scent.',
+      },
+    ],
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Most attars tell one story. A rose attar smells of rose, a mitti attar of rain on dry earth. Mukhallat attar is different. The word mukhallat means "mixed", and that is exactly what it is: a blend of several attars and aromatic materials, composed so that no single note speaks louder than the rest.',
+      },
+      {
+        type: 'paragraph',
+        text: 'If you have ever wondered what is actually inside a mukhallat, this guide explains the ingredients you will most often find, how a blend like this comes together, and how to choose one that suits you.',
+      },
+      { type: 'subhead', text: 'What Is Mukhallat Attar?' },
+      {
+        type: 'paragraph',
+        text: 'A traditional single-note attar is made from one material: a flower, a root, a wood or even baked clay. Mukhallat attar combines several of them into one composition. There is no fixed recipe. Every perfumer builds a blend in their own proportions, which is why two mukhallat attars from different houses can smell quite different.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Like other traditional attars, a mukhallat is oil-based and made without alcohol. The notes are held in a base oil, classically sandalwood, which gives the scent its smooth, rounded character and lets it evolve slowly on warm skin. In Kannauj, where attar-making has been part of daily life for generations, blending is considered a craft in its own right.',
+      },
+      { type: 'subhead', text: 'Six Ingredients Commonly Found in Mukhallat Attar' },
+      {
+        type: 'paragraph',
+        text: 'Ingredients vary from one house to another, so treat this as a guide to the classic building blocks rather than a formula.',
+      },
+      { type: 'subhead', level: 3, text: '1. Oudh (Agarwood)' },
+      {
+        type: 'paragraph',
+        text: 'Oudh comes from the resin-rich heartwood of the Aquilaria tree. The dark resin forms when the tree responds to injury or infection, which is one reason good oudh is rare and valued. In a blend it adds depth: a deep, woody, slightly smoky foundation that the other notes can rest on. You can explore the character of this material in our Oud attar.',
+        links: [{ text: 'Oud attar', url: '/products/oud' }],
+      },
+      { type: 'subhead', level: 3, text: '2. Rose' },
+      {
+        type: 'paragraph',
+        text: 'Rose attar, known as ruh gulab, is one of the best-loved materials in Indian perfumery. Traditionally it is distilled from fresh roses in the Deg-Bhapka method and collected in sandalwood oil. In a mukhallat, rose brings a soft floral warmth that balances heavier woods and resins. See our Gulab attar for a single-note example.',
+        links: [{ text: 'Gulab attar', url: '/products/gulab' }],
+      },
+      { type: 'subhead', level: 3, text: '3. Saffron' },
+      {
+        type: 'paragraph',
+        text: 'Saffron (zafran or kesar) is the dried stigma of the crocus flower and one of the most costly spices in the world. Only a little is used, but it adds a warm, slightly leathery spice that lifts a blend and gives it a golden feel. Our Zafran attar shows this note on its own.',
+        links: [{ text: 'Zafran attar', url: '/products/zafran' }],
+      },
+      { type: 'subhead', level: 3, text: '4. Sandalwood' },
+      {
+        type: 'paragraph',
+        text: 'Sandalwood is often the base in which the other notes are carried. Its soft, creamy, woody character smooths the edges of stronger ingredients and helps the blend feel unified rather than layered in separate pieces.',
+      },
+      { type: 'subhead', level: 3, text: '5. Amber' },
+      {
+        type: 'paragraph',
+        text: 'In perfumery, amber is usually an accord rather than a single raw material: a warm, resinous, gently sweet impression built from materials such as labdanum or benzoin. It rounds the blend and adds a cosy, enveloping warmth.',
+      },
+      { type: 'subhead', level: 3, text: '6. Musk' },
+      {
+        type: 'paragraph',
+        text: 'Traditionally musk was animal-derived. Today it is regulated, and many modern blends use synthetic or plant-derived musk notes instead. Musk adds a soft, skin-like finish. If this matters to you, simply ask the seller what a particular blend uses.',
+      },
+      { type: 'subhead', text: 'Quick Guide: Ingredient Roles' },
+      {
+        type: 'table',
+        headers: ['Ingredient', 'Role in the blend', 'What you may notice'],
+        rows: [
+          ['Oudh', 'Deep foundation', 'Woody, smoky, resinous'],
+          ['Rose', 'Floral heart', 'Soft, warm, round'],
+          ['Saffron', 'Spice accent', 'Warm, golden, leathery'],
+          ['Sandalwood', 'Base and binder', 'Creamy, smooth'],
+          ['Amber', 'Warm accord', 'Resinous, gently sweet'],
+          ['Musk', 'Soft finish', 'Skin-like, clean'],
+        ],
+      },
+      { type: 'subhead', text: 'How a Mukhallat Attar Is Made' },
+      {
+        type: 'paragraph',
+        text: 'A single-note attar is distilled from one material. A mukhallat is composed. The perfumer starts with attars and aromatic oils that are already prepared, for example a rose attar from Deg-Bhapka distillation, and blends them by hand in chosen proportions. You can read how the distillation works in our guide to the Deg-Bhapka method.',
+        links: [{
+          text: 'Deg-Bhapka method',
+          url: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation',
+        }],
+      },
+      {
+        type: 'paragraph',
+        text: 'The blend is then typically left to rest so the notes settle together, and it is filtered before bottling. The time this takes differs from house to house. Because the result depends on proportion and judgement rather than a single distillation, a mukhallat reflects the skill of the perfumer who made it.',
+      },
+      { type: 'subhead', text: 'How to Choose a Mukhallat Attar' },
+      {
+        type: 'list',
+        items: [
+          { strongPrefix: 'Ask what is in it.', text: 'Ask what is in it. A trustworthy seller can tell you the main notes and the base oil.' },
+          { strongPrefix: 'Test it on skin.', text: 'Test it on skin. Attar is oil-based and changes with body warmth, so give it a few minutes before you decide.' },
+          { strongPrefix: 'Pick a lead note you like.', text: 'Pick a lead note you like. Some blends lean toward rose, some toward oudh, some toward spice.' },
+          { strongPrefix: 'Patch test first.', text: 'Patch test first. If you have sensitive skin, try a small amount on your forearm before regular use.' },
+          { strongPrefix: 'Start small.', text: 'Start small. A little dab on the wrists or behind the ears is usually enough.' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'New to attar? Read what makes attar different from regular perfume or explore alcohol-free attar.',
+        links: [
+          {
+            text: 'what makes attar different from regular perfume',
+            url: '/journal/attar-vs-perfume-key-differences',
+          },
+          { text: 'alcohol-free attar', url: '/alcohol-free-attar' },
+        ],
+      },
+      { type: 'subhead', text: 'Mukhallat Attar FAQs' },
+      {
+        type: 'faq',
+        items: [
+          {
+            question: 'What does mukhallat mean?',
+            answer: 'Mukhallat means "mixed" or "blended". In perfumery it describes an attar made by combining several attars and aromatic materials.',
+          },
+          {
+            question: 'Is mukhallat attar alcohol-free?',
+            answer: 'Traditional attars are oil-based and made without alcohol. Always check the details of the specific product you are buying.',
+          },
+          {
+            question: 'Is mukhallat attar for men or women?',
+            answer: 'Blends are not restricted by gender. Choose by scent character: rose-led blends tend to feel softer, oudh-led blends deeper and woodier.',
+          },
+          {
+            question: 'How is mukhallat different from a single-note attar?',
+            answer: 'A single-note attar is made from one material, such as rose or mitti. A mukhallat combines several for a more layered, composed scent.',
+          },
+        ],
+      },
+      { type: 'subhead', text: 'Key Takeaways' },
+      {
+        type: 'list',
+        items: [
+          'Mukhallat means "mixed": a composed blend of several attars and aromatic materials.',
+          'Common building blocks include oudh, rose, saffron, sandalwood, amber and musk, but every house has its own formula.',
+          'Traditional attar is oil-based; the base oil shapes how the blend feels on skin.',
+          'Ask about notes and base before you buy, and test on skin.',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'Ready to try one? Explore our Mukhallat attar or browse attar for men and attar for women.',
+        links: [
+          { text: 'Mukhallat attar', url: '/products/mukhallat' },
+          { text: 'attar for men', url: '/attar-for-men' },
+          { text: 'attar for women', url: '/attar-for-women' },
+        ],
+      },
+    ],
+  },
   ...internationalJournalArticles,
 ]
 
@@ -1191,7 +1378,13 @@ export function getRelatedArticles(article: JournalArticle, limit = 2) {
 
 export function getReadingTime(article: JournalArticle) {
   const contentText = article.content.map((block) =>
-    block.type === 'list' ? block.items.join(' ') : block.text
+    block.type === 'list'
+      ? block.items.map((item) => typeof item === 'string' ? item : item.text).join(' ')
+      : block.type === 'table'
+        ? [...block.headers, ...block.rows.flat()].join(' ')
+        : block.type === 'faq'
+          ? block.items.map((item) => `${item.question} ${item.answer}`).join(' ')
+          : block.text
   )
   const text = [article.description, ...contentText].join(' ')
   const words = text.trim().split(/\s+/).length
