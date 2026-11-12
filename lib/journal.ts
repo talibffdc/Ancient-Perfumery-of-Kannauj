@@ -28,6 +28,70 @@ export interface JournalArticle {
   internalLinks?: { label: string; href: string }[]
 }
 
+function markdownToJournalBlocks(markdown: string): JournalArticleBlock[] {
+  const blocks: JournalArticleBlock[] = []
+  let paragraphLines: string[] = []
+  let listItems: string[] = []
+  let listOrdered = false
+
+  const flushParagraph = () => {
+    if (!paragraphLines.length) return
+
+    const markdownText = paragraphLines.join(' ')
+    const links: { text: string; url: string }[] = []
+    const text = markdownText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, linkText: string, url: string) => {
+      links.push({ text: linkText, url })
+      return linkText
+    })
+    blocks.push({ type: 'paragraph', text, ...(links.length && { links }) })
+    paragraphLines = []
+  }
+
+  const flushList = () => {
+    if (!listItems.length) return
+    blocks.push({ type: 'list', ordered: listOrdered, items: listItems })
+    listItems = []
+  }
+
+  for (const line of markdown.trim().split('\n')) {
+    const heading = /^(#{1,3})\s+(.+)$/.exec(line)
+    if (heading) {
+      flushParagraph()
+      flushList()
+      const level = heading[1].length
+      if (level > 1) {
+        blocks.push({
+          type: 'subhead',
+          text: heading[2],
+          ...(level === 3 && { level: 3 }),
+        })
+      }
+      continue
+    }
+
+    const listItem = /^(?:(\d+)\.|-)\s+(.+)$/.exec(line)
+    if (listItem) {
+      flushParagraph()
+      const ordered = Boolean(listItem[1])
+      if (listItems.length && listOrdered !== ordered) flushList()
+      if (!listItems.length) listOrdered = ordered
+      listItems.push(listItem[2])
+      continue
+    }
+
+    flushList()
+    if (line.trim()) {
+      paragraphLines.push(line.trim())
+    } else {
+      flushParagraph()
+    }
+  }
+
+  flushParagraph()
+  flushList()
+  return blocks
+}
+
 export const journalArticles: JournalArticle[] = [
   {
     slug: 'harsingar-flower-benefits-uses-fragrance',
@@ -1343,6 +1407,412 @@ export const journalArticles: JournalArticle[] = [
         ],
       },
     ],
+  },
+  {
+    slug: 'kannauj-attar-online-authentic-buying-guide',
+    title: 'Kannauj Attar Online: A Guide to Choosing Authentic Attar',
+    seoTitle: 'Kannauj Attar Online – Buy Authentic Traditional Attar',
+    description:
+      'Explore Kannauj Attar online with a guide to traditional fragrances, Deg-Bhapka craftsmanship, fragrance selection and choosing authentic attar from Kannauj.',
+    primaryKeyword: 'Kannauj Attar Online',
+    secondaryKeywords: [
+      'Buy Authentic Kannauj Attar Online',
+      'Natural Kannauj Attar',
+      'Traditional Attar from Kannauj',
+    ],
+    image: '/images/traditional_deg_bhapka_distillation_process.png',
+    imageAlt: 'Traditional Deg-Bhapka distillation process in Kannauj perfumery',
+    author: 'Kannauj Attar',
+    category: 'Attar Education / Kannauj Heritage',
+    publishedAt: '2026-11-12',
+    tags: [
+      'Kannauj Attar Online',
+      'Natural Kannauj Attar',
+      'Traditional Attar from Kannauj',
+      'Deg-Bhapka',
+    ],
+    relatedSlugs: ['what-is-deg-bhapka-traditional-kannauj-distillation'],
+    internalLinks: [
+      { label: 'Kannauj Attar collection', href: '/#shop' },
+      { label: 'Mitti Attar product page', href: '/products/mitti' },
+      {
+        label: 'Deg-Bhapka distillation process',
+        href: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is Kannauj Attar?',
+        answer:
+          "Kannauj attar is a traditional fragrance associated with Kannauj's perfumery heritage. It may be produced through traditional distillation or fragrance composition, depending on the particular product.",
+      },
+      {
+        question: 'Can I buy authentic Kannauj Attar online?',
+        answer:
+          'Yes. You can explore Kannauj attar online by reviewing product descriptions, manufacturing information, available sizes, seller details and quality-related information before ordering.',
+      },
+      {
+        question: 'What is the Deg-Bhapka method?',
+        answer:
+          'Deg-Bhapka is a traditional distillation arrangement used in Kannauj perfumery. It uses a heated vessel, a connecting pipe and a receiving vessel to capture aromatic vapours.',
+      },
+      {
+        question: 'Which Kannauj attar should a beginner try?',
+        answer:
+          'A beginner can start by choosing a fragrance family they already enjoy, such as floral, earthy, woody or fresh. Reading the fragrance description can help narrow down the options.',
+      },
+      {
+        question: 'How can I learn about the quality of an attar?',
+        answer:
+          'Review the product information and ask the seller about its quality checks and any applicable batch-wise testing report. Do not assume that every product has the same test results.',
+      },
+      {
+        question: 'Where can I explore traditional Kannauj attars?',
+        answer:
+          'You can explore the Kannauj Attar collection and visit individual product pages to check current availability and details.',
+      },
+    ],
+    content: markdownToJournalBlocks(`# Kannauj Attar Online: A Guide to Choosing Authentic Attar
+Fragrance is more than a pleasant smell. It can carry memories of a place, the character of natural ingredients and the craftsmanship of the people who create it. For generations, Kannauj in Uttar Pradesh has been associated with India's traditional perfumery, particularly the art of making attar.
+
+Today, people can explore and buy Kannauj attar online without travelling to the city itself. However, choosing an attar online requires more than looking at a product photograph or a fragrance name. It is important to understand the fragrance character, the ingredients, the method of production and the information provided by the seller.
+
+This guide explains what makes Kannauj perfumery distinctive, how traditional attars are made, what to consider before ordering and how to explore different fragrance families.
+
+## What Is Kannauj Attar?
+Kannauj attar is a traditional fragrance associated with the perfumery heritage of Kannauj, Uttar Pradesh. Attar generally refers to a concentrated fragrance preparation, often made by distilling aromatic botanical materials or by composing aromatic ingredients into a fragrance.
+
+Traditional Kannauj perfumery is closely associated with the Deg-Bhapka method. This method uses a distillation arrangement in which aromatic vapours are produced in a heated vessel and collected in a receiving vessel. Depending on the formulation, a suitable base material may receive and retain the fragrance.
+
+The result is a fragrance shaped by its ingredients, preparation and distillation process. Different materials produce different fragrance characters, which is why rose, jasmine, mitti, khus and other traditional attars do not smell alike.
+
+## Why Is Kannauj Known for Traditional Attar?
+Kannauj has a long-standing association with Indian perfumery. Its identity as a perfume-making centre is connected to traditional distillation knowledge, skilled craftsmanship and the handling of aromatic materials.
+
+One important part of this heritage is the Deg-Bhapka process. Instead of relying only on modern fragrance blending, traditional distillation uses heat, water, aromatic material and a receiving medium to capture fragrance.
+
+The process requires attention to several factors, including:
+
+- The quality and condition of the raw material.
+- The preparation of flowers, roots, wood or other aromatic ingredients.
+- Temperature and heating control.
+- The distillation duration.
+- The receiving material and the final fragrance profile.
+To understand this traditional technique in more detail, read our guide to the [Deg-Bhapka distillation process](https://kannaujattar.co.in/?utm_source=chatgpt.com).
+
+## How to Choose Kannauj Attar Online
+When you buy Kannauj attar online, you cannot always experience the fragrance before placing an order. That makes clear product information especially important.
+
+Here are some practical points to consider.
+
+### 1. Understand the fragrance character
+Start by identifying the type of fragrance you enjoy.
+
+- Floral: Rose, jasmine, bela and other flower-based fragrances.
+- Earthy: Mitti attar, known for its association with the smell of rain meeting dry earth.
+- Woody: Sandalwood and other wood-inspired fragrance profiles.
+- Fresh and green: Khus and selected botanical fragrances.
+- Warm and complex: Traditional blends such as Shamama and Mukhallat.
+A fragrance description should help you understand its general character rather than promise that every person will experience it in exactly the same way.
+
+### 2. Check the product details
+Before ordering, review the product page carefully. Look for:
+
+- Product name and fragrance description.
+- Available bottle sizes or forms.
+- Current price.
+- Application instructions, where provided.
+- Shipping and return information.
+- Contact details for product-related questions.
+A well-presented product page should help you understand what you are ordering.
+
+### 3. Learn about the manufacturing process
+If a seller describes its products as traditional Kannauj attars, look for information about the actual production method.
+
+The Deg-Bhapka process is an important part of Kannauj's traditional perfumery heritage. A useful product or brand page should explain the process accurately rather than simply using traditional terminology as a marketing phrase.
+
+### 4. Look for quality information
+Quality information helps customers make more informed decisions.
+
+At Kannauj Attar, the website describes an in-house quality analysis lab that checks ingredient quality as production progresses. The business also states that batch-wise testing reports are provided to customers. Customers can contact the team to ask about the report applicable to a particular product or order.
+
+Members of the perfumery team have received relevant training at the Fragrance & Flavour Development Centre (FFDC), Kannauj. This refers to individual training and should not be confused with an FFDC endorsement or certification of the products.
+
+### 5. Choose a fragrance that suits your preference
+There is no single attar that suits everyone. Some people prefer soft floral fragrances, while others enjoy earthy, woody or warm compositions.
+
+If you are new to attars, begin with a fragrance whose character you already understand. Read its description, check the available size and contact the seller if you need clarification.
+
+## Popular Fragrance Families in Kannauj Attar
+Kannauj perfumery includes a wide variety of fragrance profiles. Here are a few examples to help you explore.
+
+### Rose Attar
+Rose attar is associated with a floral fragrance character. Its profile can vary according to the rose material, distillation and formulation.
+
+### Mitti Attar
+Mitti attar is known for its earthy fragrance, reminiscent of the aroma of rain falling on dry ground. It is an interesting choice for people who enjoy unusual, nature-inspired scents.
+
+### Jasmine Attar
+Jasmine-based fragrances are generally associated with a rich floral character. Their fragrance profile can vary depending on the flowers and the preparation method.
+
+### Khus Attar
+Khus, also known as vetiver, is associated with earthy, green and woody fragrance characteristics.
+
+### Shamama and Mukhallat
+These are examples of more complex fragrance compositions. Their character depends on the aromatic materials and the proportions used in the formulation.
+
+## Why Explore Kannauj Attar from Kannauj Attar?
+Kannauj Attar presents its work through the heritage of traditional perfumery and the Deg-Bhapka method.
+
+The website provides information about its fragrance collection, available product forms and the craft behind the fragrances. Its quality information includes in-house ingredient checks during production and batch-wise testing reports for customers.
+
+The perfumery team also includes members who have received relevant training at FFDC, Kannauj.
+
+If you are exploring traditional attars, you can browse the [Kannauj Attar collection](https://kannaujattar.co.in/?utm_source=chatgpt.com) and review the product information before choosing a fragrance.
+
+## How to Order Kannauj Attar Online
+Ordering online should be a straightforward process:
+
+1. Explore the available attar collection.
+2. Open the product that interests you.
+3. Read the fragrance description and product details.
+4. Select an available form or bottle size.
+5. Review the current price and delivery information.
+6. Place your order through the website.
+If you have a question about a fragrance, its available form or its batch-wise testing report, contact the Kannauj Attar team before ordering.
+
+## Frequently Asked Questions
+
+### 1. What is Kannauj Attar?
+Kannauj attar is a traditional fragrance associated with Kannauj's perfumery heritage. It may be produced through traditional distillation or fragrance composition, depending on the particular product.
+
+### 2. Can I buy authentic Kannauj Attar online?
+Yes. You can explore Kannauj attar online by reviewing product descriptions, manufacturing information, available sizes, seller details and quality-related information before ordering.
+
+### 3. What is the Deg-Bhapka method?
+Deg-Bhapka is a traditional distillation arrangement used in Kannauj perfumery. It uses a heated vessel, a connecting pipe and a receiving vessel to capture aromatic vapours.
+
+### 4. Which Kannauj attar should a beginner try?
+A beginner can start by choosing a fragrance family they already enjoy, such as floral, earthy, woody or fresh. Reading the fragrance description can help narrow down the options.
+
+### 5. How can I learn about the quality of an attar?
+Review the product information and ask the seller about its quality checks and any applicable batch-wise testing report. Do not assume that every product has the same test results.
+
+### 6. Where can I explore traditional Kannauj attars?
+You can explore the [Kannauj Attar collection](https://kannaujattar.co.in/?utm_source=chatgpt.com) and visit individual product pages to check current availability and details.
+
+## Explore the Craft of Kannauj Perfumery
+Kannauj attar brings together fragrance, materials and a distinctive tradition of perfumery. Whether you are discovering rose, jasmine, khus or the earthy character of mitti, understanding the fragrance and its making can make the experience more meaningful.
+
+Explore the collection at [Kannauj Attar](https://kannaujattar.co.in/?utm_source=chatgpt.com) and discover traditional fragrances from Kannauj.`),
+  },
+  {
+    slug: 'mitti-attar-kannauj-fragrance-of-first-rain',
+    title: 'Mitti Attar Kannauj: The Fragrance of Rain Meeting Earth',
+    seoTitle: 'Mitti Attar Kannauj – The Earthy Fragrance of First Rain',
+    description:
+      'Discover Mitti Attar Kannauj, its earthy petrichor fragrance, traditional clay distillation, Deg-Bhapka heritage and how to explore this distinctive attar.',
+    primaryKeyword: 'Mitti Attar Kannauj',
+    secondaryKeywords: [
+      'Kannauj Mitti Attar',
+      'Natural Mitti Attar',
+      'Mitti Attar Making Process',
+      'Petrichor Fragrance',
+    ],
+    image: '/images/mittiattar.webp',
+    imageAlt: 'Mitti attar fragrance oil from Kannauj',
+    author: 'Kannauj Attar',
+    category: 'Attar Stories / Natural Ingredients',
+    publishedAt: '2026-11-12',
+    tags: [
+      'Mitti Attar Kannauj',
+      'Kannauj Mitti Attar',
+      'Natural Mitti Attar',
+      'Petrichor Fragrance',
+      'Deg-Bhapka',
+    ],
+    relatedSlugs: ['what-is-deg-bhapka-traditional-kannauj-distillation'],
+    internalLinks: [
+      { label: 'Mitti Attar product page', href: '/products/mitti' },
+      { label: 'Kannauj Attar collection', href: '/#shop' },
+      {
+        label: 'Deg-Bhapka distillation process',
+        href: '/journal/what-is-deg-bhapka-traditional-kannauj-distillation',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is Mitti Attar Kannauj?',
+        answer:
+          'Mitti Attar Kannauj is an earthy fragrance associated with the traditional perfumery of Kannauj. It is inspired by the aroma of rain falling on dry earth.',
+      },
+      {
+        question: 'What does Mitti Attar smell like?',
+        answer:
+          'Mitti Attar is generally described as earthy, warm and reminiscent of the smell of the first rain on dry soil. Its exact fragrance character can vary by formulation.',
+      },
+      {
+        question: 'How is traditional Mitti Attar made?',
+        answer:
+          'Traditional Mitti Attar is associated with baked earth and the Deg-Bhapka distillation method. Aromatic vapours are collected in a receiving medium, traditionally sandalwood oil.',
+      },
+      {
+        question: 'What is the difference between Mitti Attar and petrichor?',
+        answer:
+          'Petrichor refers to the smell associated with rain falling on dry ground. Mitti Attar is a prepared fragrance inspired by that earthy aroma.',
+      },
+      {
+        question: 'Why is sandalwood oil used in traditional Mitti Attar?',
+        answer:
+          'Sandalwood oil can act as a receiving medium in traditional attar distillation, capturing and retaining aromatic components during the process.',
+      },
+      {
+        question: 'How can I buy Mitti Attar online?',
+        answer:
+          "Read the product description, review the available forms and sizes, check the seller's information and order through the product page. You can explore Mitti Attar by Kannauj Attar.",
+      },
+    ],
+    content: markdownToJournalBlocks(`# Mitti Attar Kannauj: The Fragrance of Rain Meeting Earth
+There is a particular moment when the first drops of rain touch dry earth. The air changes, the surroundings feel refreshed and a distinctive earthy aroma rises from the ground. For many people, this fragrance brings back memories of the monsoon, open fields and the first rain after a long summer.
+
+This familiar yet remarkable scent is the inspiration behind Mitti Attar.
+
+Mitti Attar Kannauj is associated with the traditional perfumery of Kannauj, Uttar Pradesh, where the fragrance of baked earth is captured through a distinctive distillation process. Unlike conventional floral fragrances, Mitti Attar has an earthy character inspired by the smell of rain meeting warm, dry soil.
+
+In this guide, we explore what Mitti Attar is, how its fragrance is traditionally created, what makes it distinctive and what to consider when choosing one.
+
+## What Is Mitti Attar?
+Mitti Attar is a traditional earthy fragrance inspired by the aroma of rain falling on dry soil.
+
+The word mitti means earth or soil. Its fragrance is often associated with the smell that appears when the first rain reaches sun-warmed ground. In fragrance discussions, this earthy rain-associated smell is commonly connected with the term petrichor.
+
+Mitti Attar is distinctive because its inspiration does not come from a conventional flower or a familiar fruit. Instead, it reflects the scent of the earth itself.
+
+Traditional Kannauj Mitti Attar is associated with the use of specially prepared baked clay and a distillation process that captures its characteristic aroma in a receiving medium, traditionally sandalwood oil.
+
+## Why Does Mitti Attar Smell Like the First Rain?
+The smell of rain on dry earth is a sensory experience influenced by several natural factors.
+
+When rain reaches dry ground, it can release volatile compounds and tiny airborne particles that carry the characteristic earthy smell. The aroma may vary according to the soil, environment and surrounding natural materials.
+
+Mitti Attar takes inspiration from this earthy experience. Its fragrance character is generally described as:
+
+- Earthy and soil-like.
+- Warm and grounded.
+- Dry yet reminiscent of rain.
+- Distinctive compared with conventional floral fragrances.
+- Connected with the atmosphere of the first monsoon rain.
+The exact scent profile can differ between formulations and production methods. Therefore, the product description and fragrance sample, where available, are useful when selecting an attar.
+
+## How Is Mitti Attar Made in Kannauj?
+Traditional Kannauj perfumery is known for the Deg-Bhapka method. This method is also associated with the making of Mitti Attar.
+
+The process involves preparing the aromatic material, heating it in a distillation vessel and collecting the resulting aromatic vapours in a receiving vessel.
+
+In the traditional preparation of Mitti Attar, baked earth is used as the source of the characteristic earthy fragrance.
+
+### 1. Preparing the Earth
+Suitable clay or earth is selected and prepared for the process. The material is baked so that it develops the earthy aroma required for distillation.
+
+### 2. Preparing the Deg
+The prepared material is placed in the traditional distillation vessel, known as the deg. Water and other process requirements are handled according to the specific method being followed.
+
+### 3. Heating and Distillation
+The deg is heated carefully. As the contents are heated, vapours carrying aromatic components move through the connecting pipe.
+
+### 4. Receiving the Fragrance
+The vapours pass into the receiving vessel, known as the bhapka. In traditional Mitti Attar production, sandalwood oil can act as the receiving medium that captures the earthy aroma.
+
+### 5. Separation and Maturation
+After distillation, the resulting material is handled and separated as required. The finished fragrance depends on the raw material, distillation conditions and the receiving medium.
+
+The traditional Deg-Bhapka method requires knowledge of the materials, heat and process timing. It is one of the important parts of Kannauj's perfumery heritage.
+
+## What Makes Kannauj Mitti Attar Different?
+The identity of Kannauj Mitti Attar is closely connected with the region's traditional fragrance-making knowledge.
+
+Its distinctive character comes from the use of baked earth as the fragrance source rather than relying on a typical floral profile.
+
+There are three aspects worth understanding:
+
+1. Earth-inspired fragrance
+
+Mitti Attar is created around the earthy aroma associated with rain and dry soil. This makes it different from rose, jasmine or other flower-based attars.
+
+2. Traditional distillation heritage
+
+The Deg-Bhapka method connects Mitti Attar with Kannauj's traditional perfumery practices.
+
+3. Receiving medium
+
+The receiving material plays an important role in the finished fragrance. In traditional Mitti Attar, sandalwood oil is associated with capturing the earthy aroma.
+
+## Mitti Attar and Petrichor: Are They the Same?
+The terms are related, but they do not mean exactly the same thing.
+
+Petrichor is a term used for the characteristic smell associated with rain falling on dry ground. Mitti Attar is a fragrance inspired by that earthy experience and produced as an attar.
+
+In simple terms, petrichor describes the natural smell experience, while Mitti Attar is a prepared fragrance that seeks to capture an earthy character reminiscent of it.
+
+The two may evoke a similar impression, but a natural environment and a finished perfume oil are not identical.
+
+## Who May Enjoy Mitti Attar?
+Mitti Attar may appeal to people who enjoy fragrances that are different from conventional sweet, fruity or floral perfumes.
+
+It may be worth exploring if you like:
+
+- Earthy and soil-inspired fragrances.
+- The smell associated with the first rain.
+- Warm, natural and grounded scent profiles.
+- Traditional Indian perfumery.
+- Unusual fragrances that evoke memories of nature.
+Fragrance preferences are personal, so it is useful to read the product description and try a small quantity where possible before selecting a larger size.
+
+## How to Choose Mitti Attar from Kannauj
+When exploring Mitti Attar Kannauj online, consider the following:
+
+1. Read the fragrance description: Check whether the product is described as earthy, rain-inspired or baked-earth inspired.
+2. Understand the production method: Look for clear information about the materials and distillation process.
+3. Review the available forms: Check the available bottle sizes and product variants.
+4. Check quality information: Ask about ingredient checks and any batch-wise testing report applicable to the product.
+5. Review the seller's information: Look for clear product details, contact information, shipping terms and return policy.
+These checks help you make a more informed choice instead of relying only on marketing descriptions.
+
+## Explore Mitti Attar by Kannauj Attar
+At Kannauj Attar, Mitti is presented as the unmistakable scent of rain meeting sun-warmed earth.
+
+The product information describes the preparation of baked clay and the capture of its essence in sandalwood through the traditional approach associated with Kannauj perfumery.
+
+The website also describes its in-house ingredient quality checks during production. Customers can contact the team to ask about the batch-wise testing report applicable to their product.
+
+You can explore the [Mitti Attar product page](https://kannaujattar.co.in/products/mitti?utm_source=chatgpt.com) to review the current product details, available forms, sizes and ordering information.
+
+## Frequently Asked Questions About Mitti Attar Kannauj
+
+### 1. What is Mitti Attar Kannauj?
+Mitti Attar Kannauj is an earthy fragrance associated with the traditional perfumery of Kannauj. It is inspired by the aroma of rain falling on dry earth.
+
+### 2. What does Mitti Attar smell like?
+Mitti Attar is generally described as earthy, warm and reminiscent of the smell of the first rain on dry soil. Its exact fragrance character can vary by formulation.
+
+### 3. How is traditional Mitti Attar made?
+Traditional Mitti Attar is associated with baked earth and the Deg-Bhapka distillation method. Aromatic vapours are collected in a receiving medium, traditionally sandalwood oil.
+
+### 4. What is the difference between Mitti Attar and petrichor?
+Petrichor refers to the smell associated with rain falling on dry ground. Mitti Attar is a prepared fragrance inspired by that earthy aroma.
+
+### 5. Why is sandalwood oil used in traditional Mitti Attar?
+Sandalwood oil can act as a receiving medium in traditional attar distillation, capturing and retaining aromatic components during the process.
+
+### 6. How can I buy Mitti Attar online?
+Read the product description, review the available forms and sizes, check the seller's information and order through the product page. You can explore [Mitti Attar by Kannauj Attar](https://kannaujattar.co.in/products/mitti?utm_source=chatgpt.com).
+
+## Experience the Earthy Fragrance of Kannauj
+Mitti Attar is a reminder that fragrance does not always need to come from flowers. Sometimes, its inspiration can be found in dry earth, the arrival of rain and the atmosphere of a monsoon morning.
+
+Through traditional Kannauj perfumery, this earthy fragrance has become part of India's wider attar heritage.
+
+Explore [Mitti Attar Kannauj](https://kannaujattar.co.in/products/mitti?utm_source=chatgpt.com) and discover the fragrance inspired by the first rain.`),
   },
   ...internationalJournalArticles,
 ]
