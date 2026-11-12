@@ -389,7 +389,8 @@ export function ShopSection() {
 
         <div
           ref={productsRef}
-          className="scroll-mt-24 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          id="shop-products"
+          className="scroll-mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           {products.map((product) => {
             const isSelected = selectedProduct?.slug === product.slug

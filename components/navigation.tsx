@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { ChevronDown } from 'lucide-react'
@@ -12,7 +12,7 @@ interface NavigationProps {
 
 const primaryLinks = [
   { label: 'Collection', href: '#collection' },
-  { label: 'Shop', href: '#shop' },
+  { label: 'Shop', href: '#shop-products' },
   { label: 'Journal', href: '/journal' },
 ]
 
@@ -37,14 +37,39 @@ export function Navigation({ className }: NavigationProps) {
   const pathname = usePathname()
   const sectionHref = (href: string) =>
     href.startsWith('/') || pathname === '/' ? href : `/${href}`
-  const linkClass =
-    'font-sans text-xs uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:text-primary'
-  const dropdownButtonClass = cn(linkClass, 'inline-flex items-center gap-1')
-
   const closeMenu = () => {
     setIsMenuOpen(false)
     setOpenDropdown(null)
   }
+  const handlePrimaryLinkClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (href !== '#shop-products' || pathname !== '/') return
+
+    event.preventDefault()
+    window.history.pushState(null, '', href)
+    document.getElementById('shop-products')?.scrollIntoView({
+      behavior: 'instant',
+      block: 'start',
+    })
+    closeMenu()
+  }
+  const linkClass =
+    'font-sans text-xs uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:text-primary'
+  const dropdownButtonClass = cn(linkClass, 'inline-flex items-center gap-1')
+
+  useEffect(() => {
+    if (pathname !== '/' || window.location.hash !== '#shop-products') return
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById('shop-products')?.scrollIntoView({
+        behavior: 'instant',
+        block: 'start',
+      })
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [pathname])
 
   return (
     <header
@@ -69,6 +94,7 @@ export function Navigation({ className }: NavigationProps) {
             <li key={link.href}>
               <a
                 href={sectionHref(link.href)}
+                onClick={(event) => handlePrimaryLinkClick(event, link.href)}
                 className={linkClass}
               >
                 {link.label}
@@ -208,7 +234,10 @@ export function Navigation({ className }: NavigationProps) {
             <li key={link.href}>
               <a
                 href={sectionHref(link.href)}
-                onClick={closeMenu}
+                onClick={(event) => {
+                  handlePrimaryLinkClick(event, link.href)
+                  closeMenu()
+                }}
                 className="font-serif text-2xl tracking-wide text-foreground transition-colors duration-300 hover:text-primary"
               >
                 {link.label}
