@@ -1431,7 +1431,10 @@ export const journalArticles: JournalArticle[] = [
       'Traditional Attar from Kannauj',
       'Deg-Bhapka',
     ],
-    relatedSlugs: ['what-is-deg-bhapka-traditional-kannauj-distillation'],
+    relatedSlugs: [
+      'what-is-deg-bhapka-traditional-kannauj-distillation',
+      'mitti-attar-kannauj-fragrance-of-first-rain',
+    ],
     internalLinks: [
       { label: 'Kannauj Attar collection', href: '/#shop' },
       { label: 'Mitti Attar product page', href: '/products/mitti' },
@@ -1498,7 +1501,7 @@ The process requires attention to several factors, including:
 - Temperature and heating control.
 - The distillation duration.
 - The receiving material and the final fragrance profile.
-To understand this traditional technique in more detail, read our guide to the [Deg-Bhapka distillation process](https://kannaujattar.co.in/?utm_source=chatgpt.com).
+To understand this traditional technique in more detail, read our guide to the [Deg-Bhapka distillation process](/journal/what-is-deg-bhapka-traditional-kannauj-distillation).
 
 ## How to Choose Kannauj Attar Online
 When you buy Kannauj attar online, you cannot always experience the fragrance before placing an order. That makes clear product information especially important.
@@ -1568,7 +1571,7 @@ The website provides information about its fragrance collection, available produ
 
 The perfumery team also includes members who have received relevant training at FFDC, Kannauj.
 
-If you are exploring traditional attars, you can browse the [Kannauj Attar collection](https://kannaujattar.co.in/?utm_source=chatgpt.com) and review the product information before choosing a fragrance.
+If you are exploring traditional attars, you can browse the [Kannauj Attar collection](/#shop) and review the product information before choosing a fragrance.
 
 ## How to Order Kannauj Attar Online
 Ordering online should be a straightforward process:
@@ -1599,12 +1602,12 @@ A beginner can start by choosing a fragrance family they already enjoy, such as 
 Review the product information and ask the seller about its quality checks and any applicable batch-wise testing report. Do not assume that every product has the same test results.
 
 ### 6. Where can I explore traditional Kannauj attars?
-You can explore the [Kannauj Attar collection](https://kannaujattar.co.in/?utm_source=chatgpt.com) and visit individual product pages to check current availability and details.
+You can explore the [Kannauj Attar collection](/#shop) and visit individual product pages to check current availability and details.
 
 ## Explore the Craft of Kannauj Perfumery
 Kannauj attar brings together fragrance, materials and a distinctive tradition of perfumery. Whether you are discovering rose, jasmine, khus or the earthy character of mitti, understanding the fragrance and its making can make the experience more meaningful.
 
-Explore the collection at [Kannauj Attar](https://kannaujattar.co.in/?utm_source=chatgpt.com) and discover traditional fragrances from Kannauj.`),
+Explore the collection at [Kannauj Attar](/#shop) and discover traditional fragrances from Kannauj.`),
   },
   {
     slug: 'mitti-attar-kannauj-fragrance-of-first-rain',
@@ -1631,7 +1634,10 @@ Explore the collection at [Kannauj Attar](https://kannaujattar.co.in/?utm_source
       'Petrichor Fragrance',
       'Deg-Bhapka',
     ],
-    relatedSlugs: ['what-is-deg-bhapka-traditional-kannauj-distillation'],
+    relatedSlugs: [
+      'what-is-deg-bhapka-traditional-kannauj-distillation',
+      'kannauj-attar-online-authentic-buying-guide',
+    ],
     internalLinks: [
       { label: 'Mitti Attar product page', href: '/products/mitti' },
       { label: 'Kannauj Attar collection', href: '/#shop' },
@@ -1785,7 +1791,7 @@ The product information describes the preparation of baked clay and the capture 
 
 The website also describes its in-house ingredient quality checks during production. Customers can contact the team to ask about the batch-wise testing report applicable to their product.
 
-You can explore the [Mitti Attar product page](https://kannaujattar.co.in/products/mitti?utm_source=chatgpt.com) to review the current product details, available forms, sizes and ordering information.
+You can explore the [Mitti Attar product page](/products/mitti) to review the current product details, available forms, sizes and ordering information.
 
 ## Frequently Asked Questions About Mitti Attar Kannauj
 
@@ -1805,14 +1811,14 @@ Petrichor refers to the smell associated with rain falling on dry ground. Mitti 
 Sandalwood oil can act as a receiving medium in traditional attar distillation, capturing and retaining aromatic components during the process.
 
 ### 6. How can I buy Mitti Attar online?
-Read the product description, review the available forms and sizes, check the seller's information and order through the product page. You can explore [Mitti Attar by Kannauj Attar](https://kannaujattar.co.in/products/mitti?utm_source=chatgpt.com).
+Read the product description, review the available forms and sizes, check the seller's information and order through the product page. You can explore [Mitti Attar by Kannauj Attar](/products/mitti).
 
 ## Experience the Earthy Fragrance of Kannauj
 Mitti Attar is a reminder that fragrance does not always need to come from flowers. Sometimes, its inspiration can be found in dry earth, the arrival of rain and the atmosphere of a monsoon morning.
 
 Through traditional Kannauj perfumery, this earthy fragrance has become part of India's wider attar heritage.
 
-Explore [Mitti Attar Kannauj](https://kannaujattar.co.in/products/mitti?utm_source=chatgpt.com) and discover the fragrance inspired by the first rain.`),
+Explore [Mitti Attar Kannauj](/products/mitti) and discover the fragrance inspired by the first rain.`),
   },
   ...internationalJournalArticles,
 ]
