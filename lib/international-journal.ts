@@ -183,10 +183,10 @@ export const internationalJournalArticles: JournalArticle[] = [
   {
     slug: 'attar-vs-oud-what-is-the-difference',
     title: 'Attar vs Oud: What Is the Difference?',
-    seoTitle: 'Attar vs Oud: What Is the Difference?',
+    seoTitle: 'Attar vs Oud: Format, Material & Scent Differences',
     description:
       'Learn how attar and oud differ as fragrance terms, materials and formats, with a respectful guide to Kannauj perfume oils.',
-    image: '/images/product-oud.jpg',
+    image: '/images/oud_wood_product_photo.webp',
     imageAlt: 'Oud fragrance product from Kannauj Attar',
     author: 'Kannauj Attar',
     category: 'Attar Education',
@@ -267,7 +267,7 @@ export const internationalJournalArticles: JournalArticle[] = [
   {
     slug: 'how-to-choose-attar-eid-festive-gift',
     title: 'How to Choose an Attar as an Eid or Festive Gift',
-    seoTitle: 'How to Choose an Attar as an Eid or Festive Gift',
+    seoTitle: 'Attar Gift Guide for Eid and Festive Occasions',
     description:
       'A practical guide to choosing an attar gift by fragrance character, format and recipient preference without assuming a fixed gift set or packaging.',
     image: '/images/hinattarkannauj.webp',
@@ -353,7 +353,7 @@ export const internationalJournalArticles: JournalArticle[] = [
     seoTitle: 'What Is Deg-Bhapka? Traditional Kannauj Distillation',
     description:
       'Learn how the traditional Deg-Bhapka method connects botanical material, heat, water and receiving oil in Kannauj attar making.',
-    image: '/images/heritage-deg-vessel.webp',
+    image: '/heritage-deg-vessel.webp',
     imageAlt: 'Traditional Deg vessel used in Kannauj attar distillation',
     author: 'Kannauj Attar',
     category: 'Kannauj Craft',

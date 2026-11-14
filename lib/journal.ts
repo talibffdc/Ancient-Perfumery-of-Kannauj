@@ -157,7 +157,7 @@ export const journalArticles: JournalArticle[] = [
   {
     slug: 'harsingar-attar-floral-treasure',
     title: 'Harsingar Attar: A Rare Floral Treasure from Kannauj',
-    seoTitle: 'Harsingar Attar: A Rare Floral Treasure from Kannauj',
+    seoTitle: 'Harsingar Attar from Kannauj: A Rare Floral Story',
     description:
       'Discover the delicate beauty of Harsingar attar and floral water, explored through traditional Kannauj perfumery, careful testing and fragrance craftsmanship.',
     image: '/images/harsingar-flower-kannaujattar.webp',
@@ -964,6 +964,7 @@ export const journalArticles: JournalArticle[] = [
   {
     slug: 'what-is-attar',
     title: 'What is Attar? Understanding India’s Timeless Natural Perfume Tradition',
+    seoTitle: 'What Is Attar? India’s Natural Perfume Tradition',
     description:
       'A refined introduction to attar, the traditional Indian perfume oil shaped by Kannauj distillation, natural botanicals, and quiet craft.',
     author: 'Kannauj Attar',

@@ -60,6 +60,27 @@ export default function CategoriesPage() {
               ))}
             </ul>
           </section>
+          <section aria-labelledby="category-browsing-heading" className="mt-10">
+            <Title as="h2">
+              <span id="category-browsing-heading">How to use these categories</span>
+            </Title>
+            <BodyText className="mt-4 max-w-3xl">
+              Open a category to see a short guide and the products connected to
+              that browsing theme. Compare the descriptions, then visit each
+              product page for current variants, sizes, prices, and ordering
+              details. Categories are navigation aids, not guarantees about
+              performance or suitability. If you already know which fragrance
+              you want, browse the{' '}
+              <Link href="/#shop" className="text-primary underline underline-offset-4">
+                full attar collection
+              </Link>
+              . For questions about an item, contact the team through the{' '}
+              <Link href="/#inquiry" className="text-primary underline underline-offset-4">
+                inquiry form
+              </Link>{' '}
+              before ordering.
+            </BodyText>
+          </section>
           <p className="mt-10 text-sm text-foreground/70">
             For business supply or manufacturing requests, visit{' '}
             <Link href="/attar-manufacturer-in-kannauj" className="text-primary underline underline-offset-4">
