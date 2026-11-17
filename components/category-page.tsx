@@ -30,10 +30,7 @@ export function CategoryPage({ pageKey }: { pageKey: CategoryPageKey }) {
     itemListElement: products.map((product, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      item: {
-        name: `${product.name} Attar`,
-        url: absoluteUrl(`/products/${product.slug}`),
-      },
+      item: absoluteUrl(`/products/${product.slug}`),
     })),
   }
   const faqSchema = {
