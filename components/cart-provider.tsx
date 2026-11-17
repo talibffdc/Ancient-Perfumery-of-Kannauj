@@ -1,8 +1,10 @@
 'use client'
 
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { ProductVariant, StoreProduct } from '@/lib/shop-catalog'
 import type { CustomFragranceBrief } from '@/lib/custom-fragrance'
+
+const CART_STORAGE_KEY = 'kannauj-attar-cart:v1'
 
 export type CartItem = {
   lineId: string
@@ -22,8 +24,91 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null)
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((entry) => typeof entry === 'string')
+}
+
+function isCartItem(value: unknown): value is CartItem {
+  if (!isRecord(value) || !isRecord(value.product) || !isRecord(value.variant)) return false
+
+  const { product, variant, customBrief } = value
+  const validProduct =
+    typeof product.slug === 'string' &&
+    typeof product.name === 'string' &&
+    typeof product.hindi === 'string' &&
+    typeof product.note === 'string' &&
+    typeof product.image === 'string' &&
+    Array.isArray(product.variants)
+  const validVariant =
+    typeof variant.id === 'string' &&
+    typeof variant.name === 'string' &&
+    typeof variant.size === 'string' &&
+    typeof variant.price === 'number'
+  const validBrief =
+    customBrief === undefined ||
+    (isRecord(customBrief) &&
+      typeof customBrief.description === 'string' &&
+      isStringArray(customBrief.topNotes) &&
+      isStringArray(customBrief.middleNotes) &&
+      isStringArray(customBrief.baseNotes) &&
+      isStringArray(customBrief.fragranceFamilies))
+
+  return (
+    typeof value.lineId === 'string' &&
+    typeof value.quantity === 'number' &&
+    Number.isInteger(value.quantity) &&
+    value.quantity >= 1 &&
+    value.quantity <= 10 &&
+    validProduct &&
+    validVariant &&
+    validBrief
+  )
+}
+
+function isCart(value: unknown): value is CartItem[] {
+  return Array.isArray(value) && value.every(isCartItem)
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
+  const [isHydrated, setIsHydrated] = useState(false)
+  const canPersist = useRef(true)
+
+  useEffect(() => {
+    try {
+      const storedCart = window.localStorage.getItem(CART_STORAGE_KEY)
+      if (storedCart) {
+        const parsedCart: unknown = JSON.parse(storedCart)
+        if (isCart(parsedCart)) {
+          // localStorage is only available after server rendering.
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setItems(parsedCart)
+        } else {
+          console.error('Saved cart data is invalid and could not be restored.')
+        }
+      }
+    } catch (error) {
+      console.error('Failed to restore the saved cart.', error)
+      canPersist.current = false
+    } finally {
+      setIsHydrated(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isHydrated || !canPersist.current) return
+
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
+    } catch (error) {
+      console.error('Failed to save the cart.', error)
+      canPersist.current = false
+    }
+  }, [isHydrated, items])
 
   const value = useMemo<CartContextValue>(
     () => ({
